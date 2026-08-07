@@ -8,8 +8,8 @@ from datetime import datetime
 from pathlib import Path
 
 ROOT = Path(__file__).parent.parent
-DB = ROOT / "work" / "football_data.sqlite"
-OUT = ROOT / "outputs" / "football-predictions.html"
+DB = ROOT / "scripts" / "football_data.sqlite"
+OUT = ROOT / "index.html"
 
 def pct(value):
     return "—" if value is None else f"{value:.0f}%"
