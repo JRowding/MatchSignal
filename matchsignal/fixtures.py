@@ -1,7 +1,10 @@
 """Free fixture providers for the English football pyramid."""
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
+from html import unescape
+import json
 import logging
+import re
 
 import requests
 
@@ -29,8 +32,9 @@ class TheSportsDBProvider(FixtureProvider):
     BASE = "https://www.thesportsdb.com/api/v1/json/123/eventsseason.php"
     LEAGUES = {
         "4328": "Premier League", "4329": "Championship",
-        "4396": "League One", "4397": "League Two", "4590": "National League",
+        "4396": "League One", "4397": "League Two",
     }
+    SKY_DAILY_URL = "https://www.skysports.com/football-scores-fixtures/{date}"
 
     def __init__(self, session=requests):
         self.session = session
@@ -65,6 +69,36 @@ class TheSportsDBProvider(FixtureProvider):
                 kickoff = kickoff_at.isoformat()
                 fixtures.append(Fixture(str(event["idEvent"]), competition, kickoff,
                                         canonical_team(home), canonical_team(away)))
+        fixtures.extend(self._national_league(now, cutoff))
+        return fixtures
+
+    def _national_league(self, now, cutoff):
+        """Sky's dated page fills the schedule gap in the free National League feed."""
+        fixtures = []
+        current = now.date()
+        while current <= cutoff.date():
+            try:
+                response = self.session.get(self.SKY_DAILY_URL.format(date=current.isoformat()), timeout=30,
+                                            headers={"User-Agent": "MatchSignal/2.2"})
+                response.raise_for_status()
+            except requests.RequestException as exc:
+                LOG.warning("National League fixture page unavailable for %s: %s", current, exc)
+                current += timedelta(days=1); continue
+            for raw in re.findall(r'data-state="({.*?})"', response.text):
+                try:
+                    event = json.loads(unescape(raw))
+                    if event["competition"]["name"]["full"] != "National League" or not event.get("isFixture"):
+                        continue
+                    time = event["start"].get("time") or "00:00"
+                    kickoff = datetime.fromisoformat(f"{current.isoformat()}T{time}:00")
+                    if not now <= kickoff <= cutoff:
+                        continue
+                    home, away = event["teams"]["home"]["name"]["full"], event["teams"]["away"]["name"]["full"]
+                    fixtures.append(Fixture(f"sky-{event['id']}", "National League", kickoff.isoformat(),
+                                            canonical_team(home), canonical_team(away)))
+                except (KeyError, TypeError, ValueError, json.JSONDecodeError):
+                    continue
+            current += timedelta(days=1)
         return fixtures
 
 def upsert_fixtures(connection, fixtures: list[Fixture]) -> int:
