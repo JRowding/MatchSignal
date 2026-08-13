@@ -5,6 +5,7 @@ ALIASES = {
     "man united": "Manchester United", "man utd": "Manchester United",
     "manchester utd": "Manchester United", "sheff utd": "Sheffield United",
     "sheff wed": "Sheffield Wednesday", "west brom": "West Bromwich Albion",
+    "wolverhampton wanderers": "Wolves", "blackburn rovers": "Blackburn",
 }
 
 def team_key(value: str) -> str:

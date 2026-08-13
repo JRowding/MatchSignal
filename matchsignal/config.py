@@ -6,6 +6,13 @@ SUPPORTED_COMPETITIONS = {
     "E3": "League Two", "EC": "National League",
 }
 
+# Shared rating priors make promotions, relegations and cup ties comparable
+# before the teams have accumulated matches in their new division.
+COMPETITION_ELO_PRIORS = {
+    "Premier League": 1650.0, "Championship": 1550.0,
+    "League One": 1475.0, "League Two": 1410.0, "National League": 1350.0,
+}
+
 @dataclass(frozen=True)
 class ModelConfig:
     recent_window: int = 10

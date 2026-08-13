@@ -9,6 +9,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from matchsignal.database import connect
+from matchsignal.fixtures import TheSportsDBProvider, upsert_fixtures
 from matchsignal.ingestion import import_season, promote_unplayed_matches_to_fixtures
 from matchsignal.persistence import settle_predictions
 from matchsignal.service import generate_pending_predictions
@@ -21,6 +22,7 @@ def main():
     current = date.today().year
     total = sum(import_season(connection, year) for year in range(current - 3, current + 1))
     fixtures = promote_unplayed_matches_to_fixtures(connection)
+    fixtures += upsert_fixtures(connection, TheSportsDBProvider().upcoming())
     settled = settle_predictions(connection)
     generated = generate_pending_predictions(connection)
     print({"matches_imported": total, "fixtures": fixtures, "settled": settled, "predictions": generated})

@@ -2,7 +2,7 @@ from collections import defaultdict
 from datetime import datetime
 from math import exp
 
-from .config import CONFIG
+from .config import COMPETITION_ELO_PRIORS, CONFIG
 
 def parse_date(value: str) -> datetime:
     for pattern in ("%Y-%m-%d", "%d/%m/%Y", "%Y-%m-%dT%H:%M:%S"):
@@ -26,9 +26,13 @@ def team_form(matches, team: str, kickoff: datetime, home_only: bool) -> dict:
     return {"sample": len(eligible), "points_per_game": weighted["points"] / weights, "goals_for": weighted["goals_for"] / weights, "goals_against": weighted["goals_against"] / weights}
 
 def chronological_elo(matches, initial: float = 1500.0, k: float = CONFIG.elo_k) -> dict:
-    ratings = defaultdict(lambda: initial)
+    # A team keeps its earned rating when it moves division.
+    ratings = {}
     for match in sorted(matches, key=lambda item: parse_date(item["kickoff"])):
         home, away = match["home_team"], match["away_team"]
+        tier_prior = COMPETITION_ELO_PRIORS.get(match.get("competition"), initial)
+        ratings.setdefault(home, tier_prior)
+        ratings.setdefault(away, tier_prior)
         expected_home = 1 / (1 + 10 ** ((ratings[away] - ratings[home]) / 400))
         actual_home = 1 if match["home_goals"] > match["away_goals"] else .5 if match["home_goals"] == match["away_goals"] else 0
         delta = k * (actual_home - expected_home)

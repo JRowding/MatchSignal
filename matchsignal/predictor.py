@@ -1,13 +1,18 @@
-from .config import CONFIG, MODEL_VERSION
+from .config import CONFIG, MODEL_VERSION, SUPPORTED_COMPETITIONS
 from .features import chronological_elo, team_form
 from .poisson import markets, score_matrix
 
 def expected_goals(matches, competition: str, home_team: str, away_team: str, kickoff):
-    prior = [match for match in matches if match["competition"] == competition and match["kickoff"] < kickoff.isoformat()]
+    # Use a shared English-pyramid sample for team form and Elo.  The fixture
+    # division remains the local goal baseline, so a cup tie is still valid.
+    english = [match for match in matches if match["competition"] in SUPPORTED_COMPETITIONS.values() and match["kickoff"] < kickoff.isoformat()]
+    prior = [match for match in english if match["competition"] == competition]
+    if not prior:
+        prior = english
     if not prior: return 1.35, 1.05, {"reason": "league baseline only", "sample": 0}
     league_goals = sum(match["home_goals"] + match["away_goals"] for match in prior) / (2 * len(prior))
-    home = team_form(prior, home_team, kickoff, True); away = team_form(prior, away_team, kickoff, False)
-    elo = chronological_elo(prior)
+    home = team_form(english, home_team, kickoff, True); away = team_form(english, away_team, kickoff, False)
+    elo = chronological_elo(english)
     home_attack = home["goals_for"] if home["goals_for"] is not None else league_goals
     home_defence = home["goals_against"] if home["goals_against"] is not None else league_goals
     away_attack = away["goals_for"] if away["goals_for"] is not None else league_goals
