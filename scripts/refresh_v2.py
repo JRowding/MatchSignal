@@ -1,14 +1,18 @@
 """Idempotent refresh command for scheduled execution."""
 import os
+import sys
 from datetime import date
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 from matchsignal.database import connect
 from matchsignal.ingestion import import_season, promote_unplayed_matches_to_fixtures
 from matchsignal.persistence import settle_predictions
 from matchsignal.service import generate_pending_predictions
 
-ROOT = Path(__file__).resolve().parents[1]
 DATABASE = Path(os.environ.get("MATCHSIGNAL_DATABASE", ROOT / "data" / "matchsignal.sqlite"))
 
 def main():

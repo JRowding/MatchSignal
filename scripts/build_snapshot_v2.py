@@ -1,12 +1,16 @@
 """Generate the free-hosting static dashboard from persisted predictions."""
 import html
 import os
+import sys
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 from matchsignal.database import connect
 from matchsignal.scanner import strongest
 
-ROOT = Path(__file__).resolve().parents[1]
 DATABASE = Path(os.environ.get("MATCHSIGNAL_DATABASE", ROOT / "data" / "matchsignal.sqlite"))
 
 def main():
