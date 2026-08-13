@@ -17,11 +17,9 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
-      - run: python scripts/build_football_database.py
-      - run: python scripts/match_live_fixtures.py
-      - run: python scripts/build_head_to_head_predictions.py
-      - run: python scripts/render_prediction_page.py
-      - run: rm -f scripts/football_data.sqlite scripts/football_data.sqlite-wal scripts/football_data.sqlite-shm
+      - run: python scripts/refresh_v2.py
+      - run: python scripts/build_snapshot_v2.py
+      - run: rm -rf data
       - run: |
           git config user.name "MatchSignal updater"
           git config user.email "actions@github.com"

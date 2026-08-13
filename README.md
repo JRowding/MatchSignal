@@ -22,3 +22,13 @@ pytest
 
 The current Render app continues to serve `index.html` while the data pipeline
 and dynamic dashboard are built. See [ARCHITECTURE.md](ARCHITECTURE.md).
+
+## Refresh and backtesting
+
+`python scripts/refresh_v2.py` imports supported Football-Data files,
+creates scheduled fixtures from unplayed source rows, generates immutable
+predictions, and settles completed records. It is safe to rerun.
+
+The free GitHub Action refreshes a static snapshot. For complete long-term
+prediction history and a dynamic fixture provider, deploy the same database to
+a durable datastore.
