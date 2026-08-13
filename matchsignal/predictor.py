@@ -1,4 +1,5 @@
 from .config import CONFIG, MODEL_VERSION, SUPPORTED_COMPETITIONS
+from .count_models import predict_count_markets
 from .features import chronological_elo, team_form
 from .poisson import markets, score_matrix
 
@@ -27,4 +28,7 @@ def predict(matches, competition, home_team, away_team, kickoff):
     home_xg, away_xg, evidence = expected_goals(matches, competition, home_team, away_team, kickoff)
     probabilities = markets(score_matrix(home_xg, away_xg, CONFIG.poisson_max_goals))
     confidence = "VERY HIGH" if evidence["sample"] >= 10 else "HIGH" if evidence["sample"] >= 7 else "MEDIUM" if evidence["sample"] >= 4 else "LOW"
+    count_probabilities, count_evidence = predict_count_markets(matches, competition, home_team, away_team, kickoff)
+    probabilities.update(count_probabilities)
+    evidence["count_models"] = count_evidence
     return {"model_version": MODEL_VERSION, "home_xg": home_xg, "away_xg": away_xg, "probabilities": probabilities, "confidence": confidence, "evidence": evidence}

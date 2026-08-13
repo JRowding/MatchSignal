@@ -3,7 +3,7 @@
 MatchSignal estimates the expected goals for each team before kickoff, then
 converts those estimates into market probabilities with a Poisson score model.
 
-## Version 2.0.0 foundation
+## Version 2.1.0
 
 1. Historical matches are imported into a normalised database.
 2. Features are calculated only from matches before the fixture kickoff.
@@ -20,6 +20,10 @@ based on usable sample size and statistic completeness.
 
 ## Limitations
 
-This is a team-level model, not shot-level expected goals. Corners and cards
-remain unavailable until the current league has sufficient source statistics.
-No prediction is a guarantee.
+This is a team-level model, not shot-level expected goals. Shots, shots on
+target, corners, fouls and cards use separate count models: recent home/away
+team rates, opponent rates conceded and a league baseline produce an expected
+count, then a Poisson distribution produces the over-market probabilities.
+Each market is withheld unless it has 20 usable league rows and five usable
+home/away rows for both teams. “Cards” means yellow cards plus red cards in the
+underlying Football-Data rows. No prediction is a guarantee.
