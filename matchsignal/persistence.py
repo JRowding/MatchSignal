@@ -1,12 +1,12 @@
 from datetime import datetime, timezone
 
-from .config import MODEL_VERSION
+from .config import CONFIG, MODEL_VERSION
 from .scanner import LABELS
 
 def persist_prediction(connection, fixture, forecast):
     created = datetime.now(timezone.utc).isoformat(timespec="seconds")
     for market, probability in forecast["probabilities"].items():
-        if market not in LABELS: continue
+        if market not in CONFIG.enabled_markets or market not in LABELS: continue
         connection.execute("""INSERT OR IGNORE INTO predictions(fixture_id,prediction_created_at,model_version,home_expected_goals,away_expected_goals,market,selection,predicted_probability,confidence)
         VALUES(?,?,?,?,?,?,?,?,?)""", (fixture["id"], created, MODEL_VERSION, forecast["home_xg"], forecast["away_xg"], market, LABELS[market], probability, forecast["confidence"]))
     connection.commit()

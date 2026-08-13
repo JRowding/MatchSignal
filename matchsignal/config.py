@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-MODEL_VERSION = "2.1.0"
+MODEL_VERSION = "2.2.0"
 SUPPORTED_COMPETITIONS = {
     "E0": "Premier League", "E1": "Championship", "E2": "League One",
     "E3": "League Two", "EC": "National League",
@@ -23,5 +23,7 @@ class ModelConfig:
     elo_k: float = 20.0
     scanner_min_probability: float = 0.58
     scanner_max_probability: float = 0.94
+    fixture_lookahead_days: int = 4
+    enabled_markets: tuple[str, ...] = ("over_2.5",)
 
 CONFIG = ModelConfig()

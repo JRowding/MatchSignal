@@ -1,11 +1,12 @@
 """Free fixture providers for the English football pyramid."""
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 import logging
 
 import requests
 
 from .normalization import canonical_team
+from .config import CONFIG
 
 LOG = logging.getLogger(__name__)
 
@@ -36,6 +37,8 @@ class TheSportsDBProvider(FixtureProvider):
 
     def upcoming(self) -> list[Fixture]:
         fixtures = []
+        now = datetime.now(timezone.utc).replace(tzinfo=None)
+        cutoff = now + timedelta(days=CONFIG.fixture_lookahead_days)
         for league_id, competition in self.LEAGUES.items():
             try:
                 response = self.session.get(self.BASE, params={"id": league_id}, timeout=30,
@@ -52,9 +55,12 @@ class TheSportsDBProvider(FixtureProvider):
                 if not event.get("idEvent") or not home or not away or not date:
                     continue
                 try:
-                    kickoff = datetime.fromisoformat(f"{date}T{time[:8]}").isoformat()
+                    kickoff_at = datetime.fromisoformat(f"{date}T{time[:8]}")
                 except ValueError:
-                    kickoff = f"{date}T00:00:00"
+                    kickoff_at = datetime.fromisoformat(f"{date}T00:00:00")
+                if not now <= kickoff_at <= cutoff:
+                    continue
+                kickoff = kickoff_at.isoformat()
                 fixtures.append(Fixture(str(event["idEvent"]), competition, kickoff,
                                         canonical_team(home), canonical_team(away)))
         return fixtures
