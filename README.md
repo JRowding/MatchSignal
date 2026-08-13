@@ -2,7 +2,8 @@
 
 MatchSignal forecasts matches from the Premier League through the National
 League. It uses Football-Data.co.uk for historic results and TheSportsDB's
-public fixture feed for the upcoming round; neither requires a paid account.
+public season-schedule feed for fixtures in the next four days; neither
+requires a paid account.
 
 The model carries one Elo rating across the five tiers, with conservative
 division priors. That means promotions, relegations and cross-division/cup

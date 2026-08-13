@@ -26,7 +26,7 @@ class FixtureProvider:
 
 class TheSportsDBProvider(FixtureProvider):
     """Public, keyless fixture source covering all five supported tiers."""
-    BASE = "https://www.thesportsdb.com/api/v1/json/123/eventsnextleague.php"
+    BASE = "https://www.thesportsdb.com/api/v1/json/123/eventsseason.php"
     LEAGUES = {
         "4328": "Premier League", "4329": "Championship",
         "4396": "League One", "4397": "League Two", "4590": "National League",
@@ -39,9 +39,11 @@ class TheSportsDBProvider(FixtureProvider):
         fixtures = []
         now = datetime.now(timezone.utc).replace(tzinfo=None)
         cutoff = now + timedelta(days=CONFIG.fixture_lookahead_days)
+        season_start = now.year if now.month >= 7 else now.year - 1
+        season = f"{season_start}-{season_start + 1}"
         for league_id, competition in self.LEAGUES.items():
             try:
-                response = self.session.get(self.BASE, params={"id": league_id}, timeout=30,
+                response = self.session.get(self.BASE, params={"id": league_id, "s": season}, timeout=30,
                                             headers={"User-Agent": "MatchSignal/2.0"})
                 response.raise_for_status()
             except requests.RequestException as exc:
