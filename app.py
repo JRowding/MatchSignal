@@ -23,6 +23,21 @@ def home():
     body = "<h2>Today's strongest signals</h2><div class=grid>" + "".join(f"<article class=card><small>{s['competition']} · {s['confidence']}</small><b>{s['fixture']}</b><p>{s['selection']} · <strong>{s['probability']:.1%}</strong></p></article>" for s in signals) + "</div>" if signals else "<h2>No eligible signals yet</h2><p class=muted>Run the refresh pipeline once historical data and upcoming fixtures are available.</p>"
     return render_template_string(LAYOUT, body=body)
 
+
+@app.get("/mockup")
+def mockup():
+    """Visual preview of the expanded, team-specific fixture card."""
+    return render_template_string("""<!doctype html><meta name=viewport content='width=device-width,initial-scale=1'>
+    <title>Match Signal card preview</title><style>
+    body{margin:0;background:#07111d;color:#ecf4fa;font:15px system-ui,Arial;padding:22px}.card{max-width:620px;margin:auto;background:#102536;border:1px solid #214154;border-radius:18px;overflow:hidden;box-shadow:0 14px 40px #0006}.head{padding:22px;background:linear-gradient(135deg,#15354a,#102536)}.eyebrow{color:#b8ff4e;text-transform:uppercase;letter-spacing:.11em;font-size:11px;font-weight:700}.teams{display:flex;justify-content:space-between;align-items:center;font-size:23px;font-weight:800;margin:12px 0 5px}.muted{color:#9bb1c0}.score{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:16px}.metric,.market{background:#0b1c2a;border-radius:11px;padding:11px}.metric b,.market b{display:block;font-size:19px;margin-top:3px}.label{color:#9bb1c0;font-size:11px;text-transform:uppercase;letter-spacing:.06em}.tabs{display:flex;gap:8px;padding:0 16px 16px;overflow:auto}.tab{white-space:nowrap;border:1px solid #2a4e62;border-radius:99px;padding:7px 10px;color:#b9ceda}.tab.active{background:#b8ff4e;color:#0c1b27;border-color:#b8ff4e;font-weight:700}.section{padding:16px;border-top:1px solid #214154}.section h2{font-size:14px;margin:0 0 11px}.split{display:grid;grid-template-columns:1fr 1fr;gap:8px}.market b{color:#b8ff4e}.note{padding:0 16px 18px;color:#9bb1c0;font-size:12px}</style>
+    <main class=card><header class=head><div class=eyebrow>Championship · Fri 14 Aug · 19:00</div><div class=teams><span>Wolves</span><span class=muted>vs</span><span>Blackburn</span></div><div class=muted>Model 2.1.0 · Team-stat preview</div></header>
+    <section class=score><div class=metric><span class=label>Wolves win</span><b>47.9%</b></div><div class=metric><span class=label>Draw</span><b>26.2%</b></div><div class=metric><span class=label>Blackburn win</span><b>25.9%</b></div></section>
+    <nav class=tabs><span class="tab active">Overview</span><span class=tab>Goals</span><span class=tab>Shots</span><span class=tab>Corners</span><span class=tab>Discipline</span></nav>
+    <section class=section><h2>Team shots</h2><div class=split><div class=market><span class=label>Wolves 10+ shots</span><b>85.8%</b></div><div class=market><span class=label>Blackburn 9+ shots</span><b>85.6%</b></div><div class=market><span class=label>Wolves 3+ on target</span><b>80.8%</b></div><div class=market><span class=label>Blackburn 3+ on target</span><b>73.8%</b></div></div></section>
+    <section class=section><h2>Team corners</h2><div class=split><div class=market><span class=label>Wolves 4+ corners</span><b>71.9%</b></div><div class=market><span class=label>Blackburn 4+ corners</span><b>72.2%</b></div></div></section>
+    <section class=section><h2>Discipline</h2><div class=split><div class=market><span class=label>Wolves 9+ fouls</span><b>80.0%</b></div><div class=market><span class=label>Blackburn 9+ fouls</span><b>75.5%</b></div><div class=market><span class=label>Wolves 2+ cards</span><b>51.5%</b></div><div class=market><span class=label>Blackburn 2+ cards</span><b>59.8%</b></div></div></section>
+    <p class=note>Preview figures use historical team-level data. Markets remain hidden when the supporting data is insufficient.</p></main>""")
+
 @app.get('/history')
 def history():
     connection = db()
