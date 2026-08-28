@@ -48,10 +48,14 @@ def parse_csv(content: str, competition: str, season: str) -> list[dict]:
 def import_season(connection, start_year: int, session=requests) -> int:
     code = season_code(start_year); imported = 0
     for source_code, competition in SUPPORTED_COMPETITIONS.items():
-        response = session.get(f"{BASE}/{code}/{source_code}.csv", timeout=45, headers={"User-Agent": "MatchSignal/2.0"})
-        if response.status_code == 404:
-            LOG.info("Source unavailable", extra={"competition": competition, "season": code}); continue
-        response.raise_for_status()
+        try:
+            response = session.get(f"{BASE}/{code}/{source_code}.csv", timeout=45, headers={"User-Agent": "MatchSignal/2.5"})
+            if response.status_code == 404:
+                LOG.info("Source unavailable", extra={"competition": competition, "season": code}); continue
+            response.raise_for_status()
+        except requests.RequestException as exc:
+            LOG.warning("Football-Data unavailable for %s %s: %s", competition, code, exc)
+            continue
         for match in parse_csv(response.text, competition, f"{start_year}/{start_year + 1}"):
             connection.execute("""INSERT INTO matches_v2(competition,season,kickoff,home_team,away_team,home_goals,away_goals,home_shots,away_shots,home_sot,away_sot,home_corners,away_corners,home_fouls,away_fouls,home_yellows,away_yellows,home_reds,away_reds,referee,completed)
             VALUES(:competition,:season,:kickoff,:home_team,:away_team,:home_goals,:away_goals,:home_shots,:away_shots,:home_sot,:away_sot,:home_corners,:away_corners,:home_fouls,:away_fouls,:home_yellows,:away_yellows,:home_reds,:away_reds,:referee,:completed)
