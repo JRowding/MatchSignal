@@ -21,6 +21,9 @@ def match_time(value):
     suffix = "am" if kickoff.hour < 12 else "pm"
     return f"{kickoff.strftime('%A')} {hour}{minute}{suffix}"
 
+def match_day(value):
+    return datetime.fromisoformat(str(value)).strftime("%A")
+
 
 def main():
     connection = connect(DATABASE)
@@ -37,8 +40,14 @@ def main():
         -(item[1].get("over_2.5")["predicted_probability"] if item[1].get("over_2.5") else 0),
         item[0][0],
     ))
+    days = []
+    for kickoff, *_ in sorted(by_fixture):
+        day = match_day(kickoff)
+        if day not in days:
+            days.append(day)
+    day_buttons = "".join(f"<button data-day={html.escape(day)}>{html.escape(day)}</button>" for day in days)
     over_entries = "".join(
-        f"<tr><td>{html.escape(match_time(row['kickoff']))}</td>"
+        f"<tr data-day={html.escape(match_day(row['kickoff']))}><td>{html.escape(match_time(row['kickoff']))}</td>"
         f"<td><b>{html.escape(row['home_team'])} vs {html.escape(row['away_team'])}</b>"
         f"<small>{html.escape(row['competition'])}</small></td>"
         f"<td>{html.escape(row['selection'])}</td>"
@@ -57,7 +66,7 @@ def main():
     for (kickoff, competition, home, away), markets, best_market in winner_fixtures:
         result_label = {"home_win": home, "draw": "Draw", "away_win": away}[best_market]
         winner_rows.append(
-            f"<tr><td>{html.escape(match_time(kickoff))}</td>"
+            f"<tr data-day={html.escape(match_day(kickoff))}><td>{html.escape(match_time(kickoff))}</td>"
             f"<td><b>{html.escape(home)} vs {html.escape(away)}</b><small>{html.escape(competition)}</small></td>"
             f"<td><b>{html.escape(result_label)}</b><small>H {markets['home_win']['predicted_probability']:.1%} | "
             f"D {markets['draw']['predicted_probability']:.1%} | A {markets['away_win']['predicted_probability']:.1%}</small></td>"
@@ -74,9 +83,12 @@ td{{background:#102536;padding:13px 12px}}td:first-child{{border-radius:10px 0 0
 td:last-child{{border-radius:0 10px 10px 0}}td b,td small{{display:block}}.prob{{color:#b8ff4e;font-size:1.25rem;font-weight:bold}}
 .tabs{{display:flex;gap:8px;margin-top:18px}}.tabs button{{border:1px solid #294557;border-radius:999px;background:#102536;color:#eef5fa;padding:9px 14px;font-weight:700;cursor:pointer}}
 .tabs button.active{{background:#b8ff4e;color:#08131f;border-color:#b8ff4e}}.panel{{display:none}}.panel.active{{display:block}}
+.day-filter{{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}}.day-filter button{{border:1px solid #294557;border-radius:8px;background:#0d2232;color:#eef5fa;padding:8px 11px;font-weight:700;cursor:pointer}}
+.day-filter button.active{{background:#eef5fa;color:#08131f;border-color:#eef5fa}}tr.hidden{{display:none}}
 @media(max-width:650px){{body{{padding:16px}}th:nth-child(1),td:nth-child(1){{display:none}}td{{padding:12px 10px}}}}
 </style><header><h1>Match Signal</h1><p class=muted>English fixtures in the next four days | Model {MODEL_VERSION}</p></header>
 <div class=tabs><button class=active data-tab=goals>Over 2.5 Goals</button><button data-tab=winners>Match Winners</button></div>
+<div class=day-filter><button class=active data-day=all>All</button>{day_buttons}</div>
 <section class="panel active" id=goals><h2>Fixtures ranked by goal probability</h2><table><thead><tr><th>Day / time</th><th>Fixture</th><th>Market</th><th>Probability</th></tr></thead><tbody>{over_entries}</tbody></table></section>
 <section class=panel id=winners><h2>Fixtures ranked by likely result</h2><table><thead><tr><th>Day / time</th><th>Fixture</th><th>Likely result</th><th>Probability</th></tr></thead><tbody>{winner_entries}</tbody></table></section>
 <footer class=muted><p>Probabilities are model estimates, not guarantees.</p></footer>"""
@@ -84,6 +96,11 @@ td:last-child{{border-radius:0 10px 10px 0}}td b,td small{{display:block}}.prob{
 document.querySelectorAll('[data-tab]').forEach(button => button.addEventListener('click', () => {
   document.querySelectorAll('[data-tab]').forEach(item => item.classList.toggle('active', item === button));
   document.querySelectorAll('.panel').forEach(panel => panel.classList.toggle('active', panel.id === button.dataset.tab));
+}));
+document.querySelectorAll('[data-day]').forEach(button => button.addEventListener('click', () => {
+  const day = button.dataset.day;
+  document.querySelectorAll('.day-filter [data-day]').forEach(item => item.classList.toggle('active', item === button));
+  document.querySelectorAll('tbody tr[data-day]').forEach(row => row.classList.toggle('hidden', day !== 'all' && row.dataset.day !== day));
 }));
 </script>"""
     (ROOT / "index.html").write_text(page, encoding="utf-8")
