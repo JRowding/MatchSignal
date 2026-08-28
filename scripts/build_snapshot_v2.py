@@ -2,6 +2,7 @@
 import html
 import os
 import sys
+from datetime import datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -12,6 +13,13 @@ from matchsignal.config import MODEL_VERSION
 from matchsignal.database import connect
 
 DATABASE = Path(os.environ.get("MATCHSIGNAL_DATABASE", ROOT / "data" / "matchsignal.sqlite"))
+
+def match_time(value):
+    kickoff = datetime.fromisoformat(str(value))
+    hour = kickoff.hour % 12 or 12
+    minute = f":{kickoff.minute:02d}" if kickoff.minute else ""
+    suffix = "am" if kickoff.hour < 12 else "pm"
+    return f"{kickoff.strftime('%A')} {hour}{minute}{suffix}"
 
 
 def main():
@@ -30,7 +38,7 @@ def main():
         item[0][0],
     ))
     over_entries = "".join(
-        f"<tr><td>{html.escape(str(row['kickoff'])[:16].replace('T', ' '))}</td>"
+        f"<tr><td>{html.escape(match_time(row['kickoff']))}</td>"
         f"<td><b>{html.escape(row['home_team'])} vs {html.escape(row['away_team'])}</b>"
         f"<small>{html.escape(row['competition'])}</small></td>"
         f"<td>{html.escape(row['selection'])}</td>"
@@ -49,7 +57,7 @@ def main():
     for (kickoff, competition, home, away), markets, best_market in winner_fixtures:
         result_label = {"home_win": home, "draw": "Draw", "away_win": away}[best_market]
         winner_rows.append(
-            f"<tr><td>{html.escape(str(kickoff)[:16].replace('T', ' '))}</td>"
+            f"<tr><td>{html.escape(match_time(kickoff))}</td>"
             f"<td><b>{html.escape(home)} vs {html.escape(away)}</b><small>{html.escape(competition)}</small></td>"
             f"<td><b>{html.escape(result_label)}</b><small>H {markets['home_win']['predicted_probability']:.1%} | "
             f"D {markets['draw']['predicted_probability']:.1%} | A {markets['away_win']['predicted_probability']:.1%}</small></td>"
@@ -69,8 +77,8 @@ td:last-child{{border-radius:0 10px 10px 0}}td b,td small{{display:block}}.prob{
 @media(max-width:650px){{body{{padding:16px}}th:nth-child(1),td:nth-child(1){{display:none}}td{{padding:12px 10px}}}}
 </style><header><h1>Match Signal</h1><p class=muted>English fixtures in the next four days | Model {MODEL_VERSION}</p></header>
 <div class=tabs><button class=active data-tab=goals>Over 2.5 Goals</button><button data-tab=winners>Match Winners</button></div>
-<section class="panel active" id=goals><h2>Fixtures ranked by goal probability</h2><table><thead><tr><th>Kickoff</th><th>Fixture</th><th>Market</th><th>Probability</th></tr></thead><tbody>{over_entries}</tbody></table></section>
-<section class=panel id=winners><h2>Fixtures ranked by likely result</h2><table><thead><tr><th>Kickoff</th><th>Fixture</th><th>Likely result</th><th>Probability</th></tr></thead><tbody>{winner_entries}</tbody></table></section>
+<section class="panel active" id=goals><h2>Fixtures ranked by goal probability</h2><table><thead><tr><th>Day / time</th><th>Fixture</th><th>Market</th><th>Probability</th></tr></thead><tbody>{over_entries}</tbody></table></section>
+<section class=panel id=winners><h2>Fixtures ranked by likely result</h2><table><thead><tr><th>Day / time</th><th>Fixture</th><th>Likely result</th><th>Probability</th></tr></thead><tbody>{winner_entries}</tbody></table></section>
 <footer class=muted><p>Probabilities are model estimates, not guarantees.</p></footer>"""
     page += """<script>
 document.querySelectorAll('[data-tab]').forEach(button => button.addEventListener('click', () => {

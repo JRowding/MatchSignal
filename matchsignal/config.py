@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-MODEL_VERSION = "2.2.0"
+MODEL_VERSION = "2.3.0"
 SUPPORTED_COMPETITIONS = {
     "E0": "Premier League", "E1": "Championship", "E2": "League One",
     "E3": "League Two", "EC": "National League",

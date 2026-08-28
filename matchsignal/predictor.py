@@ -1,6 +1,6 @@
 from .config import CONFIG, MODEL_VERSION, SUPPORTED_COMPETITIONS
 from .count_models import predict_count_markets
-from .features import chronological_elo, team_form
+from .features import chronological_elo, league_table, team_form
 from .poisson import markets, score_matrix
 
 def expected_goals(matches, competition: str, home_team: str, away_team: str, kickoff):
@@ -14,15 +14,23 @@ def expected_goals(matches, competition: str, home_team: str, away_team: str, ki
     league_goals = sum(match["home_goals"] + match["away_goals"] for match in prior) / (2 * len(prior))
     home = team_form(english, home_team, kickoff, True); away = team_form(english, away_team, kickoff, False)
     elo = chronological_elo(english)
+    table = league_table(english, competition, kickoff)
     home_attack = home["goals_for"] if home["goals_for"] is not None else league_goals
     home_defence = home["goals_against"] if home["goals_against"] is not None else league_goals
     away_attack = away["goals_for"] if away["goals_for"] is not None else league_goals
     away_defence = away["goals_against"] if away["goals_against"] is not None else league_goals
     elo_delta = max(-.15, min(.15, (elo.get(home_team, 1500) - elo.get(away_team, 1500)) / 2000))
-    home_xg = max(.2, league_goals * (home_attack / league_goals) ** .5 * (away_defence / league_goals) ** .5 * CONFIG.home_advantage * (1 + elo_delta))
-    away_xg = max(.2, league_goals * (away_attack / league_goals) ** .5 * (home_defence / league_goals) ** .5 / CONFIG.home_advantage * (1 - elo_delta))
+    table_delta = 0.0
+    if home_team in table and away_team in table:
+        team_count = max(table[home_team]["team_count"] - 1, 1)
+        position_delta = (table[away_team]["position"] - table[home_team]["position"]) / team_count
+        ppg_delta = (table[home_team]["points_per_game"] - table[away_team]["points_per_game"]) / 3
+        table_delta = max(-.12, min(.12, (position_delta * .08) + (ppg_delta * .08)))
+    strength_delta = max(-.22, min(.22, elo_delta + table_delta))
+    home_xg = max(.2, league_goals * (home_attack / league_goals) ** .5 * (away_defence / league_goals) ** .5 * CONFIG.home_advantage * (1 + strength_delta))
+    away_xg = max(.2, league_goals * (away_attack / league_goals) ** .5 * (home_defence / league_goals) ** .5 / CONFIG.home_advantage * (1 - strength_delta))
     sample = min(home["sample"], away["sample"])
-    return home_xg, away_xg, {"sample": sample, "home_form": home, "away_form": away, "elo_delta": elo_delta}
+    return home_xg, away_xg, {"sample": sample, "home_form": home, "away_form": away, "elo_delta": elo_delta, "table_delta": table_delta, "table": {"home": table.get(home_team), "away": table.get(away_team)}}
 
 def predict(matches, competition, home_team, away_team, kickoff):
     home_xg, away_xg, evidence = expected_goals(matches, competition, home_team, away_team, kickoff)
