@@ -37,11 +37,16 @@ def main():
         f"<td class=prob>{row['predicted_probability']:.1%}</td></tr>"
         for row in (markets["over_2.5"] for _, markets in fixtures if markets.get("over_2.5"))
     ) or "<tr><td colspan=4>No fixtures in the next four days yet.</td></tr>"
-    winner_rows = []
-    for (kickoff, competition, home, away), markets in fixtures:
+    winner_fixtures = []
+    for fixture, markets in by_fixture.items():
         if not all(market in markets for market in ("home_win", "draw", "away_win")):
             continue
         best_market = max(("home_win", "draw", "away_win"), key=lambda market: markets[market]["predicted_probability"])
+        winner_fixtures.append((fixture, markets, best_market))
+    winner_fixtures.sort(key=lambda item: (-item[1][item[2]]["predicted_probability"], item[0][0]))
+
+    winner_rows = []
+    for (kickoff, competition, home, away), markets, best_market in winner_fixtures:
         result_label = {"home_win": home, "draw": "Draw", "away_win": away}[best_market]
         winner_rows.append(
             f"<tr><td>{html.escape(str(kickoff)[:16].replace('T', ' '))}</td>"
