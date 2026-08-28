@@ -13,14 +13,24 @@ def parse_date(value: str) -> datetime:
 def recency_weight(kickoff: datetime, match_date: datetime, half_life_days: int = 90) -> float:
     return exp(-0.69314718056 * max((kickoff - match_date).days, 0) / half_life_days)
 
-def team_form(matches, team: str, kickoff: datetime, home_only: bool) -> dict:
-    eligible = [match for match in matches if parse_date(match["kickoff"]) < kickoff and ((match["home_team"] == team) if home_only else (match["away_team"] == team))]
+def team_form(matches, team: str, kickoff: datetime, home_only: bool | None) -> dict:
+    def matches_team(match):
+        if home_only is True:
+            return match["home_team"] == team
+        if home_only is False:
+            return match["away_team"] == team
+        return match["home_team"] == team or match["away_team"] == team
+
+    eligible = [match for match in matches if parse_date(match["kickoff"]) < kickoff and matches_team(match)]
     eligible = sorted(eligible, key=lambda match: parse_date(match["kickoff"]), reverse=True)[:CONFIG.recent_window]
     if not eligible: return {"sample": 0, "points_per_game": None, "goals_for": None, "goals_against": None}
     weighted = defaultdict(float); weights = 0.0
     for match in eligible:
         weight = recency_weight(kickoff, parse_date(match["kickoff"])); weights += weight
-        goals_for, goals_against = (match["home_goals"], match["away_goals"]) if home_only else (match["away_goals"], match["home_goals"])
+        if match["home_team"] == team:
+            goals_for, goals_against = match["home_goals"], match["away_goals"]
+        else:
+            goals_for, goals_against = match["away_goals"], match["home_goals"]
         weighted["goals_for"] += goals_for * weight; weighted["goals_against"] += goals_against * weight
         weighted["points"] += (3 if goals_for > goals_against else 1 if goals_for == goals_against else 0) * weight
     return {"sample": len(eligible), "points_per_game": weighted["points"] / weights, "goals_for": weighted["goals_for"] / weights, "goals_against": weighted["goals_against"] / weights}

@@ -55,7 +55,15 @@ def import_season(connection, start_year: int, session=requests) -> int:
         for match in parse_csv(response.text, competition, f"{start_year}/{start_year + 1}"):
             connection.execute("""INSERT INTO matches_v2(competition,season,kickoff,home_team,away_team,home_goals,away_goals,home_shots,away_shots,home_sot,away_sot,home_corners,away_corners,home_fouls,away_fouls,home_yellows,away_yellows,home_reds,away_reds,referee,completed)
             VALUES(:competition,:season,:kickoff,:home_team,:away_team,:home_goals,:away_goals,:home_shots,:away_shots,:home_sot,:away_sot,:home_corners,:away_corners,:home_fouls,:away_fouls,:home_yellows,:away_yellows,:home_reds,:away_reds,:referee,:completed)
-            ON CONFLICT(competition,kickoff,home_team,away_team) DO UPDATE SET home_goals=excluded.home_goals, away_goals=excluded.away_goals, completed=excluded.completed""", match)
+            ON CONFLICT(competition,kickoff,home_team,away_team) DO UPDATE SET
+            home_goals=excluded.home_goals, away_goals=excluded.away_goals,
+            home_shots=excluded.home_shots, away_shots=excluded.away_shots,
+            home_sot=excluded.home_sot, away_sot=excluded.away_sot,
+            home_corners=excluded.home_corners, away_corners=excluded.away_corners,
+            home_fouls=excluded.home_fouls, away_fouls=excluded.away_fouls,
+            home_yellows=excluded.home_yellows, away_yellows=excluded.away_yellows,
+            home_reds=excluded.home_reds, away_reds=excluded.away_reds,
+            referee=excluded.referee, completed=excluded.completed""", match)
             imported += 1
     connection.commit(); return imported
 
