@@ -34,15 +34,26 @@ class TheSportsDBProvider(FixtureProvider):
         "4328": "Premier League", "4329": "Championship",
         "4396": "League One", "4397": "League Two",
     }
+    SKY_COMPETITIONS = {
+        "Premier League": "Premier League",
+        "Sky Bet Championship": "Championship",
+        "Sky Bet League One": "League One",
+        "Sky Bet League Two": "League Two",
+        "National League": "National League",
+    }
     SKY_DAILY_URL = "https://www.skysports.com/football-scores-fixtures/{date}"
 
     def __init__(self, session=requests):
         self.session = session
 
     def upcoming(self) -> list[Fixture]:
-        fixtures = []
         now = datetime.now(timezone.utc).replace(tzinfo=None)
         cutoff = now + timedelta(days=CONFIG.fixture_lookahead_days)
+        fixtures = self._sky_fixtures(now, cutoff)
+        if fixtures:
+            return fixtures
+
+        fixtures = []
         season_start = now.year if now.month >= 7 else now.year - 1
         season = f"{season_start}-{season_start + 1}"
         for league_id, competition in self.LEAGUES.items():
@@ -69,11 +80,10 @@ class TheSportsDBProvider(FixtureProvider):
                 kickoff = kickoff_at.isoformat()
                 fixtures.append(Fixture(str(event["idEvent"]), competition, kickoff,
                                         canonical_team(home), canonical_team(away)))
-        fixtures.extend(self._national_league(now, cutoff))
         return fixtures
 
-    def _national_league(self, now, cutoff):
-        """Sky's dated page fills the schedule gap in the free National League feed."""
+    def _sky_fixtures(self, now, cutoff):
+        """Sky's dated pages cover all supported English tiers without API keys."""
         fixtures = []
         current = now.date()
         while current <= cutoff.date():
@@ -82,19 +92,21 @@ class TheSportsDBProvider(FixtureProvider):
                                             headers={"User-Agent": "MatchSignal/2.2"})
                 response.raise_for_status()
             except requests.RequestException as exc:
-                LOG.warning("National League fixture page unavailable for %s: %s", current, exc)
+                LOG.warning("Sky fixture page unavailable for %s: %s", current, exc)
                 current += timedelta(days=1); continue
-            for raw in re.findall(r'data-state="({.*?})"', response.text):
+            for raw in re.findall(r'data-state="([^"]+)"', response.text):
                 try:
                     event = json.loads(unescape(raw))
-                    if event["competition"]["name"]["full"] != "National League" or not event.get("isFixture"):
+                    source_competition = event["competition"]["name"]["full"]
+                    competition = self.SKY_COMPETITIONS.get(source_competition)
+                    if not competition or not event.get("isFixture"):
                         continue
                     time = event["start"].get("time") or "00:00"
                     kickoff = datetime.fromisoformat(f"{current.isoformat()}T{time}:00")
                     if not now <= kickoff <= cutoff:
                         continue
                     home, away = event["teams"]["home"]["name"]["full"], event["teams"]["away"]["name"]["full"]
-                    fixtures.append(Fixture(f"sky-{event['id']}", "National League", kickoff.isoformat(),
+                    fixtures.append(Fixture(f"sky-{event['id']}", competition, kickoff.isoformat(),
                                             canonical_team(home), canonical_team(away)))
                 except (KeyError, TypeError, ValueError, json.JSONDecodeError):
                     continue

@@ -24,6 +24,6 @@ class ModelConfig:
     scanner_min_probability: float = 0.58
     scanner_max_probability: float = 0.94
     fixture_lookahead_days: int = 4
-    enabled_markets: tuple[str, ...] = ("over_2.5",)
+    enabled_markets: tuple[str, ...] = ("home_win", "draw", "away_win", "over_2.5")
 
 CONFIG = ModelConfig()
