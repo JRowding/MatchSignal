@@ -14,6 +14,7 @@ from matchsignal.database import connect
 
 DATABASE = Path(os.environ.get("MATCHSIGNAL_DATABASE", ROOT / "data" / "matchsignal.sqlite"))
 DAYS = ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
+WINNER_LIMIT = 6
 
 def match_time(value):
     kickoff = datetime.fromisoformat(str(value))
@@ -59,7 +60,7 @@ def main():
     winner_fixtures.sort(key=lambda item: (-item[1][item[2]]["predicted_probability"], item[0][0]))
 
     winner_rows = []
-    for (kickoff, competition, home, away), markets, best_market in winner_fixtures:
+    for (kickoff, competition, home, away), markets, best_market in winner_fixtures[:WINNER_LIMIT]:
         result_label = {"home_win": home, "draw": "Draw", "away_win": away}[best_market]
         winner_rows.append(
             f"<tr data-day={html.escape(match_day(kickoff))}><td>{html.escape(match_time(kickoff))}</td>"
@@ -68,7 +69,7 @@ def main():
             f"D {markets['draw']['predicted_probability']:.1%} | A {markets['away_win']['predicted_probability']:.1%}</small></td>"
             f"<td class=prob>{markets[best_market]['predicted_probability']:.1%}</td></tr>"
         )
-    winner_entries = "".join(winner_rows) or "<tr><td colspan=4>No match-winner predictions in the next four days yet.</td></tr>"
+    winner_entries = "".join(winner_rows) or "<tr><td colspan=4>No match-winner predictions are available yet. The next refresh will try again.</td></tr>"
     page = f"""<!doctype html><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'>
 <title>Match Signal</title><style>
 body{{margin:auto;max-width:1100px;padding:24px;background:#08131f;color:#eef5fa;font:16px Arial}}
@@ -87,7 +88,7 @@ td:last-child{{border-radius:0 10px 10px 0}}td b,td small{{display:block}}.prob{
 <div class=tabs><button class=active data-tab=goals>Over 2.5 Goals</button><button data-tab=winners>Match Winners</button></div>
 <div class=day-filter><button class=active data-day=all>All</button>{day_buttons}</div>
 <section class="panel active" id=goals><h2>Fixtures ranked by goal probability</h2><p class="empty-day hidden">No fixtures for this day inside the four-day window.</p><table><thead><tr><th>Day / time</th><th>Fixture</th><th>Market</th><th>Probability</th></tr></thead><tbody>{over_entries}</tbody></table></section>
-<section class=panel id=winners><h2>Fixtures ranked by likely result</h2><p class="empty-day hidden">No fixtures for this day inside the four-day window.</p><table><thead><tr><th>Day / time</th><th>Fixture</th><th>Likely result</th><th>Probability</th></tr></thead><tbody>{winner_entries}</tbody></table></section>
+<section class=panel id=winners><h2>Top {WINNER_LIMIT} likely winners</h2><p class="empty-day hidden">No fixtures for this day inside the four-day window.</p><table><thead><tr><th>Day / time</th><th>Fixture</th><th>Likely result</th><th>Probability</th></tr></thead><tbody>{winner_entries}</tbody></table></section>
 <footer class=muted><p>Probabilities are model estimates, not guarantees.</p></footer>"""
     page += """<script>
 document.querySelectorAll('[data-tab]').forEach(button => button.addEventListener('click', () => {

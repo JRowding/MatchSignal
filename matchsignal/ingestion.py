@@ -6,6 +6,7 @@ from datetime import datetime
 
 import requests
 
+from .config import CONFIG
 from .config import SUPPORTED_COMPETITIONS
 from .normalization import canonical_team
 
@@ -49,7 +50,7 @@ def import_season(connection, start_year: int, session=requests) -> int:
     code = season_code(start_year); imported = 0
     for source_code, competition in SUPPORTED_COMPETITIONS.items():
         try:
-            response = session.get(f"{BASE}/{code}/{source_code}.csv", timeout=45, headers={"User-Agent": "MatchSignal/2.5"})
+            response = session.get(f"{BASE}/{code}/{source_code}.csv", timeout=CONFIG.source_timeout_seconds, headers={"User-Agent": "MatchSignal/2.5"})
             if response.status_code == 404:
                 LOG.info("Source unavailable", extra={"competition": competition, "season": code}); continue
             response.raise_for_status()

@@ -7,6 +7,7 @@ from time import sleep
 
 import requests
 
+from .config import CONFIG
 from .normalization import canonical_team
 
 LOG = logging.getLogger(__name__)
@@ -102,12 +103,14 @@ def import_current_scores(connection, session=requests) -> int:
 
 def _get(session, url):
     last_error = None
-    for _ in range(3):
+    attempts = CONFIG.source_retries + 1
+    for attempt in range(attempts):
         try:
-            response = session.get(url, timeout=30, headers={"User-Agent": "MatchSignal/2.5"})
+            response = session.get(url, timeout=CONFIG.source_timeout_seconds, headers={"User-Agent": "MatchSignal/2.5"})
             response.raise_for_status()
             return response
         except requests.RequestException as exc:
             last_error = exc
-            sleep(2)
+            if attempt < attempts - 1:
+                sleep(1)
     raise last_error

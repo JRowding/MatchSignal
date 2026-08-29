@@ -11,13 +11,14 @@ permissions:
 jobs:
   refresh:
     runs-on: ubuntu-latest
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
-      - run: python scripts/refresh_v2.py
+      - run: timeout 6m python scripts/refresh_v2.py
       - run: python scripts/build_snapshot_v2.py
       - run: rm -rf data
       - run: |

@@ -59,7 +59,7 @@ class TheSportsDBProvider(FixtureProvider):
         season = f"{season_start}-{season_start + 1}"
         for league_id, competition in self.LEAGUES.items():
             try:
-                response = self.session.get(self.BASE, params={"id": league_id, "s": season}, timeout=30,
+                response = self.session.get(self.BASE, params={"id": league_id, "s": season}, timeout=CONFIG.source_timeout_seconds,
                                             headers={"User-Agent": "MatchSignal/2.0"})
                 response.raise_for_status()
             except requests.RequestException as exc:
@@ -88,7 +88,7 @@ class TheSportsDBProvider(FixtureProvider):
         months = {(now.year, now.month), (cutoff.year, cutoff.month)}
         for year, month in sorted(months):
             try:
-                response = self.session.get(self.FWP_NATIONAL_LEAGUE_URL, params={"month": month}, timeout=30,
+                response = self.session.get(self.FWP_NATIONAL_LEAGUE_URL, params={"month": month}, timeout=CONFIG.source_timeout_seconds,
                                             headers={"User-Agent": "MatchSignal/2.3"})
                 response.raise_for_status()
             except requests.RequestException as exc:
@@ -135,7 +135,7 @@ class TheSportsDBProvider(FixtureProvider):
         current = now.date()
         while current <= cutoff.date():
             try:
-                response = self.session.get(self.SKY_DAILY_URL.format(date=current.isoformat()), timeout=30,
+                response = self.session.get(self.SKY_DAILY_URL.format(date=current.isoformat()), timeout=CONFIG.source_timeout_seconds,
                                             headers={"User-Agent": "MatchSignal/2.2"})
                 response.raise_for_status()
             except requests.RequestException as exc:
