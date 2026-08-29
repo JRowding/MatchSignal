@@ -7,9 +7,10 @@ from matchsignal.metrics import brier_score, calibration, log_loss
 from matchsignal.scanner import strongest
 
 app = Flask(__name__)
-DATABASE = Path(os.environ.get("MATCHSIGNAL_DATABASE", "data/matchsignal.sqlite"))
+DATABASE_ENV = os.environ.get("MATCHSIGNAL_DATABASE")
+DATABASE = Path(DATABASE_ENV) if DATABASE_ENV else None
 
-def db(): return connect(DATABASE) if DATABASE.exists() else None
+def db(): return connect(DATABASE) if DATABASE and DATABASE.exists() else None
 
 LAYOUT = """<!doctype html><title>Match Signal</title><meta name=viewport content='width=device-width,initial-scale=1'><style>body{margin:auto;max-width:980px;padding:28px;background:#08131f;color:#eef5fa;font:16px Arial}a{color:#b8ff4e}nav{display:flex;gap:18px;margin:18px 0 30px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}.card{background:#102536;padding:18px;border-radius:12px}small{color:#98aebb;text-transform:uppercase}b{display:block;font-size:1.3em;margin:7px 0}.muted{color:#98aebb}</style><h1>Match Signal</h1><p class=muted>English Football Probability Scanner · Model 2.0.0</p><nav><a href='/'>Signals</a><a href='/history'>History</a><a href='/performance'>Performance</a></nav>{{ body|safe }}"""
 
