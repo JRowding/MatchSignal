@@ -2,6 +2,13 @@ name: Refresh football predictions
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "matchsignal/**"
+      - "scripts/**"
+      - "requirements.txt"
+      - ".github/workflows/refresh-predictions.yml"
   schedule:
     - cron: "17 */6 * * *"
 

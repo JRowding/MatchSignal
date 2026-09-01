@@ -2,20 +2,17 @@
 import html
 import os
 import sys
-from datetime import datetime
+from datetime import date, datetime, timedelta
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from matchsignal.config import MODEL_VERSION
+from matchsignal.config import CONFIG, MODEL_VERSION
 from matchsignal.database import connect
 
 DATABASE = Path(os.environ.get("MATCHSIGNAL_DATABASE", ROOT / "data" / "matchsignal.sqlite"))
-DAYS = ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
-WINNER_LIMIT = 6
-
 def match_time(value):
     kickoff = datetime.fromisoformat(str(value))
     hour = kickoff.hour % 12 or 12
@@ -24,43 +21,42 @@ def match_time(value):
     return f"{kickoff.strftime('%A')} {hour}{minute}{suffix}"
 
 def match_day(value):
-    return datetime.fromisoformat(str(value)).strftime("%A")
+    return datetime.fromisoformat(str(value)).date().isoformat()
 
 
-def main():
-    connection = connect(DATABASE)
-    rows = connection.execute("""SELECT p.market,p.predicted_probability,p.selection,
+def fixture_window(today=None):
+    today = today or date.today()
+    end = today + timedelta(days=CONFIG.fixture_lookahead_days + 1)
+    return today.isoformat(), end.isoformat()
+
+
+def prediction_rows(connection, today=None):
+    window_start, window_end = fixture_window(today)
+    return connection.execute("""SELECT p.market,p.predicted_probability,p.selection,
         f.home_team,f.away_team,f.competition,f.kickoff
         FROM predictions p JOIN fixtures f ON f.id=p.fixture_id
-        WHERE p.settled_at IS NULL AND p.market IN ('home_win','draw','away_win','over_2.5')
-        ORDER BY f.kickoff, f.competition, f.home_team, p.market""").fetchall()
-    by_fixture = {}
-    for row in rows:
-        key = (row["kickoff"], row["competition"], row["home_team"], row["away_team"])
-        by_fixture.setdefault(key, {})[row["market"]] = row
-    fixtures = sorted(by_fixture.items(), key=lambda item: (
-        -(item[1].get("over_2.5")["predicted_probability"] if item[1].get("over_2.5") else 0),
-        item[0][0],
-    ))
-    day_buttons = "".join(f"<button data-day={html.escape(day)}>{html.escape(day)}</button>" for day in DAYS)
-    over_entries = "".join(
-        f"<tr data-day={html.escape(match_day(row['kickoff']))}><td>{html.escape(match_time(row['kickoff']))}</td>"
-        f"<td><b>{html.escape(row['home_team'])} vs {html.escape(row['away_team'])}</b>"
-        f"<small>{html.escape(row['competition'])}</small></td>"
-        f"<td>{html.escape(row['selection'])}</td>"
-        f"<td class=prob>{row['predicted_probability']:.1%}</td></tr>"
-        for row in (markets["over_2.5"] for _, markets in fixtures if markets.get("over_2.5"))
-    ) or "<tr><td colspan=4>No fixtures in the next four days yet.</td></tr>"
+        WHERE p.settled_at IS NULL
+          AND f.status='scheduled'
+          AND p.market IN ('home_win','draw','away_win','over_2.5')
+          AND f.kickoff >= ? AND f.kickoff < ?
+        ORDER BY f.kickoff, f.competition, f.home_team, p.market""",
+        (window_start, window_end)).fetchall()
+
+
+def build_winner_entries(by_fixture):
     winner_fixtures = []
     for fixture, markets in by_fixture.items():
         if not all(market in markets for market in ("home_win", "draw", "away_win")):
             continue
-        best_market = max(("home_win", "draw", "away_win"), key=lambda market: markets[market]["predicted_probability"])
+        best_market = max(
+            ("home_win", "draw", "away_win"),
+            key=lambda market: markets[market]["predicted_probability"],
+        )
         winner_fixtures.append((fixture, markets, best_market))
     winner_fixtures.sort(key=lambda item: (-item[1][item[2]]["predicted_probability"], item[0][0]))
 
     winner_rows = []
-    for (kickoff, competition, home, away), markets, best_market in winner_fixtures[:WINNER_LIMIT]:
+    for (kickoff, competition, home, away), markets, best_market in winner_fixtures:
         result_label = {"home_win": home, "draw": "Draw", "away_win": away}[best_market]
         winner_rows.append(
             f"<tr data-day={html.escape(match_day(kickoff))}><td>{html.escape(match_time(kickoff))}</td>"
@@ -69,7 +65,35 @@ def main():
             f"D {markets['draw']['predicted_probability']:.1%} | A {markets['away_win']['predicted_probability']:.1%}</small></td>"
             f"<td class=prob>{markets[best_market]['predicted_probability']:.1%}</td></tr>"
         )
-    winner_entries = "".join(winner_rows) or "<tr><td colspan=4>No match-winner predictions are available yet. The next refresh will try again.</td></tr>"
+    return "".join(winner_rows) or "<tr><td colspan=4>No match-winner predictions are available yet. The next refresh will try again.</td></tr>"
+
+
+def main():
+    connection = connect(DATABASE)
+    today = date.today()
+    rows = prediction_rows(connection, today)
+    by_fixture = {}
+    for row in rows:
+        key = (row["kickoff"], row["competition"], row["home_team"], row["away_team"])
+        by_fixture.setdefault(key, {})[row["market"]] = row
+    fixtures = sorted(by_fixture.items(), key=lambda item: (
+        -(item[1].get("over_2.5")["predicted_probability"] if item[1].get("over_2.5") else 0),
+        item[0][0],
+    ))
+    window_dates = [today + timedelta(days=offset) for offset in range(CONFIG.fixture_lookahead_days + 1)]
+    day_buttons = "".join(
+        f"<button data-day={day.isoformat()}>{'Today' if day == today else day.strftime('%A')}</button>"
+        for day in window_dates
+    )
+    over_entries = "".join(
+        f"<tr data-day={html.escape(match_day(row['kickoff']))}><td>{html.escape(match_time(row['kickoff']))}</td>"
+        f"<td><b>{html.escape(row['home_team'])} vs {html.escape(row['away_team'])}</b>"
+        f"<small>{html.escape(row['competition'])}</small></td>"
+        f"<td>{html.escape(row['selection'])}</td>"
+        f"<td class=prob>{row['predicted_probability']:.1%}</td></tr>"
+        for row in (markets["over_2.5"] for _, markets in fixtures if markets.get("over_2.5"))
+    ) or "<tr><td colspan=4>No fixtures in the five-day window yet.</td></tr>"
+    winner_entries = build_winner_entries(by_fixture)
     page = f"""<!doctype html><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'>
 <title>Match Signal</title><style>
 body{{margin:auto;max-width:1100px;padding:24px;background:#08131f;color:#eef5fa;font:16px Arial}}
@@ -84,11 +108,11 @@ td:last-child{{border-radius:0 10px 10px 0}}td b,td small{{display:block}}.prob{
 .day-filter button.active{{background:#eef5fa;color:#08131f;border-color:#eef5fa}}tr.hidden,.empty-day.hidden{{display:none}}
 .empty-day{{background:#102536;border-radius:10px;margin-top:18px;padding:16px;color:#a8bdca}}
 @media(max-width:650px){{body{{padding:16px}}th:nth-child(1),td:nth-child(1){{display:none}}td{{padding:12px 10px}}}}
-</style><header><h1>Match Signal</h1><p class=muted>English fixtures in the next four days | Model {MODEL_VERSION}</p></header>
+</style><header><h1>Match Signal</h1><p class=muted>English fixtures today and over the next four days | Model {MODEL_VERSION}</p></header>
 <div class=tabs><button class=active data-tab=goals>Over 2.5 Goals</button><button data-tab=winners>Match Winners</button></div>
 <div class=day-filter><button class=active data-day=all>All</button>{day_buttons}</div>
-<section class="panel active" id=goals><h2>Fixtures ranked by goal probability</h2><p class="empty-day hidden">No fixtures for this day inside the four-day window.</p><table><thead><tr><th>Day / time</th><th>Fixture</th><th>Market</th><th>Probability</th></tr></thead><tbody>{over_entries}</tbody></table></section>
-<section class=panel id=winners><h2>Top {WINNER_LIMIT} likely winners</h2><p class="empty-day hidden">No fixtures for this day inside the four-day window.</p><table><thead><tr><th>Day / time</th><th>Fixture</th><th>Likely result</th><th>Probability</th></tr></thead><tbody>{winner_entries}</tbody></table></section>
+<section class="panel active" id=goals><h2>Fixtures ranked by goal probability</h2><p class="empty-day hidden">No fixtures for this day inside the five-day window.</p><table><thead><tr><th>Day / time</th><th>Fixture</th><th>Market</th><th>Probability</th></tr></thead><tbody>{over_entries}</tbody></table></section>
+<section class=panel id=winners><h2>Fixtures ranked by match-winner probability</h2><p class="empty-day hidden">No fixtures for this day inside the five-day window.</p><table><thead><tr><th>Day / time</th><th>Fixture</th><th>Likely result</th><th>Probability</th></tr></thead><tbody>{winner_entries}</tbody></table></section>
 <footer class=muted><p>Probabilities are model estimates, not guarantees.</p></footer>"""
     page += """<script>
 document.querySelectorAll('[data-tab]').forEach(button => button.addEventListener('click', () => {

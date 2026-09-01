@@ -1,6 +1,6 @@
 """Free fixture providers for the English football pyramid."""
 from dataclasses import dataclass
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, time, timedelta
 from html import unescape
 import json
 import logging
@@ -47,10 +47,13 @@ class TheSportsDBProvider(FixtureProvider):
         self.session = session
 
     def upcoming(self) -> list[Fixture]:
-        now = datetime.now(timezone.utc).replace(tzinfo=None)
-        cutoff = now + timedelta(days=CONFIG.fixture_lookahead_days)
-        fixtures = self._sky_fixtures(now, cutoff)
-        fixtures.extend(self._football_web_pages_national_league(now, cutoff))
+        now = datetime.now()
+        window_start = datetime.combine(now.date(), time.min)
+        window_end = datetime.combine(
+            now.date() + timedelta(days=CONFIG.fixture_lookahead_days), time.max
+        )
+        fixtures = self._sky_fixtures(window_start, window_end)
+        fixtures.extend(self._football_web_pages_national_league(window_start, window_end))
         if fixtures:
             return fixtures
 
@@ -76,7 +79,7 @@ class TheSportsDBProvider(FixtureProvider):
                     kickoff_at = datetime.fromisoformat(f"{date}T{time[:8]}")
                 except ValueError:
                     kickoff_at = datetime.fromisoformat(f"{date}T00:00:00")
-                if not now <= kickoff_at <= cutoff:
+                if not window_start <= kickoff_at <= window_end:
                     continue
                 kickoff = kickoff_at.isoformat()
                 fixtures.append(Fixture(str(event["idEvent"]), competition, kickoff,
