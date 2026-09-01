@@ -1,6 +1,6 @@
 """Free fixture providers for the English football pyramid."""
 from dataclasses import dataclass
-from datetime import datetime, time, timedelta
+from datetime import datetime, time as datetime_time, timedelta
 from html import unescape
 import json
 import logging
@@ -12,6 +12,15 @@ from .normalization import canonical_team
 from .config import CONFIG
 
 LOG = logging.getLogger(__name__)
+
+
+def fixture_window(now):
+    return (
+        datetime.combine(now.date(), datetime_time.min),
+        datetime.combine(
+            now.date() + timedelta(days=CONFIG.fixture_lookahead_days), datetime_time.max
+        ),
+    )
 
 @dataclass(frozen=True)
 class Fixture:
@@ -48,10 +57,7 @@ class TheSportsDBProvider(FixtureProvider):
 
     def upcoming(self) -> list[Fixture]:
         now = datetime.now()
-        window_start = datetime.combine(now.date(), time.min)
-        window_end = datetime.combine(
-            now.date() + timedelta(days=CONFIG.fixture_lookahead_days), time.max
-        )
+        window_start, window_end = fixture_window(now)
         fixtures = self._sky_fixtures(window_start, window_end)
         fixtures.extend(self._football_web_pages_national_league(window_start, window_end))
         if fixtures:

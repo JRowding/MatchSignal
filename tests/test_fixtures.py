@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from matchsignal.config import CONFIG
-from matchsignal.fixtures import TheSportsDBProvider
+from matchsignal.fixtures import TheSportsDBProvider, fixture_window
 
 
 def test_football_web_pages_time_parser_handles_common_kickoff_times():
@@ -25,3 +25,11 @@ def test_sky_provider_uses_configured_timeout():
     session = Session()
     TheSportsDBProvider(session)._sky_fixtures(datetime(2026, 8, 29), datetime(2026, 8, 29))
     assert session.timeout == CONFIG.source_timeout_seconds
+
+
+def test_fixture_window_covers_all_of_today_and_the_next_four_days():
+    start, end = fixture_window(datetime(2026, 9, 1, 17, 30))
+
+    assert start == datetime(2026, 9, 1, 0, 0)
+    assert end.date().isoformat() == "2026-09-05"
+    assert (end.hour, end.minute, end.second) == (23, 59, 59)
