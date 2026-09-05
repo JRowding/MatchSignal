@@ -37,7 +37,7 @@ def prediction_rows(connection, today=None):
         FROM predictions p JOIN fixtures f ON f.id=p.fixture_id
         WHERE p.settled_at IS NULL
           AND f.status='scheduled'
-          AND p.market IN ('home_win','draw','away_win','over_2.5','btts_yes')
+          AND p.market IN ('home_win','draw','away_win','over_2.5','btts_yes','home_win_btts','away_win_btts')
           AND f.kickoff >= ? AND f.kickoff < ?
         ORDER BY f.kickoff, f.competition, f.home_team, p.market""",
         (window_start, window_end)).fetchall()
@@ -48,13 +48,9 @@ def build_winner_entries(by_fixture):
     for fixture, markets in by_fixture.items():
         if not all(market in markets for market in ("home_win", "draw", "away_win")):
             continue
-        best_market = max(
-            ("home_win", "draw", "away_win"),
-            key=lambda market: markets[market]["predicted_probability"],
-        )
+        best_market = max(("home_win", "draw", "away_win"), key=lambda market: markets[market]["predicted_probability"])
         winner_fixtures.append((fixture, markets, best_market))
     winner_fixtures.sort(key=lambda item: (-item[1][item[2]]["predicted_probability"], item[0][0]))
-
     winner_rows = []
     for (kickoff, competition, home, away), markets, best_market in winner_fixtures:
         result_label = {"home_win": home, "draw": "Draw", "away_win": away}[best_market]
@@ -84,6 +80,27 @@ def build_market_entries(by_fixture, market, empty_message):
     ) or f"<tr><td colspan=4>{html.escape(empty_message)}</td></tr>"
 
 
+def build_btts_winner_entries(by_fixture):
+    entries = []
+    for fixture, markets in by_fixture.items():
+        available = [market for market in ("home_win_btts", "away_win_btts") if market in markets]
+        if not available:
+            continue
+        best_market = max(available, key=lambda market: markets[market]["predicted_probability"])
+        entries.append((fixture, markets[best_market], best_market))
+    entries.sort(key=lambda item: (-item[1]["predicted_probability"], item[0][0]))
+    rows = []
+    for (kickoff, competition, home, away), row, market in entries:
+        winner = home if market == "home_win_btts" else away
+        rows.append(
+            f"<tr data-day={html.escape(match_day(kickoff))}><td>{html.escape(match_time(kickoff))}</td>"
+            f"<td><b>{html.escape(home)} vs {html.escape(away)}</b><small>{html.escape(competition)}</small></td>"
+            f"<td><b>{html.escape(winner)} win + BTTS</b></td>"
+            f"<td class=prob>{row['predicted_probability']:.1%}</td></tr>"
+        )
+    return "".join(rows) or "<tr><td colspan=4>No BTTS + match-winner predictions are available yet. The next refresh will try again.</td></tr>"
+
+
 def main():
     connection = connect(DATABASE)
     today = date.today()
@@ -100,6 +117,7 @@ def main():
     over_entries = build_market_entries(by_fixture, "over_2.5", "No fixtures in the five-day window yet.")
     btts_entries = build_market_entries(by_fixture, "btts_yes", "No BTTS predictions are available yet. The next refresh will try again.")
     winner_entries = build_winner_entries(by_fixture)
+    btts_winner_entries = build_btts_winner_entries(by_fixture)
     page = f"""<!doctype html><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'>
 <title>Match Signal</title><style>
 body{{margin:auto;max-width:1100px;padding:24px;background:#08131f;color:#eef5fa;font:16px Arial}}
@@ -115,11 +133,12 @@ td:last-child{{border-radius:0 10px 10px 0}}td b,td small{{display:block}}.prob{
 .empty-day{{background:#102536;border-radius:10px;margin-top:18px;padding:16px;color:#a8bdca}}
 @media(max-width:650px){{body{{padding:16px}}th:nth-child(1),td:nth-child(1){{display:none}}td{{padding:12px 10px}}}}
 </style><header><h1>Match Signal</h1><p class=muted>English fixtures today and over the next four days | Model {MODEL_VERSION}</p></header>
-<div class=tabs><button class=active data-tab=goals>Over 2.5 Goals</button><button data-tab=winners>Match Winners</button><button data-tab=btts>Both Teams to Score</button></div>
+<div class=tabs><button class=active data-tab=goals>Over 2.5 Goals</button><button data-tab=winners>Match Winners</button><button data-tab=btts>Both Teams to Score</button><button data-tab=bttswinner>BTTS + Winner</button></div>
 <div class=day-filter><button class=active data-day=all>All</button>{day_buttons}</div>
 <section class="panel active" id=goals><h2>Fixtures ranked by goal probability</h2><p class="empty-day hidden">No fixtures for this day inside the five-day window.</p><table><thead><tr><th>Day / time</th><th>Fixture</th><th>Market</th><th>Probability</th></tr></thead><tbody>{over_entries}</tbody></table></section>
 <section class=panel id=winners><h2>Fixtures ranked by match-winner probability</h2><p class="empty-day hidden">No fixtures for this day inside the five-day window.</p><table><thead><tr><th>Day / time</th><th>Fixture</th><th>Likely result</th><th>Probability</th></tr></thead><tbody>{winner_entries}</tbody></table></section>
 <section class=panel id=btts><h2>Fixtures ranked by both-teams-to-score probability</h2><p class="empty-day hidden">No fixtures for this day inside the five-day window.</p><table><thead><tr><th>Day / time</th><th>Fixture</th><th>Market</th><th>Probability</th></tr></thead><tbody>{btts_entries}</tbody></table></section>
+<section class=panel id=bttswinner><h2>Fixtures ranked by BTTS + match-winner probability</h2><p class="empty-day hidden">No fixtures for this day inside the five-day window.</p><table><thead><tr><th>Day / time</th><th>Fixture</th><th>Combined pick</th><th>Probability</th></tr></thead><tbody>{btts_winner_entries}</tbody></table></section>
 <footer class=muted><p>Probabilities are model estimates, not guarantees.</p></footer>"""
     page += """<script>
 document.querySelectorAll('[data-tab]').forEach(button => button.addEventListener('click', () => {
