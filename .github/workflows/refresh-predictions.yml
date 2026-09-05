@@ -20,13 +20,15 @@ jobs:
   refresh:
     runs-on: ubuntu-latest
     timeout-minutes: 8
+    env:
+      PYTHONPATH: ${{ github.workspace }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
-      - run: pytest -q tests/test_fixtures.py
+      - run: python -m pytest -q tests/test_fixtures.py
       - run: timeout 6m python scripts/refresh_v2.py
       - run: python scripts/build_snapshot_v2.py
       - run: rm -rf data
