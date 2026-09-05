@@ -26,6 +26,9 @@ class ModelConfig:
     fixture_lookahead_days: int = 4
     source_timeout_seconds: int = 5
     source_retries: int = 1
-    enabled_markets: tuple[str, ...] = ("home_win", "draw", "away_win", "over_2.5", "btts_yes")
+    enabled_markets: tuple[str, ...] = (
+        "home_win", "draw", "away_win", "over_2.5", "btts_yes",
+        "home_win_btts", "away_win_btts",
+    )
 
 CONFIG = ModelConfig()
