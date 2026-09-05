@@ -18,6 +18,8 @@ def settle_predictions(connection):
         outcome = {"home_win": home > away, "draw": home == away, "away_win": away > home,
                    "over_0.5": total > .5, "over_1.5": total > 1.5, "over_2.5": total > 2.5, "over_3.5": total > 3.5,
                    "btts_yes": home > 0 and away > 0, "btts_no": home == 0 or away == 0,
+                   "home_win_btts": home > away and home > 0 and away > 0,
+                   "away_win_btts": away > home and home > 0 and away > 0,
                    "home_over_0.5": home > .5, "home_over_1.5": home > 1.5, "away_over_0.5": away > .5, "away_over_1.5": away > 1.5}.get(row["market"])
         if outcome is not None: connection.execute("UPDATE predictions SET actual_outcome=?,correct=?,settled_at=? WHERE id=?", (int(outcome), int(outcome), datetime.now(timezone.utc).isoformat(timespec="seconds"), row["id"]))
     connection.commit(); return len(rows)
