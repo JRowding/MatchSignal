@@ -22,6 +22,7 @@ def fixture_window(now):
         ),
     )
 
+
 @dataclass(frozen=True)
 class Fixture:
     external_fixture_id: str
@@ -31,6 +32,7 @@ class Fixture:
     away_team: str
     status: str = "scheduled"
 
+
 class FixtureProvider:
     def upcoming(self) -> list[Fixture]:
         raise NotImplementedError
@@ -38,10 +40,13 @@ class FixtureProvider:
 
 class TheSportsDBProvider(FixtureProvider):
     """Public, keyless fixture source covering all five supported tiers."""
+
     BASE = "https://www.thesportsdb.com/api/v1/json/123/eventsseason.php"
     LEAGUES = {
-        "4328": "Premier League", "4329": "Championship",
-        "4396": "League One", "4397": "League Two",
+        "4328": "Premier League",
+        "4329": "Championship",
+        "4396": "League One",
+        "4397": "League Two",
     }
     SKY_COMPETITIONS = {
         "Premier League": "Premier League",
@@ -55,30 +60,80 @@ class TheSportsDBProvider(FixtureProvider):
     def __init__(self, session=requests):
         self.session = session
 
+    @staticmethod
+    def _dedupe(fixtures: list[Fixture]) -> list[Fixture]:
+        seen = set()
+        result = []
+        for fixture in fixtures:
+            key = (
+                fixture.competition,
+                fixture.kickoff,
+                fixture.home_team,
+                fixture.away_team,
+            )
+            if key in seen:
+                continue
+            seen.add(key)
+            result.append(fixture)
+        return result
+
     def upcoming(self) -> list[Fixture]:
         now = datetime.now()
         window_start, window_end = fixture_window(now)
-        fixtures = self._sky_fixtures(window_start, window_end)
-        fixtures.extend(self._football_web_pages_national_league(window_start, window_end))
-        if fixtures:
-            return fixtures
 
+        # Primary sources. Sky should cover the four EFL/Premier League tiers;
+        # Football Web Pages covers the National League.
+        fixtures = self._sky_fixtures(window_start, window_end)
+        fixtures.extend(
+            self._football_web_pages_national_league(window_start, window_end)
+        )
+
+        # Do not treat "some fixtures" as "all fixtures". If Sky only returns
+        # one or two competitions, fill each missing competition independently
+        # from TheSportsDB instead of returning early and silently dropping the
+        # Championship, League One or League Two.
+        present_competitions = {fixture.competition for fixture in fixtures}
+        missing_leagues = {
+            league_id: competition
+            for league_id, competition in self.LEAGUES.items()
+            if competition not in present_competitions
+        }
+        if missing_leagues:
+            fixtures.extend(
+                self._thesportsdb_fixtures(
+                    window_start,
+                    window_end,
+                    league_ids=missing_leagues,
+                )
+            )
+
+        return self._dedupe(fixtures)
+
+    def _thesportsdb_fixtures(self, window_start, window_end, league_ids=None):
         fixtures = []
+        now = datetime.now()
         season_start = now.year if now.month >= 7 else now.year - 1
         season = f"{season_start}-{season_start + 1}"
-        for league_id, competition in self.LEAGUES.items():
+        leagues = league_ids or self.LEAGUES
+
+        for league_id, competition in leagues.items():
             try:
-                response = self.session.get(self.BASE, params={"id": league_id, "s": season}, timeout=CONFIG.source_timeout_seconds,
-                                            headers={"User-Agent": "MatchSignal/2.0"})
+                response = self.session.get(
+                    self.BASE,
+                    params={"id": league_id, "s": season},
+                    timeout=CONFIG.source_timeout_seconds,
+                    headers={"User-Agent": "MatchSignal/2.5"},
+                )
                 response.raise_for_status()
             except requests.RequestException as exc:
-                # Preserve previously saved fixtures when a free upstream is
-                # temporarily rate-limited instead of aborting the whole run.
                 LOG.warning("Fixture provider unavailable for %s: %s", competition, exc)
                 continue
+
             for event in response.json().get("events") or []:
-                home, away = event.get("strHomeTeam"), event.get("strAwayTeam")
-                date, time = event.get("dateEvent"), event.get("strTime") or "00:00:00"
+                home = event.get("strHomeTeam")
+                away = event.get("strAwayTeam")
+                date = event.get("dateEvent")
+                time = event.get("strTime") or "00:00:00"
                 if not event.get("idEvent") or not home or not away or not date:
                     continue
                 try:
@@ -87,9 +142,15 @@ class TheSportsDBProvider(FixtureProvider):
                     kickoff_at = datetime.fromisoformat(f"{date}T00:00:00")
                 if not window_start <= kickoff_at <= window_end:
                     continue
-                kickoff = kickoff_at.isoformat()
-                fixtures.append(Fixture(str(event["idEvent"]), competition, kickoff,
-                                        canonical_team(home), canonical_team(away)))
+                fixtures.append(
+                    Fixture(
+                        str(event["idEvent"]),
+                        competition,
+                        kickoff_at.isoformat(),
+                        canonical_team(home),
+                        canonical_team(away),
+                    )
+                )
         return fixtures
 
     def _football_web_pages_national_league(self, now, cutoff):
@@ -97,11 +158,20 @@ class TheSportsDBProvider(FixtureProvider):
         months = {(now.year, now.month), (cutoff.year, cutoff.month)}
         for year, month in sorted(months):
             try:
-                response = self.session.get(self.FWP_NATIONAL_LEAGUE_URL, params={"month": month}, timeout=CONFIG.source_timeout_seconds,
-                                            headers={"User-Agent": "MatchSignal/2.3"})
+                response = self.session.get(
+                    self.FWP_NATIONAL_LEAGUE_URL,
+                    params={"month": month},
+                    timeout=CONFIG.source_timeout_seconds,
+                    headers={"User-Agent": "MatchSignal/2.3"},
+                )
                 response.raise_for_status()
             except requests.RequestException as exc:
-                LOG.warning("Football Web Pages National League fixtures unavailable for %s/%s: %s", month, year, exc)
+                LOG.warning(
+                    "Football Web Pages National League fixtures unavailable for %s/%s: %s",
+                    month,
+                    year,
+                    exc,
+                )
                 continue
             rows = re.findall(
                 r'<tr[^>]+data-href="match/([^"]+)"[^>]*>.*?'
@@ -119,8 +189,15 @@ class TheSportsDBProvider(FixtureProvider):
                     continue
                 if not now <= kickoff <= cutoff:
                     continue
-                fixtures.append(Fixture(f"fwp-{path}", "National League", kickoff.isoformat(),
-                                        canonical_team(unescape(home)), canonical_team(unescape(away))))
+                fixtures.append(
+                    Fixture(
+                        f"fwp-{path}",
+                        "National League",
+                        kickoff.isoformat(),
+                        canonical_team(unescape(home)),
+                        canonical_team(unescape(away)),
+                    )
+                )
         return fixtures
 
     @staticmethod
@@ -144,12 +221,16 @@ class TheSportsDBProvider(FixtureProvider):
         current = now.date()
         while current <= cutoff.date():
             try:
-                response = self.session.get(self.SKY_DAILY_URL.format(date=current.isoformat()), timeout=CONFIG.source_timeout_seconds,
-                                            headers={"User-Agent": "MatchSignal/2.2"})
+                response = self.session.get(
+                    self.SKY_DAILY_URL.format(date=current.isoformat()),
+                    timeout=CONFIG.source_timeout_seconds,
+                    headers={"User-Agent": "MatchSignal/2.2"},
+                )
                 response.raise_for_status()
             except requests.RequestException as exc:
                 LOG.warning("Sky fixture page unavailable for %s: %s", current, exc)
-                current += timedelta(days=1); continue
+                current += timedelta(days=1)
+                continue
             for raw in re.findall(r'data-state="([^"]+)"', response.text):
                 try:
                     event = json.loads(unescape(raw))
@@ -161,17 +242,36 @@ class TheSportsDBProvider(FixtureProvider):
                     kickoff = datetime.fromisoformat(f"{current.isoformat()}T{time}:00")
                     if not now <= kickoff <= cutoff:
                         continue
-                    home, away = event["teams"]["home"]["name"]["full"], event["teams"]["away"]["name"]["full"]
-                    fixtures.append(Fixture(f"sky-{event['id']}", competition, kickoff.isoformat(),
-                                            canonical_team(home), canonical_team(away)))
+                    home = event["teams"]["home"]["name"]["full"]
+                    away = event["teams"]["away"]["name"]["full"]
+                    fixtures.append(
+                        Fixture(
+                            f"sky-{event['id']}",
+                            competition,
+                            kickoff.isoformat(),
+                            canonical_team(home),
+                            canonical_team(away),
+                        )
+                    )
                 except (KeyError, TypeError, ValueError, json.JSONDecodeError):
                     continue
             current += timedelta(days=1)
         return fixtures
 
+
 def upsert_fixtures(connection, fixtures: list[Fixture]) -> int:
     for fixture in fixtures:
-        connection.execute("""INSERT INTO fixtures(external_fixture_id,competition,kickoff,home_team,away_team,status)
+        connection.execute(
+            """INSERT INTO fixtures(external_fixture_id,competition,kickoff,home_team,away_team,status)
         VALUES(?,?,?,?,?,?) ON CONFLICT(external_fixture_id) DO UPDATE SET kickoff=excluded.kickoff,status=excluded.status""",
-        (fixture.external_fixture_id, fixture.competition, fixture.kickoff, fixture.home_team, fixture.away_team, fixture.status))
-    connection.commit(); return len(fixtures)
+            (
+                fixture.external_fixture_id,
+                fixture.competition,
+                fixture.kickoff,
+                fixture.home_team,
+                fixture.away_team,
+                fixture.status,
+            ),
+        )
+    connection.commit()
+    return len(fixtures)
