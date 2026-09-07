@@ -3,6 +3,7 @@ import csv
 import io
 import logging
 from datetime import datetime
+from time import sleep
 
 import requests
 
@@ -14,6 +15,30 @@ from .timeutils import utc_text
 
 LOG = logging.getLogger(__name__)
 BASE = "https://www.football-data.co.uk/mmz4281"
+
+
+def _fetch_csv(session, relative_path):
+    """Retry transient failures and the publisher's alternate HTTPS hostname."""
+    last_error = None
+    bases = (BASE, BASE.replace('://www.', '://'))
+    for base in bases:
+        for attempt in range(CONFIG.source_retries + 1):
+            try:
+                response = session.get(f'{base}/{relative_path}', timeout=CONFIG.source_timeout_seconds,
+                                       headers={'User-Agent': 'MatchSignal/2.5'})
+                if response.status_code == 404:
+                    return response
+                response.raise_for_status()
+                return response
+            except requests.RequestException as exc:
+                last_error = exc
+                status = getattr(getattr(exc, 'response', None), 'status_code', None)
+                if status is not None and status != 429 and status < 500:
+                    raise
+                if attempt < CONFIG.source_retries:
+                    sleep(1 + attempt)
+        LOG.warning('Transient source failure at %s; trying alternate publisher endpoint if available', base)
+    raise last_error
 
 def season_code(start_year: int) -> str:
     return f"{str(start_year)[-2:]}{str(start_year + 1)[-2:]}"
@@ -64,7 +89,7 @@ def import_season(connection, start_year: int, session=requests) -> int:
     code = season_code(start_year); imported = 0
     for source_code, competition in SUPPORTED_COMPETITIONS.items():
         try:
-            response = session.get(f"{BASE}/{code}/{source_code}.csv", timeout=CONFIG.source_timeout_seconds, headers={"User-Agent": "MatchSignal/2.5"})
+            response = _fetch_csv(session, f'{code}/{source_code}.csv')
             if response.status_code == 404:
                 LOG.info("Source unavailable", extra={"competition": competition, "season": code}); continue
             response.raise_for_status()
