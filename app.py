@@ -12,7 +12,25 @@ DATABASE = Path(DATABASE_ENV) if DATABASE_ENV else None
 
 def db(): return connect(DATABASE) if DATABASE and DATABASE.exists() else None
 
-LAYOUT = """<!doctype html><title>Match Signal</title><meta name=viewport content='width=device-width,initial-scale=1'><style>body{margin:auto;max-width:980px;padding:28px;background:#08131f;color:#eef5fa;font:16px Arial}a{color:#b8ff4e}nav{display:flex;gap:18px;margin:18px 0 30px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}.card{background:#102536;padding:18px;border-radius:12px}small{color:#98aebb;text-transform:uppercase}b{display:block;font-size:1.3em;margin:7px 0}.muted{color:#98aebb}</style><h1>Match Signal</h1><p class=muted>English Football Probability Scanner · Model 2.0.0</p><nav><a href='/'>Signals</a><a href='/history'>History</a><a href='/performance'>Performance</a></nav>{{ body|safe }}"""
+LAYOUT = """<!doctype html><title>Match Signal</title><meta name=viewport content='width=device-width,initial-scale=1'><style>body{margin:auto;max-width:1080px;padding:28px;background:#08131f;color:#eef5fa;font:16px Arial}a{color:#b8ff4e}nav{display:flex;gap:18px;margin:18px 0 30px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}.card{background:#102536;padding:18px;border-radius:8px}small{color:#98aebb;text-transform:uppercase}b{display:block;font-size:1.3em;margin:7px 0}.muted{color:#98aebb}table{width:100%;border-collapse:collapse;margin:12px 0 28px}th,td{border-bottom:1px solid #214154;padding:10px;text-align:left}th{color:#98aebb;font-size:12px;text-transform:uppercase}.pill{display:inline-block;background:#17364c;border-radius:999px;padding:4px 8px}</style><h1>Match Signal</h1><p class=muted>English Football Probability Scanner · Model 2.5.0</p><nav><a href='/'>Signals</a><a href='/history'>History</a><a href='/performance'>Performance</a></nav>{{ body|safe }}"""
+
+
+def pct(value):
+    return f"{value:.1%}" if value is not None else "-"
+
+
+def score(value):
+    return f"{value:.3f}" if value is not None else "-"
+
+
+def performance_table(title, rows, label):
+    if not rows:
+        return f"<h3>{title}</h3><p class=muted>No settled predictions yet.</p>"
+    body = "".join(
+        f"<tr><td>{row[label] or 'Unknown'}</td><td>{row['total']}</td><td>{pct(row['accuracy'])}</td><td>{pct(row['avg_probability'])}</td><td>{score(row['brier'])}</td></tr>"
+        for row in rows
+    )
+    return f"<h3>{title}</h3><table><tr><th>{label.replace('_', ' ')}</th><th>Predictions</th><th>Accuracy</th><th>Avg probability</th><th>Brier</th></tr>{body}</table>"
 
 
 @app.get("/")
@@ -42,15 +60,31 @@ def mockup():
 @app.get('/history')
 def history():
     connection = db()
-    rows = connection.execute("""SELECT f.kickoff,f.home_team,f.away_team,p.selection,p.predicted_probability,p.correct FROM predictions p JOIN fixtures f ON f.id=p.fixture_id WHERE p.settled_at IS NOT NULL ORDER BY f.kickoff DESC LIMIT 200""").fetchall() if connection else []
-    body = "<h2>Prediction history</h2>" + "".join(f"<p>{r['kickoff']} · {r['home_team']} vs {r['away_team']} · {r['selection']} {r['predicted_probability']:.1%} · {'Correct' if r['correct'] else 'Incorrect'}</p>" for r in rows)
-    return render_template_string(LAYOUT, body=body or '<p class=muted>No settled predictions yet.</p>')
+    rows = connection.execute("""SELECT COALESCE(p.fixture_kickoff,f.kickoff) AS kickoff,COALESCE(p.home_team,f.home_team) AS home_team,COALESCE(p.away_team,f.away_team) AS away_team,p.selection,p.predicted_probability,p.correct,p.actual_home_goals,p.actual_away_goals,p.market_group FROM predictions p JOIN fixtures f ON f.id=p.fixture_id WHERE p.settled_at IS NOT NULL ORDER BY kickoff DESC LIMIT 200""").fetchall() if connection else []
+    if not rows:
+        return render_template_string(LAYOUT, body="<h2>Prediction history</h2><p class=muted>No settled predictions yet.</p>")
+    body = "<h2>Prediction history</h2>" + "".join(f"<p>{r['kickoff']} · {r['home_team']} {r['actual_home_goals'] if r['actual_home_goals'] is not None else ''} - {r['actual_away_goals'] if r['actual_away_goals'] is not None else ''} {r['away_team']} · <span class=pill>{r['market_group'] or 'Market'}</span> {r['selection']} {r['predicted_probability']:.1%} · {'Correct' if r['correct'] else 'Incorrect'}</p>" for r in rows)
+    return render_template_string(LAYOUT, body=body)
 
 @app.get('/performance')
 def performance():
     connection = db(); rows = connection.execute("SELECT predicted_probability,actual_outcome FROM predictions WHERE settled_at IS NOT NULL").fetchall() if connection else []
     pairs = [(row["predicted_probability"], row["actual_outcome"]) for row in rows]
-    body = f"<h2>Performance</h2><p>Total predictions: {len(pairs)}</p><p>Brier score: {brier_score(pairs)}</p><p>Log loss: {log_loss(pairs)}</p>" + "".join(f"<p>{bucket['bucket']}: predicted {bucket['predicted']:.1%}, occurred {bucket['actual']:.1%} ({bucket['count']})</p>" for bucket in calibration(pairs))
+    if not connection:
+        return render_template_string(LAYOUT, body="<h2>Performance</h2><p class=muted>No database configured yet.</p>")
+    by_league = connection.execute("""SELECT COALESCE(competition,'Unknown') AS competition,COUNT(*) AS total,AVG(correct) AS accuracy,AVG(predicted_probability) AS avg_probability,AVG((predicted_probability - actual_outcome) * (predicted_probability - actual_outcome)) AS brier FROM predictions WHERE settled_at IS NOT NULL GROUP BY 1 ORDER BY total DESC""").fetchall()
+    by_market = connection.execute("""SELECT COALESCE(market_group,market) AS market_group,COUNT(*) AS total,AVG(correct) AS accuracy,AVG(predicted_probability) AS avg_probability,AVG((predicted_probability - actual_outcome) * (predicted_probability - actual_outcome)) AS brier FROM predictions WHERE settled_at IS NOT NULL GROUP BY 1 ORDER BY total DESC""").fetchall()
+    by_probability = connection.execute("""SELECT COALESCE(probability_bucket,'Unknown') AS probability_bucket,COUNT(*) AS total,AVG(correct) AS accuracy,AVG(predicted_probability) AS avg_probability,AVG((predicted_probability - actual_outcome) * (predicted_probability - actual_outcome)) AS brier FROM predictions WHERE settled_at IS NOT NULL GROUP BY 1 ORDER BY probability_bucket""").fetchall()
+    body = (
+        f"<h2>Prediction Tracker</h2><div class=grid><article class=card><small>Settled predictions</small><b>{len(pairs)}</b></article>"
+        f"<article class=card><small>Overall accuracy</small><b>{pct(sum(outcome for _, outcome in pairs) / len(pairs)) if pairs else '-'}</b></article>"
+        f"<article class=card><small>Brier score</small><b>{score(brier_score(pairs))}</b></article><article class=card><small>Log loss</small><b>{score(log_loss(pairs))}</b></article></div>"
+        "<h3>Calibration</h3>"
+        + "".join(f"<p>{bucket['bucket']}: predicted {bucket['predicted']:.1%}, occurred {bucket['actual']:.1%} ({bucket['count']})</p>" for bucket in calibration(pairs))
+        + performance_table("By League", by_league, "competition")
+        + performance_table("By Market", by_market, "market_group")
+        + performance_table("By Probability Range", by_probability, "probability_bucket")
+    )
     return render_template_string(LAYOUT, body=body)
 
 @app.get('/fixtures/<int:fixture_id>')
