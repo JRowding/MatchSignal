@@ -28,7 +28,7 @@ def _value(match, metric, home):
 def _form(matches, team, kickoff, home_only, metric):
     eligible = []
     for match in matches:
-        if parse_date(match["kickoff"]) >= kickoff or (match["home_team"] == team) != home_only:
+        if parse_date(match["kickoff"]) >= kickoff or match['home_team' if home_only else 'away_team'] != team:
             continue
         own, against = _value(match, metric, home_only), _value(match, metric, not home_only)
         if own is not None and against is not None:

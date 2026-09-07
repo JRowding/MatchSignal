@@ -11,10 +11,12 @@ if str(ROOT) not in sys.path:
 
 from matchsignal.config import CONFIG, MODEL_VERSION
 from matchsignal.database import connect
+from matchsignal.timeutils import instant
+from zoneinfo import ZoneInfo
 
 DATABASE = Path(os.environ.get("MATCHSIGNAL_DATABASE", ROOT / "data" / "matchsignal.sqlite"))
 def match_time(value):
-    kickoff = datetime.fromisoformat(str(value))
+    kickoff = instant(str(value)).astimezone(ZoneInfo('Europe/London'))
     hour = kickoff.hour % 12 or 12
     minute = f":{kickoff.minute:02d}" if kickoff.minute else ""
     suffix = "am" if kickoff.hour < 12 else "pm"
@@ -36,11 +38,14 @@ def prediction_rows(connection, today=None):
         f.home_team,f.away_team,f.competition,f.kickoff
         FROM predictions p JOIN fixtures f ON f.id=p.fixture_id
         WHERE p.settled_at IS NULL
+          AND p.evidence_status='verified'
+          AND p.model_version=?
+          AND p.fixture_kickoff=f.kickoff
           AND f.status='scheduled'
           AND p.market IN ('home_win','draw','away_win','over_2.5','btts_yes','home_win_btts','away_win_btts')
           AND f.kickoff >= ? AND f.kickoff < ?
         ORDER BY f.kickoff, f.competition, f.home_team, p.market""",
-        (window_start, window_end)).fetchall()
+        (MODEL_VERSION, window_start, window_end)).fetchall()
 
 
 def build_winner_entries(by_fixture):
@@ -132,7 +137,7 @@ td:last-child{{border-radius:0 10px 10px 0}}td b,td small{{display:block}}.prob{
 .day-filter button.active{{background:#eef5fa;color:#08131f;border-color:#eef5fa}}tr.hidden,.empty-day.hidden{{display:none}}
 .empty-day{{background:#102536;border-radius:10px;margin-top:18px;padding:16px;color:#a8bdca}}
 @media(max-width:650px){{body{{padding:16px}}th:nth-child(1),td:nth-child(1){{display:none}}td{{padding:12px 10px}}}}
-</style><header><h1>Match Signal</h1><p class=muted>English fixtures today and over the next four days | Model {MODEL_VERSION}</p></header>
+</style><header><h1>Match Signal</h1><p class=muted>English fixtures today and over the next four days | Model {MODEL_VERSION}</p><nav><a href='/performance'>Prediction Tracker</a> | <a href='/history'>History</a></nav></header>
 <div class=tabs><button class=active data-tab=goals>Over 2.5 Goals</button><button data-tab=winners>Match Winners</button><button data-tab=btts>Both Teams to Score</button><button data-tab=bttswinner>BTTS + Winner</button></div>
 <div class=day-filter><button class=active data-day=all>All</button>{day_buttons}</div>
 <section class="panel active" id=goals><h2>Fixtures ranked by goal probability</h2><p class="empty-day hidden">No fixtures for this day inside the five-day window.</p><table><thead><tr><th>Day / time</th><th>Fixture</th><th>Market</th><th>Probability</th></tr></thead><tbody>{over_entries}</tbody></table></section>

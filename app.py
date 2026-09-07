@@ -1,45 +1,45 @@
 import os
 from pathlib import Path
-from flask import Flask, abort, render_template_string, send_from_directory
+from flask import Flask, abort, render_template_string, send_from_directory, g, request
+from matchsignal.reporting import tracker_body
+from html import escape
+from datetime import datetime, timezone
 
 from matchsignal.database import connect
-from matchsignal.metrics import brier_score, calibration, log_loss
 from matchsignal.scanner import strongest
+from matchsignal.config import MODEL_VERSION
 
 app = Flask(__name__)
 DATABASE_ENV = os.environ.get("MATCHSIGNAL_DATABASE")
-DATABASE = Path(DATABASE_ENV) if DATABASE_ENV else None
+DATABASE = Path(DATABASE_ENV) if DATABASE_ENV else Path(__file__).parent / "data" / "matchsignal.sqlite"
 
-def db(): return connect(DATABASE) if DATABASE and DATABASE.exists() else None
-
-LAYOUT = """<!doctype html><title>Match Signal</title><meta name=viewport content='width=device-width,initial-scale=1'><style>body{margin:auto;max-width:1080px;padding:28px;background:#08131f;color:#eef5fa;font:16px Arial}a{color:#b8ff4e}nav{display:flex;gap:18px;margin:18px 0 30px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}.card{background:#102536;padding:18px;border-radius:8px}small{color:#98aebb;text-transform:uppercase}b{display:block;font-size:1.3em;margin:7px 0}.muted{color:#98aebb}table{width:100%;border-collapse:collapse;margin:12px 0 28px}th,td{border-bottom:1px solid #214154;padding:10px;text-align:left}th{color:#98aebb;font-size:12px;text-transform:uppercase}.pill{display:inline-block;background:#17364c;border-radius:999px;padding:4px 8px}</style><h1>Match Signal</h1><p class=muted>English Football Probability Scanner · Model 2.5.0</p><nav><a href='/'>Signals</a><a href='/history'>History</a><a href='/performance'>Performance</a></nav>{{ body|safe }}"""
-
-
-def pct(value):
-    return f"{value:.1%}" if value is not None else "-"
+def db():
+    if 'database' not in g:
+        g.database = connect(DATABASE) if DATABASE and DATABASE.exists() else None
+    return g.database
 
 
-def score(value):
-    return f"{value:.3f}" if value is not None else "-"
+@app.teardown_appcontext
+def close_database(error=None):
+    connection = g.pop('database', None)
+    if connection:
+        connection.close()
 
 
-def performance_table(title, rows, label):
-    if not rows:
-        return f"<h3>{title}</h3><p class=muted>No settled predictions yet.</p>"
-    body = "".join(
-        f"<tr><td>{row[label] or 'Unknown'}</td><td>{row['total']}</td><td>{pct(row['accuracy'])}</td><td>{pct(row['avg_probability'])}</td><td>{score(row['brier'])}</td></tr>"
-        for row in rows
-    )
-    return f"<h3>{title}</h3><table><tr><th>{label.replace('_', ' ')}</th><th>Predictions</th><th>Accuracy</th><th>Avg probability</th><th>Brier</th></tr>{body}</table>"
+LAYOUT = """<!doctype html><title>Match Signal</title><meta name=viewport content='width=device-width,initial-scale=1'><style>body{margin:auto;max-width:1080px;padding:28px;background:#08131f;color:#eef5fa;font:16px Arial}a{color:#b8ff4e}nav{display:flex;gap:18px;margin:18px 0 30px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}.card{background:#102536;padding:18px;border-radius:8px}small{color:#98aebb;text-transform:uppercase}b{display:block;font-size:1.3em;margin:7px 0}.muted{color:#98aebb}table{width:100%;border-collapse:collapse;margin:12px 0 28px}th,td{border-bottom:1px solid #214154;padding:10px;text-align:left}th{color:#98aebb;font-size:12px;text-transform:uppercase}.pill{display:inline-block;background:#17364c;border-radius:999px;padding:4px 8px}</style><h1>Match Signal</h1><p class=muted>English Football Probability Scanner · Model versions retained in tracker</p><nav><a href='/'>Signals</a><a href='/history'>History</a><a href='/performance'>Performance</a></nav>{{ body|safe }}"""
 
 
 @app.get("/")
 def home():
+    if not DATABASE_ENV:
+        return send_from_directory('.', 'index.html')
     connection = db()
     if not connection: return send_from_directory(".", "index.html")
-    rows = connection.execute("""SELECT p.*,f.home_team,f.away_team,f.competition FROM predictions p JOIN fixtures f ON f.id=p.fixture_id WHERE p.settled_at IS NULL""").fetchall()
+    rows = connection.execute("""SELECT p.*,f.home_team,f.away_team,f.competition FROM predictions p JOIN fixtures f ON f.id=p.fixture_id WHERE p.settled_at IS NULL AND p.evidence_status='verified'
+        AND f.status='scheduled' AND julianday(f.kickoff)>julianday('now')
+        AND p.fixture_kickoff=f.kickoff AND p.model_version=(SELECT model_version FROM prediction_snapshots ORDER BY id DESC LIMIT 1)""").fetchall()
     signals = strongest([{"probability": row["predicted_probability"], "fixture": f"{row['home_team']} vs {row['away_team']}", "selection": row["selection"], "confidence": row["confidence"], "competition": row["competition"]} for row in rows])[:20]
-    body = "<h2>Today's strongest signals</h2><div class=grid>" + "".join(f"<article class=card><small>{s['competition']} · {s['confidence']}</small><b>{s['fixture']}</b><p>{s['selection']} · <strong>{s['probability']:.1%}</strong></p></article>" for s in signals) + "</div>" if signals else "<h2>No eligible signals yet</h2><p class=muted>Run the refresh pipeline once historical data and upcoming fixtures are available.</p>"
+    body = "<h2>Today's strongest signals</h2><div class=grid>" + "".join(f"<article class=card><small>{escape(str(s['competition']))} · {escape(str(s['confidence']))}</small><b>{escape(str(s['fixture']))}</b><p>{escape(str(s['selection']))} · <strong>{s['probability']:.1%}</strong></p></article>" for s in signals) + "</div>" if signals else "<h2>No eligible signals yet</h2><p class=muted>Run the refresh pipeline once historical data and upcoming fixtures are available.</p>"
     return render_template_string(LAYOUT, body=body)
 
 
@@ -60,32 +60,15 @@ def mockup():
 @app.get('/history')
 def history():
     connection = db()
-    rows = connection.execute("""SELECT COALESCE(p.fixture_kickoff,f.kickoff) AS kickoff,COALESCE(p.home_team,f.home_team) AS home_team,COALESCE(p.away_team,f.away_team) AS away_team,p.selection,p.predicted_probability,p.correct,p.actual_home_goals,p.actual_away_goals,p.market_group FROM predictions p JOIN fixtures f ON f.id=p.fixture_id WHERE p.settled_at IS NOT NULL ORDER BY kickoff DESC LIMIT 200""").fetchall() if connection else []
+    rows = connection.execute("""SELECT COALESCE(p.fixture_kickoff,f.kickoff) AS kickoff,COALESCE(p.home_team,f.home_team) AS home_team,COALESCE(p.away_team,f.away_team) AS away_team,p.selection,p.predicted_probability,p.correct,p.actual_home_goals,p.actual_away_goals,p.market_group,p.model_version,p.frozen_at FROM predictions p JOIN fixtures f ON f.id=p.fixture_id WHERE p.settled_at IS NOT NULL AND p.evidence_status='verified' AND p.grading_status='settled' ORDER BY kickoff DESC LIMIT 200""").fetchall() if connection else []
     if not rows:
         return render_template_string(LAYOUT, body="<h2>Prediction history</h2><p class=muted>No settled predictions yet.</p>")
-    body = "<h2>Prediction history</h2>" + "".join(f"<p>{r['kickoff']} · {r['home_team']} {r['actual_home_goals'] if r['actual_home_goals'] is not None else ''} - {r['actual_away_goals'] if r['actual_away_goals'] is not None else ''} {r['away_team']} · <span class=pill>{r['market_group'] or 'Market'}</span> {r['selection']} {r['predicted_probability']:.1%} · {'Correct' if r['correct'] else 'Incorrect'}</p>" for r in rows)
+    body = "<h2>Prediction history</h2>" + "".join(f"<p>{escape(str(r['kickoff']))} · {escape(str(r['home_team']))} {r['actual_home_goals'] if r['actual_home_goals'] is not None else ''} - {r['actual_away_goals'] if r['actual_away_goals'] is not None else ''} {escape(str(r['away_team']))} · <span class=pill>{escape(r['market_group'] or 'Market')}</span> Model {escape(r['model_version'])} · Frozen {escape(r['frozen_at'])} · {escape(str(r['selection']))} {r['predicted_probability']:.1%} · {'Correct' if r['correct'] else 'Incorrect'}</p>" for r in rows)
     return render_template_string(LAYOUT, body=body)
 
 @app.get('/performance')
 def performance():
-    connection = db(); rows = connection.execute("SELECT predicted_probability,actual_outcome FROM predictions WHERE settled_at IS NOT NULL").fetchall() if connection else []
-    pairs = [(row["predicted_probability"], row["actual_outcome"]) for row in rows]
-    if not connection:
-        return render_template_string(LAYOUT, body="<h2>Performance</h2><p class=muted>No database configured yet.</p>")
-    by_league = connection.execute("""SELECT COALESCE(competition,'Unknown') AS competition,COUNT(*) AS total,AVG(correct) AS accuracy,AVG(predicted_probability) AS avg_probability,AVG((predicted_probability - actual_outcome) * (predicted_probability - actual_outcome)) AS brier FROM predictions WHERE settled_at IS NOT NULL GROUP BY 1 ORDER BY total DESC""").fetchall()
-    by_market = connection.execute("""SELECT COALESCE(market_group,market) AS market_group,COUNT(*) AS total,AVG(correct) AS accuracy,AVG(predicted_probability) AS avg_probability,AVG((predicted_probability - actual_outcome) * (predicted_probability - actual_outcome)) AS brier FROM predictions WHERE settled_at IS NOT NULL GROUP BY 1 ORDER BY total DESC""").fetchall()
-    by_probability = connection.execute("""SELECT COALESCE(probability_bucket,'Unknown') AS probability_bucket,COUNT(*) AS total,AVG(correct) AS accuracy,AVG(predicted_probability) AS avg_probability,AVG((predicted_probability - actual_outcome) * (predicted_probability - actual_outcome)) AS brier FROM predictions WHERE settled_at IS NOT NULL GROUP BY 1 ORDER BY probability_bucket""").fetchall()
-    body = (
-        f"<h2>Prediction Tracker</h2><div class=grid><article class=card><small>Settled predictions</small><b>{len(pairs)}</b></article>"
-        f"<article class=card><small>Overall accuracy</small><b>{pct(sum(outcome for _, outcome in pairs) / len(pairs)) if pairs else '-'}</b></article>"
-        f"<article class=card><small>Brier score</small><b>{score(brier_score(pairs))}</b></article><article class=card><small>Log loss</small><b>{score(log_loss(pairs))}</b></article></div>"
-        "<h3>Calibration</h3>"
-        + "".join(f"<p>{bucket['bucket']}: predicted {bucket['predicted']:.1%}, occurred {bucket['actual']:.1%} ({bucket['count']})</p>" for bucket in calibration(pairs))
-        + performance_table("By League", by_league, "competition")
-        + performance_table("By Market", by_market, "market_group")
-        + performance_table("By Probability Range", by_probability, "probability_bucket")
-    )
-    return render_template_string(LAYOUT, body=body)
+    return render_template_string(LAYOUT, body=tracker_body(db(), request.args.get('model')))
 
 @app.get('/fixtures/<int:fixture_id>')
 def fixture_detail(fixture_id):
@@ -93,13 +76,33 @@ def fixture_detail(fixture_id):
     if not connection: abort(404)
     fixture = connection.execute("SELECT * FROM fixtures WHERE id=?", (fixture_id,)).fetchone()
     if not fixture: abort(404)
-    predictions = connection.execute("SELECT selection,predicted_probability,confidence,home_expected_goals,away_expected_goals FROM predictions WHERE fixture_id=? ORDER BY predicted_probability DESC", (fixture_id,)).fetchall()
-    body = f"<h2>{fixture['home_team']} vs {fixture['away_team']}</h2><p>{fixture['competition']} · {fixture['kickoff']}</p>"
+    predictions = connection.execute("SELECT selection,predicted_probability,confidence,home_expected_goals,away_expected_goals,model_version,fixture_kickoff FROM predictions WHERE fixture_id=? AND evidence_status='verified' AND snapshot_id=(SELECT id FROM prediction_snapshots WHERE fixture_id=? ORDER BY id DESC LIMIT 1) ORDER BY predicted_probability DESC", (fixture_id, fixture_id)).fetchall()
+    body = f"<h2>{escape(str(fixture['home_team']))} vs {escape(str(fixture['away_team']))}</h2><p>{escape(str(fixture['competition']))} · {escape(str(fixture['kickoff']))}</p>"
     if predictions:
-        body += f"<p>Expected goals: {predictions[0]['home_expected_goals']:.2f} – {predictions[0]['away_expected_goals']:.2f}</p>" + "".join(f"<p>{p['selection']}: <b>{p['predicted_probability']:.1%}</b> · {p['confidence']}</p>" for p in predictions)
+        body += f"<p>Model {escape(predictions[0]['model_version'])}; snapshot kickoff {escape(predictions[0]['fixture_kickoff'])}</p><p>Expected goals: {predictions[0]['home_expected_goals']:.2f} – {predictions[0]['away_expected_goals']:.2f}</p>" + "".join(f"<p>{escape(str(p['selection']))}: <b>{p['predicted_probability']:.1%}</b> · {escape(str(p['confidence']))}</p>" for p in predictions)
     return render_template_string(LAYOUT, body=body)
 
 
 @app.get("/health")
 def health():
-    return {"status": "ok"}
+    deployment = {
+        'implementation': 'prospective-tracker-v1',
+        'model_version': MODEL_VERSION,
+        'commit': os.environ.get('RENDER_GIT_COMMIT') or os.environ.get('MATCHSIGNAL_DEPLOYMENT_SHA'),
+    }
+    connection = db()
+    if not connection:
+        return {"status": "no_tracker_database", 'deployment': deployment}, 503
+    counts = dict(connection.execute("""SELECT
+        COUNT(CASE WHEN evidence_status='verified' THEN 1 END) AS frozen_verified_predictions,
+        COUNT(DISTINCT CASE WHEN evidence_status='verified' THEN fixture_id END) AS frozen_fixtures,
+        COUNT(CASE WHEN evidence_status='verified' AND grading_status='settled' THEN 1 END) AS settled_predictions,
+        COUNT(CASE WHEN evidence_status!='verified' THEN 1 END) AS legacy_unverified_predictions
+        FROM predictions""").fetchone())
+    latest = connection.execute('SELECT started_at,finished_at,status FROM refresh_runs ORDER BY id DESC LIMIT 1').fetchone()
+    if not latest:
+        return {"status": "no_refresh_record", 'deployment': deployment, 'tracker': counts}, 503
+    age = (datetime.now(timezone.utc) - datetime.fromisoformat(latest['started_at'])).total_seconds()
+    healthy = latest['status'] == 'success' and age < 12 * 3600
+    return {"status": "ok" if healthy else "tracker_stale_or_failed", "last_refresh": dict(latest),
+            'deployment': deployment, 'tracker': counts}, 200 if healthy else 503

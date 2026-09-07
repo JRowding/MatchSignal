@@ -10,6 +10,7 @@ import requests
 
 from .normalization import canonical_team
 from .config import CONFIG
+from .timeutils import utc_text, football_day
 
 LOG = logging.getLogger(__name__)
 
@@ -154,15 +155,20 @@ class TheSportsDBProvider(FixtureProvider):
                     )
                     continue
 
-                rows = re.findall(
-                    r'<tr[^>]+data-href="match/([^"]+)"[^>]*>.*?'
-                    r'<td class="d-none export-only">([^<]+)</td>.*?'
-                    r'<td class="status"[^>]*>([^<]+)</td>.*?'
-                    r'<td class="team home-team"[^>]*data-export="([^"]+)".*?'
-                    r'<td class="team away-team"[^>]*data-export="([^"]+)"',
-                    response.text,
-                    flags=re.DOTALL,
-                )
+                rows = []
+                # Restrict every extraction to one HTML row. A missing date or
+                # status must never borrow fields from the following fixture.
+                for row_html in re.findall(r'<tr\b[^>]*>.*?</tr>', response.text, flags=re.DOTALL):
+                    match = re.search(
+                        r'<tr[^>]+data-href="match/([^\"]+)"[^>]*>.*?'
+                        r'<td class="d-none export-only">([^<]+)</td>.*?'
+                        r'<td class="status"[^>]*>([^<]+)</td>.*?'
+                        r'<td class="team home-team"[^>]*data-export="([^\"]+)".*?'
+                        r'<td class="team away-team"[^>]*data-export="([^\"]+)"',
+                        row_html, flags=re.DOTALL,
+                    )
+                    if match:
+                        rows.append(match.groups())
                 for path, date_text, time_text, home, away in rows:
                     try:
                         kickoff = self._football_web_pages_kickoff(date_text, time_text)
@@ -174,7 +180,7 @@ class TheSportsDBProvider(FixtureProvider):
                         Fixture(
                             f"fwp-{slug}-{path}",
                             competition,
-                            kickoff.isoformat(),
+                            utc_text(kickoff, 'Europe/London'),
                             canonical_team(unescape(home)),
                             canonical_team(unescape(away)),
                         )
@@ -214,20 +220,22 @@ class TheSportsDBProvider(FixtureProvider):
                 home = event.get("strHomeTeam")
                 away = event.get("strAwayTeam")
                 date = event.get("dateEvent")
-                time = event.get("strTime") or "00:00:00"
+                time = event.get("strTime")
+                if not time or event.get('strStatus') in ('Match Finished', 'Postponed', 'Cancelled', 'Abandoned'):
+                    continue
                 if not event.get("idEvent") or not home or not away or not date:
                     continue
                 try:
                     kickoff_at = datetime.fromisoformat(f"{date}T{time[:8]}")
                 except ValueError:
-                    kickoff_at = datetime.fromisoformat(f"{date}T00:00:00")
+                    continue
                 if not window_start <= kickoff_at <= window_end:
                     continue
                 fixtures.append(
                     Fixture(
                         str(event["idEvent"]),
                         competition,
-                        kickoff_at.isoformat(),
+                        utc_text(kickoff_at),
                         canonical_team(home),
                         canonical_team(away),
                     )
@@ -272,7 +280,9 @@ class TheSportsDBProvider(FixtureProvider):
                     competition = self.SKY_COMPETITIONS.get(source_competition)
                     if not competition or not event.get("isFixture"):
                         continue
-                    time = event["start"].get("time") or "00:00"
+                    time = event["start"].get("time")
+                    if not time:
+                        continue
                     kickoff = datetime.fromisoformat(f"{current.isoformat()}T{time}:00")
                     if not now <= kickoff <= cutoff:
                         continue
@@ -282,7 +292,7 @@ class TheSportsDBProvider(FixtureProvider):
                         Fixture(
                             f"sky-{event['id']}",
                             competition,
-                            kickoff.isoformat(),
+                            utc_text(kickoff, 'Europe/London'),
                             canonical_team(home),
                             canonical_team(away),
                         )
@@ -294,18 +304,33 @@ class TheSportsDBProvider(FixtureProvider):
 
 
 def upsert_fixtures(connection, fixtures: list[Fixture]) -> int:
-    for fixture in fixtures:
-        connection.execute(
-            """INSERT INTO fixtures(external_fixture_id,competition,kickoff,home_team,away_team,status)
-        VALUES(?,?,?,?,?,?) ON CONFLICT(external_fixture_id) DO UPDATE SET kickoff=excluded.kickoff,status=excluded.status""",
-            (
-                fixture.external_fixture_id,
-                fixture.competition,
-                fixture.kickoff,
-                fixture.home_team,
-                fixture.away_team,
-                fixture.status,
-            ),
-        )
-    connection.commit()
+    with connection:
+        connection.execute('UPDATE fixtures SET status=status WHERE id=-1')
+        for fixture in fixtures:
+            kickoff = utc_text(fixture.kickoff) if len(fixture.kickoff) > 10 else fixture.kickoff
+            existing = connection.execute('''SELECT f.* FROM fixtures f LEFT JOIN fixture_aliases a ON a.fixture_id=f.id
+                WHERE f.external_fixture_id=? OR a.external_id=? LIMIT 1''', (fixture.external_fixture_id, fixture.external_fixture_id)).fetchone()
+            if existing:
+                if (existing['competition'], existing['home_team'], existing['away_team']) != (fixture.competition, fixture.home_team, fixture.away_team):
+                    connection.execute("UPDATE fixtures SET status='identity_conflict' WHERE id=?", (existing['id'],))
+                    LOG.error('Provider identity changed: %s', fixture.external_fixture_id)
+                    continue
+                status = 'identity_conflict' if existing['status'] == 'identity_conflict' else fixture.status
+                connection.execute('UPDATE fixtures SET kickoff=?,status=? WHERE id=?', (kickoff, status, existing['id']))
+                continue
+            candidates = connection.execute('''SELECT * FROM fixtures WHERE competition=? AND home_team=? AND away_team=?''',
+                (fixture.competition, fixture.home_team, fixture.away_team)).fetchall()
+            same_day = [r for r in candidates if football_day(r['kickoff']) == football_day(kickoff)]
+            if len(same_day) == 1:
+                existing = same_day[0]
+                connection.execute('INSERT INTO fixture_aliases VALUES(?,?)', (fixture.external_fixture_id, existing['id']))
+                if existing['kickoff'] != kickoff:
+                    # Conflicting sources require review; do not silently move a prediction.
+                    connection.execute("UPDATE fixtures SET status='identity_conflict' WHERE id=?", (existing['id'],))
+                continue
+            if same_day:
+                LOG.error('Ambiguous duplicate fixture: %s', fixture.external_fixture_id)
+                continue
+            connection.execute('''INSERT INTO fixtures(external_fixture_id,competition,kickoff,home_team,away_team,status)
+                VALUES(?,?,?,?,?,?)''', (fixture.external_fixture_id, fixture.competition, kickoff, fixture.home_team, fixture.away_team, fixture.status))
     return len(fixtures)

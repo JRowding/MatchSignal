@@ -9,6 +9,8 @@ import requests
 from .config import CONFIG
 from .config import SUPPORTED_COMPETITIONS
 from .normalization import canonical_team
+from .persistence import record_result
+from .timeutils import utc_text
 
 LOG = logging.getLogger(__name__)
 BASE = "https://www.football-data.co.uk/mmz4281"
@@ -17,7 +19,7 @@ def season_code(start_year: int) -> str:
     return f"{str(start_year)[-2:]}{str(start_year + 1)[-2:]}"
 
 def _integer(row, field):
-    value = row.get(field, "").strip()
+    value = (row.get(field) or "").strip()
     return int(value) if value.lstrip("-").isdigit() else None
 
 def _date(value: str) -> str | None:
@@ -29,9 +31,21 @@ def _date(value: str) -> str | None:
 def parse_csv(content: str, competition: str, season: str) -> list[dict]:
     rows = []
     for row in csv.DictReader(io.StringIO(content.lstrip("\ufeff"))):
-        home, away, kickoff = row.get("HomeTeam", "").strip(), row.get("AwayTeam", "").strip(), _date(row.get("Date", ""))
+        home, away, kickoff = (row.get("HomeTeam") or "").strip(), (row.get("AwayTeam") or "").strip(), _date(row.get("Date") or "")
         if not home or not away or not kickoff: continue
+        hg, ag = _integer(row, 'FTHG'), _integer(row, 'FTAG')
+        valid_score = all(v is not None and v >= 0 for v in (hg, ag))
+        expected_result = ('H' if hg > ag else 'A' if ag > hg else 'D') if valid_score else None
+        if row.get('FTR') in ('H', 'D', 'A') and row['FTR'] != expected_result:
+            raise ValueError(f'Contradictory full-time result: {competition} {kickoff} {home} {away}')
+        result_kickoff = None
+        if row.get('Time'):
+            try:
+                result_kickoff = utc_text(datetime.strptime(f"{kickoff} {row['Time']}", '%Y-%m-%d %H:%M'), 'Europe/London')
+            except ValueError:
+                LOG.warning('Invalid result kickoff time for %s %s %s', competition, home, away)
         rows.append({
+            "result_kickoff": result_kickoff,
             "competition": competition, "season": season, "kickoff": kickoff,
             "home_team": canonical_team(home), "away_team": canonical_team(away),
             "home_goals": _integer(row, "FTHG"), "away_goals": _integer(row, "FTAG"),
@@ -42,7 +56,7 @@ def parse_csv(content: str, competition: str, season: str) -> list[dict]:
             "home_yellows": _integer(row, "HY"), "away_yellows": _integer(row, "AY"),
             "home_reds": _integer(row, "HR"), "away_reds": _integer(row, "AR"),
             "referee": row.get("Referee") or None,
-            "completed": int(_integer(row, "FTHG") is not None and _integer(row, "FTAG") is not None),
+            "completed": int(all(v is not None and v >= 0 for v in (_integer(row, "FTHG"), _integer(row, "FTAG"))) and row.get('FTR') in ('H', 'D', 'A')),
         })
     return rows
 
@@ -57,9 +71,18 @@ def import_season(connection, start_year: int, session=requests) -> int:
         except requests.RequestException as exc:
             LOG.warning("Football-Data unavailable for %s %s: %s", competition, code, exc)
             continue
-        for match in parse_csv(response.text, competition, f"{start_year}/{start_year + 1}"):
-            connection.execute("""INSERT INTO matches_v2(competition,season,kickoff,home_team,away_team,home_goals,away_goals,home_shots,away_shots,home_sot,away_sot,home_corners,away_corners,home_fouls,away_fouls,home_yellows,away_yellows,home_reds,away_reds,referee,completed)
-            VALUES(:competition,:season,:kickoff,:home_team,:away_team,:home_goals,:away_goals,:home_shots,:away_shots,:home_sot,:away_sot,:home_corners,:away_corners,:home_fouls,:away_fouls,:home_yellows,:away_yellows,:home_reds,:away_reds,:referee,:completed)
+        parsed = parse_csv(response.text, competition, f"{start_year}/{start_year + 1}")
+        identities = {}
+        for match in parsed:
+            key = (match['kickoff'], match['home_team'], match['away_team'])
+            identities.setdefault(key, []).append(match)
+        for key, duplicates in identities.items():
+            if len({(m['home_goals'], m['away_goals'], m['completed']) for m in duplicates}) != 1:
+                raise ValueError(f'Conflicting source results for {competition} {key}')
+        for match in (rows[0] for rows in identities.values()):
+            record_result(connection, match, 'football-data')
+            connection.execute("""INSERT INTO matches_v2(competition,season,kickoff,home_team,away_team,home_goals,away_goals,home_shots,away_shots,home_sot,away_sot,home_corners,away_corners,home_fouls,away_fouls,home_yellows,away_yellows,home_reds,away_reds,referee,completed,source)
+            VALUES(:competition,:season,:kickoff,:home_team,:away_team,:home_goals,:away_goals,:home_shots,:away_shots,:home_sot,:away_sot,:home_corners,:away_corners,:home_fouls,:away_fouls,:home_yellows,:away_yellows,:home_reds,:away_reds,:referee,:completed,'football-data')
             ON CONFLICT(competition,kickoff,home_team,away_team) DO UPDATE SET
             home_goals=excluded.home_goals, away_goals=excluded.away_goals,
             home_shots=excluded.home_shots, away_shots=excluded.away_shots,
@@ -68,14 +91,11 @@ def import_season(connection, start_year: int, session=requests) -> int:
             home_fouls=excluded.home_fouls, away_fouls=excluded.away_fouls,
             home_yellows=excluded.home_yellows, away_yellows=excluded.away_yellows,
             home_reds=excluded.home_reds, away_reds=excluded.away_reds,
-            referee=excluded.referee, completed=excluded.completed""", match)
+            referee=excluded.referee, completed=excluded.completed, source=excluded.source""", match)
             imported += 1
     connection.commit(); return imported
 
 def promote_unplayed_matches_to_fixtures(connection) -> int:
-    rows = connection.execute("SELECT competition,kickoff,home_team,away_team FROM matches_v2 WHERE completed=0").fetchall()
-    for row in rows:
-        identity = "|".join(row)
-        connection.execute("""INSERT INTO fixtures(external_fixture_id,competition,kickoff,home_team,away_team,status)
-        VALUES(?,?,?,?,?,?) ON CONFLICT(external_fixture_id) DO NOTHING""", (identity, *row, "scheduled"))
-    connection.commit(); return len(rows)
+    # Historic CSV rows have no reliable scheduled kickoff. Only timed fixture
+    # providers can create eligible live predictions.
+    return 0

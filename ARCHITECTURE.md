@@ -1,5 +1,9 @@
 # MatchSignal 2.0 architecture and phased rebuild
 
+This document records the original rebuild plan. The current implementation,
+reliability findings and operational requirements are documented in
+[PREDICTION_TRACKER_AUDIT.md](PREDICTION_TRACKER_AUDIT.md).
+
 ## Audit of the original repository
 
 The original application was a Flask wrapper that served a pre-rendered HTML

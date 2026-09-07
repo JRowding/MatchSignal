@@ -69,3 +69,18 @@ def test_fwp_provider_reads_all_supported_competitions():
         "League Two",
         "National League",
     }
+
+
+def test_fwp_does_not_borrow_fields_across_rows():
+    class Response:
+        text = '''<tr data-href="match/wrong-id"><td>No valid fixture fields</td></tr>
+        <tr data-href="match/correct-id"><td class="d-none export-only">05/09/2026</td>
+        <td class="status">3pm</td><td class="team home-team" data-export="A"></td>
+        <td class="team away-team" data-export="B"></td></tr>'''
+        def raise_for_status(self): pass
+    class Session:
+        def get(self, *args, **kwargs): return Response()
+    rows=TheSportsDBProvider(Session())._football_web_pages_fixtures(datetime(2026,9,5),datetime(2026,9,6))
+    assert len(rows)==5
+    assert all(r.external_fixture_id.endswith('correct-id') for r in rows)
+    assert all(r.kickoff=='2026-09-05T14:00:00+00:00' for r in rows)

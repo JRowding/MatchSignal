@@ -2,6 +2,7 @@ from .config import CONFIG, MODEL_VERSION, SUPPORTED_COMPETITIONS
 from .count_models import predict_count_markets
 from .features import chronological_elo, league_table, team_form
 from .poisson import markets, score_matrix
+from .timeutils import instant
 
 def expected_goals(matches, competition: str, home_team: str, away_team: str, kickoff):
     # Use a shared English-pyramid sample for team form and Elo.  The fixture
@@ -11,7 +12,7 @@ def expected_goals(matches, competition: str, home_team: str, away_team: str, ki
     if not prior:
         prior = english
     if not prior: return 1.35, 1.05, {"reason": "league baseline only", "sample": 0}
-    league_goals = sum(match["home_goals"] + match["away_goals"] for match in prior) / (2 * len(prior))
+    league_goals = max(.1, sum(match["home_goals"] + match["away_goals"] for match in prior) / (2 * len(prior)))
     home = team_form(english, home_team, kickoff, True); away = team_form(english, away_team, kickoff, False)
     home_any = team_form(english, home_team, kickoff, None); away_any = team_form(english, away_team, kickoff, None)
     elo = chronological_elo(english)
@@ -40,6 +41,9 @@ def expected_goals(matches, competition: str, home_team: str, away_team: str, ki
     }
 
 def predict(matches, competition, home_team, away_team, kickoff):
+    kickoff = instant(kickoff).replace(tzinfo=None)
+    # Shared conservative cutoff protects goals, table, Elo and count models.
+    matches = [m for m in matches if m.get('completed', 1) and m['kickoff'][:10] < kickoff.date().isoformat()]
     home_xg, away_xg, evidence = expected_goals(matches, competition, home_team, away_team, kickoff)
     probabilities = markets(score_matrix(home_xg, away_xg, CONFIG.poisson_max_goals))
     confidence = "VERY HIGH" if evidence["sample"] >= 10 else "HIGH" if evidence["sample"] >= 7 else "MEDIUM" if evidence["sample"] >= 4 else "LOW"

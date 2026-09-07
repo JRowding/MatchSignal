@@ -10,8 +10,8 @@ def log_loss(predictions: list[tuple[float, int]]) -> float | None:
 
 def calibration(predictions: list[tuple[float, int]]) -> list[dict]:
     buckets = []
-    for lower in range(50, 100, 10):
+    for lower in range(0, 100, 10):
         values = [(p, o) for p, o in predictions if lower / 100 <= p < (lower + 10) / 100 or (lower == 90 and p == 1)]
         if values:
-            buckets.append({"bucket": f"{lower}-{lower + 9}%", "predicted": sum(p for p, _ in values) / len(values), "actual": sum(o for _, o in values) / len(values), "count": len(values)})
+            buckets.append({"bucket": f"{lower}-{100 if lower == 90 else lower + 9}%", "predicted": sum(p for p, _ in values) / len(values), "actual": sum(o for _, o in values) / len(values), "count": len(values)})
     return buckets

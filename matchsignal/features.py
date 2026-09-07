@@ -3,8 +3,13 @@ from datetime import datetime
 from math import exp
 
 from .config import COMPETITION_ELO_PRIORS, CONFIG
+from .timeutils import instant
 
 def parse_date(value: str) -> datetime:
+    try:
+        return instant(value).replace(tzinfo=None)
+    except ValueError:
+        pass
     for pattern in ("%Y-%m-%d", "%d/%m/%Y", "%Y-%m-%dT%H:%M:%S"):
         try: return datetime.strptime(value[:19], pattern)
         except ValueError: pass
@@ -14,6 +19,7 @@ def recency_weight(kickoff: datetime, match_date: datetime, half_life_days: int 
     return exp(-0.69314718056 * max((kickoff - match_date).days, 0) / half_life_days)
 
 def team_form(matches, team: str, kickoff: datetime, home_only: bool | None) -> dict:
+    kickoff = instant(kickoff).replace(tzinfo=None)
     def matches_team(match):
         if home_only is True:
             return match["home_team"] == team
@@ -36,6 +42,7 @@ def team_form(matches, team: str, kickoff: datetime, home_only: bool | None) -> 
     return {"sample": len(eligible), "points_per_game": weighted["points"] / weights, "goals_for": weighted["goals_for"] / weights, "goals_against": weighted["goals_against"] / weights}
 
 def league_table(matches, competition: str, kickoff: datetime) -> dict:
+    kickoff = instant(kickoff).replace(tzinfo=None)
     eligible = [match for match in matches if match["competition"] == competition and parse_date(match["kickoff"]) < kickoff]
     if not eligible:
         return {}

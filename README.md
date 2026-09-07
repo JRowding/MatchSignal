@@ -29,15 +29,20 @@ pip install -r requirements.txt
 pytest
 ```
 
-The current Render app continues to serve `index.html` while the data pipeline
-and dynamic dashboard are built. See [ARCHITECTURE.md](ARCHITECTURE.md).
+The default landing page serves `index.html`; `/performance` and `/history`
+read the preserved `data/matchsignal.sqlite` ledger. Set `MATCHSIGNAL_DATABASE`
+to use another database path. See [the reliability audit](PREDICTION_TRACKER_AUDIT.md)
+for the architecture, known limitations, and deployment/recovery procedure.
 
 ## Refresh and backtesting
 
 `python scripts/refresh_v2.py` imports supported Football-Data files,
-creates scheduled fixtures from unplayed source rows, generates immutable
-predictions, and settles completed records. It is safe to rerun.
+imports timed fixtures from fixture providers, captures immutable prospective
+predictions, and reconciles independent full-time results. Date-only unplayed
+CSV rows are not eligible forecasts. It is safe to rerun against the preserved ledger.
 
-The free GitHub Action refreshes a static snapshot. For complete long-term
-prediction history and a dynamic fixture provider, deploy the same database to
-a durable datastore.
+The GitHub Action commits the SQLite ledger and static snapshot together and
+retains a run artifact for recovery. This is an interim durability approach;
+large deployments should use a managed datastore. Legacy predictions remain
+unverified and are excluded from trusted metrics. `/health` returns 503 when
+the ledger has no successful recent refresh.
