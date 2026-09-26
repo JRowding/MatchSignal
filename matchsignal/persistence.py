@@ -192,4 +192,10 @@ def settle_predictions(connection):
             connection.execute('''INSERT INTO settlement_events(prediction_id,observation_id,outcome,status,recorded_at)
                 VALUES(?,?,?,?,?)''', (row['id'], observation_id, outcome, status, timestamp))
             changed += int(result is not None)
+        # Results establish completed state; a withdrawal reopens it for review.
+        for (fixture_id, _), (status, result) in cache.items():
+            if status == 'settled' and result:
+                connection.execute("UPDATE fixtures SET status='completed' WHERE id=? AND status='scheduled'", (fixture_id,))
+            elif status == 'result_withdrawn':
+                connection.execute("UPDATE fixtures SET status='scheduled' WHERE id=? AND status='completed'", (fixture_id,))
     return changed

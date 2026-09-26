@@ -5,6 +5,8 @@ from html import unescape
 import json
 import logging
 import re
+from zoneinfo import ZoneInfo
+from time import sleep
 
 import requests
 
@@ -51,6 +53,8 @@ class TheSportsDBProvider(FixtureProvider):
     }
     SKY_COMPETITIONS = {
         "Premier League": "Premier League",
+        "EFL Championship": "Championship", "EFL League One": "League One",
+        "EFL League Two": "League Two", "National League": "National League",
         "Sky Bet Championship": "Championship",
         "Sky Bet League One": "League One",
         "Sky Bet League Two": "League Two",
@@ -68,12 +72,48 @@ class TheSportsDBProvider(FixtureProvider):
 
     def __init__(self, session=requests):
         self.session = session
+        self.diagnostics = []
+
+    def _get(self, source, scope, url, **kwargs):
+        health = {'source': source, 'scope': scope, 'status': 'failed', 'rows': 0}
+        self.diagnostics.append(health)
+        for attempt in range(CONFIG.source_retries + 1):
+            try:
+                response = self.session.get(url, **kwargs)
+                response.raise_for_status()
+                return response, health
+            except requests.RequestException as exc:
+                health['error'] = str(exc)
+                status = getattr(getattr(exc, 'response', None), 'status_code', None)
+                if attempt == CONFIG.source_retries or (status is not None and status != 429 and status < 500):
+                    raise
+                sleep(1)
+
+    @staticmethod
+    def _parsed(health, rows):
+        health.update(status='success' if rows else 'invalid', rows=rows)
+        if rows and 'error' in health:
+            health['recovered_error'] = health.pop('error')
+        if not rows:
+            health['error'] = 'No recognizable fixture rows; empty schedule not verified'
+            LOG.error('%s %s: %s', health['source'], health['scope'], health['error'])
+
+    def covered_competitions(self):
+        # TheSportsDB free season responses can be truncated to five events.
+        # A few returned fixtures are not evidence of complete league coverage.
+        sky = [d for d in self.diagnostics if d['source'] == 'sky']
+        covered = set(self.SKY_COMPETITIONS.values()) if sky and all(d['status'] == 'success' for d in sky) else set()
+        for competition in self.REQUIRED_COMPETITIONS:
+            rows = [d for d in self.diagnostics if d['source'] == 'fwp' and d['scope'] == competition]
+            if rows and all(d['status'] == 'success' for d in rows):
+                covered.add(competition)
+        return covered
 
     @staticmethod
     def _dedupe(fixtures: list[Fixture]) -> list[Fixture]:
         seen = set()
         result = []
-        for fixture in fixtures:
+        for fixture in sorted(fixtures, key=lambda f: f.status == 'scheduled'):
             key = (
                 fixture.competition,
                 fixture.kickoff,
@@ -87,7 +127,7 @@ class TheSportsDBProvider(FixtureProvider):
         return result
 
     def upcoming(self) -> list[Fixture]:
-        now = datetime.now()
+        now = datetime.now(ZoneInfo('Europe/London')).replace(tzinfo=None)
         window_start, window_end = fixture_window(now)
 
         # Football Web Pages publishes all five supported English leagues and is
@@ -101,7 +141,7 @@ class TheSportsDBProvider(FixtureProvider):
         missing_leagues = {
             league_id: competition
             for league_id, competition in self.LEAGUES.items()
-            if competition not in present_competitions
+            if competition not in present_competitions and competition not in self.covered_competitions()
         }
         if missing_leagues:
             LOG.warning(
@@ -138,8 +178,8 @@ class TheSportsDBProvider(FixtureProvider):
         for competition, slug in self.FWP_COMPETITIONS.items():
             for year, month in sorted(months):
                 try:
-                    response = self.session.get(
-                        self.FWP_URL.format(slug=slug),
+                    response, health = self._get(
+                        'fwp', competition, self.FWP_URL.format(slug=slug),
                         params={"month": month},
                         timeout=CONFIG.source_timeout_seconds,
                         headers={"User-Agent": "MatchSignal/2.6"},
@@ -169,6 +209,7 @@ class TheSportsDBProvider(FixtureProvider):
                     )
                     if match:
                         rows.append(match.groups())
+                self._parsed(health, len(rows))
                 for path, date_text, time_text, home, away in rows:
                     try:
                         kickoff = self._football_web_pages_kickoff(date_text, time_text)
@@ -198,15 +239,15 @@ class TheSportsDBProvider(FixtureProvider):
 
     def _thesportsdb_fixtures(self, window_start, window_end, league_ids=None):
         fixtures = []
-        now = datetime.now()
+        now = datetime.now(ZoneInfo('Europe/London')).replace(tzinfo=None)
         season_start = now.year if now.month >= 7 else now.year - 1
         season = f"{season_start}-{season_start + 1}"
         leagues = league_ids or self.LEAGUES
 
         for league_id, competition in leagues.items():
             try:
-                response = self.session.get(
-                    self.BASE,
+                response, health = self._get(
+                    'thesportsdb', competition, self.BASE,
                     params={"id": league_id, "s": season},
                     timeout=CONFIG.source_timeout_seconds,
                     headers={"User-Agent": "MatchSignal/2.6"},
@@ -216,7 +257,18 @@ class TheSportsDBProvider(FixtureProvider):
                 LOG.warning("Fixture provider unavailable for %s: %s", competition, exc)
                 continue
 
-            for event in response.json().get("events") or []:
+            try:
+                events = response.json()['events']
+                if not isinstance(events, list):
+                    raise ValueError('Missing events array')
+            except (ValueError, KeyError, TypeError) as exc:
+                health.update(status='invalid', error=str(exc))
+                LOG.error('Invalid TheSportsDB response for %s: %s', competition, exc)
+                continue
+            self._parsed(health, len(events))
+            if len(events) <= 5:
+                health.update(status='partial', error='Free season response may be truncated')
+            for event in events:
                 home = event.get("strHomeTeam")
                 away = event.get("strAwayTeam")
                 date = event.get("dateEvent")
@@ -263,8 +315,8 @@ class TheSportsDBProvider(FixtureProvider):
         current = now.date()
         while current <= cutoff.date():
             try:
-                response = self.session.get(
-                    self.SKY_DAILY_URL.format(date=current.isoformat()),
+                response, health = self._get(
+                    'sky', current.isoformat(), self.SKY_DAILY_URL.format(date=current.isoformat()),
                     timeout=CONFIG.source_timeout_seconds,
                     headers={"User-Agent": "MatchSignal/2.6"},
                 )
@@ -273,12 +325,17 @@ class TheSportsDBProvider(FixtureProvider):
                 LOG.warning("Sky fixture page unavailable for %s: %s", current, exc)
                 current += timedelta(days=1)
                 continue
+            parsed_events = 0
             for raw in re.findall(r'data-state="([^"]+)"', response.text):
                 try:
                     event = json.loads(unescape(raw))
                     source_competition = event["competition"]["name"]["full"]
+                    parsed_events += 1
                     competition = self.SKY_COMPETITIONS.get(source_competition)
-                    if not competition or not event.get("isFixture"):
+                    status = next((state for flag, state in (
+                        ('isPostponed', 'postponed'), ('isCancelled', 'cancelled'),
+                        ('isAbandoned', 'abandoned'), ('isResult', 'completed')) if event.get(flag)), 'scheduled')
+                    if not competition or (status == 'scheduled' and not event.get('isFixture')):
                         continue
                     time = event["start"].get("time")
                     if not time:
@@ -295,10 +352,12 @@ class TheSportsDBProvider(FixtureProvider):
                             utc_text(kickoff, 'Europe/London'),
                             canonical_team(home),
                             canonical_team(away),
+                            status,
                         )
                     )
                 except (KeyError, TypeError, ValueError, json.JSONDecodeError):
                     continue
+            self._parsed(health, parsed_events)
             current += timedelta(days=1)
         return fixtures
 
@@ -316,6 +375,8 @@ def upsert_fixtures(connection, fixtures: list[Fixture]) -> int:
                     LOG.error('Provider identity changed: %s', fixture.external_fixture_id)
                     continue
                 status = 'identity_conflict' if existing['status'] == 'identity_conflict' else fixture.status
+                if existing['status'] == 'completed' and status == 'scheduled':
+                    status = 'completed'
                 connection.execute('UPDATE fixtures SET kickoff=?,status=? WHERE id=?', (kickoff, status, existing['id']))
                 continue
             candidates = connection.execute('''SELECT * FROM fixtures WHERE competition=? AND home_team=? AND away_team=?''',
@@ -324,6 +385,8 @@ def upsert_fixtures(connection, fixtures: list[Fixture]) -> int:
             if len(same_day) == 1:
                 existing = same_day[0]
                 connection.execute('INSERT INTO fixture_aliases VALUES(?,?)', (fixture.external_fixture_id, existing['id']))
+                if fixture.status in ('postponed', 'cancelled', 'abandoned', 'completed') and existing['status'] != 'identity_conflict':
+                    connection.execute('UPDATE fixtures SET status=? WHERE id=?', (fixture.status, existing['id']))
                 if existing['kickoff'] != kickoff:
                     # Conflicting sources require review; do not silently move a prediction.
                     connection.execute("UPDATE fixtures SET status='identity_conflict' WHERE id=?", (existing['id'],))

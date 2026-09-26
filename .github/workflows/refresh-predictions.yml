@@ -25,6 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
+      MATCHSIGNAL_REQUIRE_LEDGER: "1"
       PYTHONPATH: ${{ github.workspace }}
     steps:
       - uses: actions/checkout@v4
@@ -35,7 +36,9 @@ jobs:
           python-version: "3.12"
       - run: pip install -r requirements.txt
       - run: python -m pytest -q
-      - run: timeout 15m python scripts/refresh_v2.py
+      - id: refresh
+        continue-on-error: true
+        run: timeout 15m python scripts/refresh_v2.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -50,3 +53,13 @@ jobs:
           git add -f data/matchsignal.sqlite
           git diff --staged --quiet || git commit -m "Refresh football predictions"
           git push
+      - name: Report source or refresh failure after preserving the ledger
+        run: |
+          python - <<'PYTHON'
+          import sqlite3
+          db = sqlite3.connect('data/matchsignal.sqlite')
+          status = db.execute('SELECT status FROM refresh_runs ORDER BY id DESC LIMIT 1').fetchone()[0]
+          if status != 'success':
+              raise SystemExit('Refresh ' + status + '; diagnostic ledger and snapshot preserved')
+          PYTHON
+          test "${{ steps.refresh.outcome }}" = "success"

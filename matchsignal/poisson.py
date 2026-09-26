@@ -1,15 +1,21 @@
-from math import exp, factorial
+from math import exp, factorial, isfinite
 from typing import Dict, Tuple
 
 def poisson_probability(goals: int, mean: float) -> float:
-    if mean < 0:
-        raise ValueError("Expected goals cannot be negative")
+    if not isfinite(mean) or mean < 0:
+        raise ValueError("Expected goals must be finite and non-negative")
+    if type(goals) is not int or goals < 0:
+        raise ValueError("Goals must be a non-negative integer")
     return exp(-mean) * mean ** goals / factorial(goals)
 
 def score_matrix(home_xg: float, away_xg: float, max_goals: int = 8) -> Dict[Tuple[int, int], float]:
+    if type(max_goals) is not int or max_goals < 0:
+        raise ValueError('Score grid limit must be a non-negative integer')
     matrix = {(home, away): poisson_probability(home, home_xg) * poisson_probability(away, away_xg)
               for home in range(max_goals + 1) for away in range(max_goals + 1)}
     total = sum(matrix.values())
+    if not isfinite(total) or total <= 0:
+        raise ValueError('Score matrix has no representable probability mass')
     return {score: probability / total for score, probability in matrix.items()}
 
 def markets(matrix: Dict[Tuple[int, int], float]) -> dict[str, float]:

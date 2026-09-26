@@ -1,6 +1,7 @@
 """SQL aggregates over verified prospective snapshots, separated by model."""
 from html import escape
 from math import log
+from .health import refresh_health
 
 
 def tracker_body(connection, version=None):
@@ -36,6 +37,10 @@ def tracker_body(connection, version=None):
         plus Over 2.5 and BTTS Yes. Ties follow the frozen model output order. It is not the average of all possible winners.
         These overlapping markets are correlated; forecast counts are not independent match counts.
         Missing and excluded outcomes may bias the settled sample. Small samples are inconclusive.</p>'''
+    quality = connection.execute("SELECT COUNT(*) FROM prediction_snapshots WHERE model_version=? AND json_extract(payload_json,'$.forecast.evidence.sample') < 5", params).fetchone()[0]
+    body += f'<p>Frozen fixtures with fewer than five usable team matches: {quality}. Original forecasts are retained, including input defects; later mapping fixes do not rewrite them.</p>'
+    state = refresh_health(connection)
+    body += f"<p>Data freshness: {escape(state['status'])}; last successful refresh: {escape(state.get('last_success') or 'unknown')}.</p>"
     refresh = connection.execute('SELECT * FROM refresh_runs ORDER BY id DESC LIMIT 1').fetchone()
     if refresh:
         body += f"<p>Last refresh: {escape(refresh['started_at'])} — {escape(refresh['status'])}.</p>"
@@ -45,15 +50,15 @@ def tracker_body(connection, version=None):
         from urllib.parse import urlencode
         body += '<p>Models: ' + ' | '.join(f'<a href="/performance?{urlencode({"model": m})}">{escape(m)}</a>' for m in models) + '</p>'
     for title, expression in [('Overall displayed picks', "'All picks'"), ('By League', 'competition'),
-                              ('By Market', 'market_group'), ('By Probability Range', 'probability_bucket'),
+                              ('By Market', 'market_group'), ('By Market and Probability Range', "market_group || ' / ' || probability_bucket"),
                               ('Home / away / draw picks', "CASE WHEN market LIKE 'home_%' THEN 'Home' WHEN market LIKE 'away_%' THEN 'Away' WHEN market='draw' THEN 'Draw' ELSE 'Totals / BTTS' END")]:
         rows = connection.execute(f'''SELECT {expression} AS label,COUNT(*) AS n,COUNT(DISTINCT fixture_id) AS fixtures,
             AVG(actual_outcome) AS hit,AVG(predicted_probability) AS probability FROM predictions
             WHERE {settled} AND is_pick=1 GROUP BY 1 ORDER BY 1''', params).fetchall()
         body += f'<h3>{title}</h3><table><tr><th>Group</th><th>Picks</th><th>Fixtures</th><th>Hit rate</th><th>Mean probability</th></tr>'
         body += ''.join(f"<tr><td>{escape(r['label'] or 'Unknown')}</td><td>{r['n']}</td><td>{r['fixtures']}</td><td>{pct(r['hit'])}</td><td>{pct(r['probability'])}</td></tr>" for r in rows) + '</table>'
-    body += '<h3>Calibration — all probabilities, by individual market</h3><table><tr><th>Market</th><th>Range</th><th>Sample</th><th>Predicted</th><th>Occurred</th></tr>'
+    body += '<h3>Calibration — all probabilities, by individual market</h3><table><tr><th>Market</th><th>Range</th><th>Sample</th><th>Evidence</th><th>Predicted</th><th>Occurred</th></tr>'
     rows = connection.execute(f'''SELECT market,probability_bucket,COUNT(*) AS n,AVG(predicted_probability) AS p,
         AVG(actual_outcome) AS actual FROM predictions WHERE {settled} GROUP BY market,probability_bucket ORDER BY market,probability_bucket''', params).fetchall()
-    body += ''.join(f"<tr><td>{escape(r['market'])}</td><td>{escape(r['probability_bucket'])}</td><td>{r['n']}</td><td>{pct(r['p'])}</td><td>{pct(r['actual'])}</td></tr>" for r in rows) + '</table>'
+    body += ''.join(f"<tr><td>{escape(r['market'])}</td><td>{escape(r['probability_bucket'])}</td><td>{r['n']}</td><td>{'Small sample' if r['n'] < 30 else '30+ outcomes'}</td><td>{pct(r['p'])}</td><td>{pct(r['actual'])}</td></tr>" for r in rows) + '</table>'
     return body
