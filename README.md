@@ -1,8 +1,8 @@
 # MatchSignal 2.0
 
 MatchSignal forecasts matches from the Premier League through the National
-League. It uses Football-Data.co.uk for historic results and TheSportsDB's
-public season-schedule feed for fixtures in the next four days; neither
+League. It uses Football-Data.co.uk for historic results and Football Web Pages/Sky
+fixture pages (with TheSportsDB as a limited fallback) for fixtures in the next four days; neither
 requires a paid account.
 
 The model carries one Elo rating across the five tiers, with conservative
@@ -46,3 +46,16 @@ retains a run artifact for recovery. This is an interim durability approach;
 large deployments should use a managed datastore. Legacy predictions remain
 unverified and are excluded from trusted metrics. `/health` returns 503 when
 the ledger has no successful recent refresh.
+
+## System health audit (26 September 2026)
+
+See [SYSTEM_HEALTH_AUDIT.md](SYSTEM_HEALTH_AUDIT.md) for tested coverage and limits.
+Refresh records include per-source/per-league diagnostics. Failed or incomplete
+coverage blocks new freezes for affected leagues and reports degraded health.
+Source warnings remain visible even when a fallback restores coverage. A recent
+successful download is not proof of an upstream publisher's data completeness.
+
+Training aliases are repaired in place; frozen forecasts and result observations
+are never rewritten. Historic low-sample forecasts remain in the tracker with a
+warning. The active model does not consume shot-level xG/xGA. Its `home_xg` and
+`away_xg` fields are model-estimated goal means, not scraped xG statistics.

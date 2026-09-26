@@ -2,6 +2,15 @@ import re
 import unicodedata
 
 ALIASES = {
+    "newport county afc": "Newport County", "fc halifax": "FC Halifax Town",
+    "accrington": "Accrington Stanley", "oldham": "Oldham Athletic",
+    "aldershot": "Aldershot Town", "boston utd": "Boston United",
+    "carlisle": "Carlisle United", "solihull": "Solihull Moors",
+    "scunthorpe": "Scunthorpe United", "yeovil": "Yeovil Town",
+    "fylde": "AFC Fylde", "dag and red": "Dagenham and Redbridge",
+    "dorking": "Dorking Wanderers", "ebbsfleet": "Ebbsfleet United",
+    "maidenhead": "Maidenhead United", "truro": "Truro City",
+
     "man city": "Manchester City", "brighton": "Brighton and Hove Albion",
     "newcastle": "Newcastle United", "nott'm forest": "Nottingham Forest",
     "tottenham": "Tottenham Hotspur", "west ham": "West Ham United",

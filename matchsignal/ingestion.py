@@ -45,7 +45,7 @@ def season_code(start_year: int) -> str:
 
 def _integer(row, field):
     value = (row.get(field) or "").strip()
-    return int(value) if value.lstrip("-").isdigit() else None
+    return int(value) if value.isdigit() else None
 
 def _date(value: str) -> str | None:
     for pattern in ("%d/%m/%Y", "%d/%m/%y", "%Y-%m-%d"):
@@ -85,18 +85,55 @@ def parse_csv(content: str, competition: str, season: str) -> list[dict]:
         })
     return rows
 
-def import_season(connection, start_year: int, session=requests) -> int:
+def normalize_training_names(connection):
+    """Repair mutable training identities without changing frozen history/results.
+
+    Abort on collisions rather than silently discarding evidence.
+    """
+    with connection:
+        for row in connection.execute('SELECT id,home_team,away_team FROM matches_v2').fetchall():
+            home, away = canonical_team(row['home_team']), canonical_team(row['away_team'])
+            if (home, away) != (row['home_team'], row['away_team']):
+                connection.execute('UPDATE matches_v2 SET home_team=?,away_team=? WHERE id=?',
+                                   (home, away, row['id']))
+
+
+def import_season(connection, start_year: int, session=requests, diagnostics=None) -> int:
     code = season_code(start_year); imported = 0
+    normalize_training_names(connection)
     for source_code, competition in SUPPORTED_COMPETITIONS.items():
+        health = {"source": "football-data", "competition": competition, "season": code,
+                  "status": "failed", "rows": 0}
+        if diagnostics is not None:
+            diagnostics.append(health)
         try:
             response = _fetch_csv(session, f'{code}/{source_code}.csv')
             if response.status_code == 404:
-                LOG.info("Source unavailable", extra={"competition": competition, "season": code}); continue
+                health['error'] = 'HTTP 404'
+                LOG.warning("Source unavailable: %s %s HTTP 404", competition, code); continue
             response.raise_for_status()
         except requests.RequestException as exc:
+            health['error'] = str(exc)
             LOG.warning("Football-Data unavailable for %s %s: %s", competition, code, exc)
             continue
-        parsed = parse_csv(response.text, competition, f"{start_year}/{start_year + 1}")
+        required = {'Date', 'HomeTeam', 'AwayTeam', 'FTHG', 'FTAG', 'FTR'}
+        fields = set(csv.DictReader(io.StringIO(response.text.lstrip('\ufeff'))).fieldnames or [])
+        if not required <= fields:
+            health['error'] = 'Missing required CSV columns'
+            LOG.error('%s %s: %s', competition, code, health['error'])
+            continue
+        try:
+            parsed = parse_csv(response.text, competition, f"{start_year}/{start_year + 1}")
+        except ValueError as exc:
+            health['error'] = str(exc)
+            LOG.error('%s %s: %s', competition, code, exc)
+            continue
+        if not parsed or not any(m['completed'] for m in parsed):
+            health['error'] = 'No valid completed source rows'
+            LOG.error('%s %s: %s', competition, code, health['error'])
+            continue
+        health.update(status='success', rows=len(parsed), latest_match=max(m['kickoff'] for m in parsed if m['completed']))
+        LOG.info('Statistics %s %s: %s rows; latest %s', competition, code, len(parsed), health['latest_match'])
         identities = {}
         for match in parsed:
             key = (match['kickoff'], match['home_team'], match['away_team'])

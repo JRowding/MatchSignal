@@ -6,6 +6,8 @@ from html import escape
 from datetime import datetime, timezone
 
 from matchsignal.database import connect
+from matchsignal.health import refresh_health
+import sqlite3
 from matchsignal.scanner import strongest
 from matchsignal.config import MODEL_VERSION
 
@@ -15,7 +17,9 @@ DATABASE = Path(DATABASE_ENV) if DATABASE_ENV else Path(__file__).parent / "data
 
 def db():
     if 'database' not in g:
-        g.database = connect(DATABASE) if DATABASE and DATABASE.exists() else None
+        g.database = sqlite3.connect(f'{DATABASE.resolve().as_uri()}?mode=ro', uri=True) if DATABASE and DATABASE.exists() else None
+        if g.database:
+            g.database.row_factory = sqlite3.Row
     return g.database
 
 
@@ -26,7 +30,7 @@ def close_database(error=None):
         connection.close()
 
 
-LAYOUT = """<!doctype html><title>Match Signal</title><meta name=viewport content='width=device-width,initial-scale=1'><style>body{margin:auto;max-width:1080px;padding:28px;background:#08131f;color:#eef5fa;font:16px Arial}a{color:#b8ff4e}nav{display:flex;gap:18px;margin:18px 0 30px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}.card{background:#102536;padding:18px;border-radius:8px}small{color:#98aebb;text-transform:uppercase}b{display:block;font-size:1.3em;margin:7px 0}.muted{color:#98aebb}table{width:100%;border-collapse:collapse;margin:12px 0 28px}th,td{border-bottom:1px solid #214154;padding:10px;text-align:left}th{color:#98aebb;font-size:12px;text-transform:uppercase}.pill{display:inline-block;background:#17364c;border-radius:999px;padding:4px 8px}</style><h1>Match Signal</h1><p class=muted>English Football Probability Scanner · Model versions retained in tracker</p><nav><a href='/'>Signals</a><a href='/history'>History</a><a href='/performance'>Performance</a></nav>{{ body|safe }}"""
+LAYOUT = """<!doctype html><title>Match Signal</title><meta name=viewport content='width=device-width,initial-scale=1'><style>body{margin:auto;max-width:1080px;padding:28px;background:#08131f;color:#eef5fa;font:16px Arial}body{overflow-wrap:anywhere}a{color:#b8ff4e}nav{display:flex;gap:18px;margin:18px 0 30px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}.card{background:#102536;padding:18px;border-radius:8px}small{color:#98aebb;text-transform:uppercase}b{display:block;font-size:1.3em;margin:7px 0}.muted{color:#98aebb}table{display:block;overflow-x:auto;max-width:100%;width:100%;border-collapse:collapse;margin:12px 0 28px}th,td{border-bottom:1px solid #214154;padding:10px;text-align:left}th{color:#98aebb;font-size:12px;text-transform:uppercase}.pill{display:inline-block;background:#17364c;border-radius:999px;padding:4px 8px}</style><h1>Match Signal</h1><p class=muted>English Football Probability Scanner · Model versions retained in tracker</p><nav><a href='/'>Signals</a><a href='/history'>History</a><a href='/performance'>Performance</a></nav>{{ body|safe }}"""
 
 
 @app.get("/")
@@ -99,10 +103,7 @@ def health():
         COUNT(CASE WHEN evidence_status='verified' AND grading_status='settled' THEN 1 END) AS settled_predictions,
         COUNT(CASE WHEN evidence_status!='verified' THEN 1 END) AS legacy_unverified_predictions
         FROM predictions""").fetchone())
-    latest = connection.execute('SELECT started_at,finished_at,status FROM refresh_runs ORDER BY id DESC LIMIT 1').fetchone()
-    if not latest:
-        return {"status": "no_refresh_record", 'deployment': deployment, 'tracker': counts}, 503
-    age = (datetime.now(timezone.utc) - datetime.fromisoformat(latest['started_at'])).total_seconds()
-    healthy = latest['status'] == 'success' and age < 12 * 3600
-    return {"status": "ok" if healthy else "tracker_stale_or_failed", "last_refresh": dict(latest),
+    state = refresh_health(connection)
+    healthy = state['status'] == 'fresh'
+    return {**state, 'status': 'ok' if healthy else state['status'],
             'deployment': deployment, 'tracker': counts}, 200 if healthy else 503

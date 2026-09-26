@@ -12,6 +12,7 @@ if str(ROOT) not in sys.path:
 from matchsignal.config import CONFIG, MODEL_VERSION
 from matchsignal.database import connect
 from matchsignal.timeutils import instant
+from matchsignal.health import refresh_health
 from zoneinfo import ZoneInfo
 
 DATABASE = Path(os.environ.get("MATCHSIGNAL_DATABASE", ROOT / "data" / "matchsignal.sqlite"))
@@ -23,29 +24,39 @@ def match_time(value):
     return f"{kickoff.strftime('%A')} {hour}{minute}{suffix}"
 
 def match_day(value):
-    return datetime.fromisoformat(str(value)).date().isoformat()
+    return instant(str(value)).astimezone(ZoneInfo('Europe/London')).date().isoformat()
 
 
 def fixture_window(today=None):
-    today = today or date.today()
+    today = today or datetime.now(ZoneInfo('Europe/London')).date()
     end = today + timedelta(days=CONFIG.fixture_lookahead_days + 1)
-    return today.isoformat(), end.isoformat()
+    return (instant(datetime.combine(today, datetime.min.time()), 'Europe/London').isoformat(),
+            instant(datetime.combine(end, datetime.min.time()), 'Europe/London').isoformat())
 
 
 def prediction_rows(connection, today=None):
     window_start, window_end = fixture_window(today)
     return connection.execute("""SELECT p.market,p.predicted_probability,p.selection,
-        f.home_team,f.away_team,f.competition,f.kickoff
+        f.home_team,f.away_team,f.competition,f.kickoff,
+        json_extract(s.payload_json,'$.forecast.evidence.sample') AS sample
         FROM predictions p JOIN fixtures f ON f.id=p.fixture_id
+        JOIN prediction_snapshots s ON s.id=p.snapshot_id
         WHERE p.settled_at IS NULL
           AND p.evidence_status='verified'
           AND p.model_version=?
           AND p.fixture_kickoff=f.kickoff
           AND f.status='scheduled'
+          AND julianday(f.kickoff)>julianday('now')
           AND p.market IN ('home_win','draw','away_win','over_2.5','btts_yes','home_win_btts','away_win_btts')
           AND f.kickoff >= ? AND f.kickoff < ?
         ORDER BY f.kickoff, f.competition, f.home_team, p.market""",
         (MODEL_VERSION, window_start, window_end)).fetchall()
+
+
+def fixture_note(kickoff, markets):
+    sample = next((dict(row).get('sample') for row in markets.values() if dict(row).get('sample') is not None), None)
+    warning = '<small class=warning>Limited team data when frozen</small>' if sample is not None and sample < CONFIG.min_sample else ''
+    return f'<small class=mobile-time>{html.escape(match_time(kickoff))}</small>' + warning
 
 
 def build_winner_entries(by_fixture):
@@ -60,8 +71,8 @@ def build_winner_entries(by_fixture):
     for (kickoff, competition, home, away), markets, best_market in winner_fixtures:
         result_label = {"home_win": home, "draw": "Draw", "away_win": away}[best_market]
         winner_rows.append(
-            f"<tr data-day={html.escape(match_day(kickoff))}><td>{html.escape(match_time(kickoff))}</td>"
-            f"<td><b>{html.escape(home)} vs {html.escape(away)}</b><small>{html.escape(competition)}</small></td>"
+            f'<tr data-day={html.escape(match_day(kickoff))} data-kickoff="{html.escape(kickoff)}"><td>{html.escape(match_time(kickoff))}</td>'
+            f"<td><b>{html.escape(home)} vs {html.escape(away)}</b><small>{html.escape(competition)}</small>{fixture_note(kickoff, markets)}</td>"
             f"<td><b>{html.escape(result_label)}</b><small>H {markets['home_win']['predicted_probability']:.1%} | "
             f"D {markets['draw']['predicted_probability']:.1%} | A {markets['away_win']['predicted_probability']:.1%}</small></td>"
             f"<td class=prob>{markets[best_market]['predicted_probability']:.1%}</td></tr>"
@@ -77,8 +88,8 @@ def build_market_entries(by_fixture, market, empty_message):
             entries.append(((kickoff, competition, home, away), row))
     entries.sort(key=lambda item: (-item[1]["predicted_probability"], item[0][0]))
     return "".join(
-        f"<tr data-day={html.escape(match_day(kickoff))}><td>{html.escape(match_time(kickoff))}</td>"
-        f"<td><b>{html.escape(home)} vs {html.escape(away)}</b><small>{html.escape(competition)}</small></td>"
+        f'<tr data-day={html.escape(match_day(kickoff))} data-kickoff="{html.escape(kickoff)}"><td>{html.escape(match_time(kickoff))}</td>'
+        f"<td><b>{html.escape(home)} vs {html.escape(away)}</b><small>{html.escape(competition)}</small>{fixture_note(kickoff, {market: row})}</td>"
         f"<td>{html.escape(row['selection'])}</td>"
         f"<td class=prob>{row['predicted_probability']:.1%}</td></tr>"
         for (kickoff, competition, home, away), row in entries
@@ -98,8 +109,8 @@ def build_btts_winner_entries(by_fixture):
     for (kickoff, competition, home, away), row, market in entries:
         winner = home if market == "home_win_btts" else away
         rows.append(
-            f"<tr data-day={html.escape(match_day(kickoff))}><td>{html.escape(match_time(kickoff))}</td>"
-            f"<td><b>{html.escape(home)} vs {html.escape(away)}</b><small>{html.escape(competition)}</small></td>"
+            f'<tr data-day={html.escape(match_day(kickoff))} data-kickoff="{html.escape(kickoff)}"><td>{html.escape(match_time(kickoff))}</td>'
+            f"<td><b>{html.escape(home)} vs {html.escape(away)}</b><small>{html.escape(competition)}</small>{fixture_note(kickoff, {market: row})}</td>"
             f"<td><b>{html.escape(winner)} win + BTTS</b></td>"
             f"<td class=prob>{row['predicted_probability']:.1%}</td></tr>"
         )
@@ -108,7 +119,12 @@ def build_btts_winner_entries(by_fixture):
 
 def main():
     connection = connect(DATABASE)
-    today = date.today()
+    today = datetime.now(ZoneInfo('Europe/London')).date()
+    health = refresh_health(connection)
+    last = health.get('last_refresh', {})
+    refreshed = last.get('finished_at') or last.get('started_at') or ''
+    freshness = f"Data refresh: {health['status']} | Last attempt: {refreshed or 'unknown'}"
+    league_health = '; '.join(f"{league}: stats {state['statistics']}, fixtures {state['fixtures']} ({state['scheduled_found']} scheduled)" for league, state in health['leagues'].items())
     rows = prediction_rows(connection, today)
     by_fixture = {}
     for row in rows:
@@ -125,19 +141,20 @@ def main():
     btts_winner_entries = build_btts_winner_entries(by_fixture)
     page = f"""<!doctype html><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'>
 <title>Match Signal</title><style>
+a{{color:#b8ff4e}}.warning{{color:#ffce76}}.mobile-time{{display:none}}.hidden{{display:none!important}}
 body{{margin:auto;max-width:1100px;padding:24px;background:#08131f;color:#eef5fa;font:16px Arial}}
 header{{border-bottom:1px solid #294557;padding-bottom:18px}}h1{{font-size:2.4rem;margin:0}}
 .muted,small{{color:#a8bdca}}table{{width:100%;border-collapse:separate;border-spacing:0 8px;margin-top:18px}}
 th{{text-align:left;color:#a8bdca;font-size:11px;text-transform:uppercase;padding:0 12px 5px}}
 td{{background:#102536;padding:13px 12px}}td:first-child{{border-radius:10px 0 0 10px;white-space:nowrap}}
-td:last-child{{border-radius:0 10px 10px 0}}td b,td small{{display:block}}.prob{{color:#b8ff4e;font-size:1.25rem;font-weight:bold}}
+td:last-child{{border-radius:0 10px 10px 0}}td b,td small{{display:block}}td{{overflow-wrap:anywhere}}td .mobile-time{{display:none}}.prob{{color:#b8ff4e;font-size:1.25rem;font-weight:bold}}
 .tabs{{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap}}.tabs button{{border:1px solid #294557;border-radius:999px;background:#102536;color:#eef5fa;padding:9px 14px;font-weight:700;cursor:pointer}}
 .tabs button.active{{background:#b8ff4e;color:#08131f;border-color:#b8ff4e}}.panel{{display:none}}.panel.active{{display:block}}
 .day-filter{{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}}.day-filter button{{border:1px solid #294557;border-radius:8px;background:#0d2232;color:#eef5fa;padding:8px 11px;font-weight:700;cursor:pointer}}
 .day-filter button.active{{background:#eef5fa;color:#08131f;border-color:#eef5fa}}tr.hidden,.empty-day.hidden{{display:none}}
 .empty-day{{background:#102536;border-radius:10px;margin-top:18px;padding:16px;color:#a8bdca}}
-@media(max-width:650px){{body{{padding:16px}}th:nth-child(1),td:nth-child(1){{display:none}}td{{padding:12px 10px}}}}
-</style><header><h1>Match Signal</h1><p class=muted>English fixtures today and over the next four days | Model {MODEL_VERSION}</p><nav><a href='/performance'>Prediction Tracker</a> | <a href='/history'>History</a></nav></header>
+@media(max-width:650px){{body{{padding:16px}}th:nth-child(1),td:nth-child(1){{display:none}}td{{padding:10px 6px}}td .mobile-time{{display:block}}table{{table-layout:fixed}}th:nth-child(2){{width:42%}}th:last-child{{width:24%}}.prob{{font-size:1rem}}}}
+</style><header><h1>Match Signal</h1><p class=muted>English fixtures today and over the next four days | Model {MODEL_VERSION}</p><nav><a href='/performance'>Prediction Tracker</a> | <a href='/history'>History</a></nav><p id=freshness data-refresh="{html.escape(refreshed)}" data-status="{health['status']}" class=muted>{html.escape(freshness)}</p><p class=muted>{html.escape(league_health)}</p></header>
 <div class=tabs><button class=active data-tab=goals>Over 2.5 Goals</button><button data-tab=winners>Match Winners</button><button data-tab=btts>Both Teams to Score</button><button data-tab=bttswinner>BTTS + Winner</button></div>
 <div class=day-filter><button class=active data-day=all>All</button>{day_buttons}</div>
 <section class="panel active" id=goals><h2>Fixtures ranked by goal probability</h2><p class="empty-day hidden">No fixtures for this day inside the five-day window.</p><table><thead><tr><th>Day / time</th><th>Fixture</th><th>Market</th><th>Probability</th></tr></thead><tbody>{over_entries}</tbody></table></section>
@@ -150,10 +167,11 @@ document.querySelectorAll('[data-tab]').forEach(button => button.addEventListene
   document.querySelectorAll('[data-tab]').forEach(item => item.classList.toggle('active', item === button));
   document.querySelectorAll('.panel').forEach(panel => panel.classList.toggle('active', panel.id === button.dataset.tab));
 }));
-document.querySelectorAll('[data-day]').forEach(button => button.addEventListener('click', () => {
+document.querySelectorAll('.day-filter button[data-day]').forEach(button => button.addEventListener('click', () => {
   const day = button.dataset.day;
+  const now = Date.now();
   document.querySelectorAll('.day-filter [data-day]').forEach(item => item.classList.toggle('active', item === button));
-  document.querySelectorAll('tbody tr[data-day]').forEach(row => row.classList.toggle('hidden', day !== 'all' && row.dataset.day !== day));
+  document.querySelectorAll('tbody tr[data-day]').forEach(row => row.classList.toggle('hidden', new Date(row.dataset.kickoff).getTime() <= now || (day !== 'all' && row.dataset.day !== day)));
   document.querySelectorAll('.panel').forEach(panel => {
     const rows = [...panel.querySelectorAll('tbody tr[data-day]')];
     const hasVisibleRows = rows.some(row => !row.classList.contains('hidden'));
@@ -161,7 +179,19 @@ document.querySelectorAll('[data-day]').forEach(button => button.addEventListene
     panel.querySelector('table').classList.toggle('hidden', !hasVisibleRows);
   });
 }));
+function updateFreshness() {
+  const el = document.querySelector('#freshness');
+  const age = Date.now() - new Date(el.dataset.refresh).getTime();
+  if (!Number.isFinite(age) || age >= 12 * 3600 * 1000) {
+    el.textContent = 'Data is stale or freshness is unknown. Last refresh: ' + (el.dataset.refresh || 'unknown');
+    el.classList.add('warning');
+  } else if (el.dataset.status !== 'fresh') { el.classList.add('warning'); }
+  document.querySelector('.day-filter button.active').click();
+}
+updateFreshness();
+setInterval(updateFreshness, 60000);
 </script>"""
+    connection.close()
     (ROOT / "index.html").write_text(page, encoding="utf-8")
 
 
