@@ -2,6 +2,10 @@ import re
 import unicodedata
 
 ALIASES = {
+    "hereford fc": "Hereford", "maidstone utd": "Maidstone United",
+    "heart of midlothian": "Hearts", "greenock morton": "Morton",
+    "queen of the south": "Queen of the South", "queens park": "Queen's Park",
+    "the spartans": "Spartans", "hamilton": "Hamilton Academical",
     "newport county afc": "Newport County", "fc halifax": "FC Halifax Town",
     "accrington": "Accrington Stanley", "oldham": "Oldham Athletic",
     "aldershot": "Aldershot Town", "boston utd": "Boston United",

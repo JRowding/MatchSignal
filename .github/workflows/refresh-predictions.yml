@@ -1,31 +1,32 @@
-name: Refresh football predictions
+name: Refresh MatchSignals
 
 on:
   workflow_dispatch:
   push:
     branches: [main]
     paths:
-      - "matchsignal/**"
-      - "scripts/**"
-      - "tests/**"
-      - "requirements.txt"
-      - ".github/workflows/refresh-predictions.yml"
+      - 'matchsignal/**'
+      - 'scripts/**'
+      - 'templates/**'
+      - 'app.py'
+      - 'tests/**'
+      - 'requirements.txt'
+      - '.github/workflows/refresh-predictions.yml'
   schedule:
-    - cron: "17 */6 * * *"
+    - cron: '17 */6 * * *'
 
 permissions:
   contents: write
 
 concurrency:
-  group: matchsignal-prediction-ledger
+  group: matchsignal-scanner-refresh
   cancel-in-progress: false
 
 jobs:
   refresh:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 15
     env:
-      MATCHSIGNAL_REQUIRE_LEDGER: "1"
       PYTHONPATH: ${{ github.workspace }}
     steps:
       - uses: actions/checkout@v4
@@ -33,33 +34,25 @@ jobs:
           ref: main
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: '3.12'
       - run: pip install -r requirements.txt
       - run: python -m pytest -q
       - id: refresh
         continue-on-error: true
-        run: timeout 15m python scripts/refresh_v2.py
+        run: timeout 10m python scripts/refresh_v2.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: prediction-ledger-${{ github.run_id }}
-          path: data/matchsignal.sqlite
-          retention-days: 90
-      - run: python scripts/build_snapshot_v2.py
+          name: matchsignal-snapshot-${{ github.run_id }}
+          path: |
+            data/signals.json
+            VALIDATION_REPORT.md
+          retention-days: 30
       - run: |
           git config user.name "MatchSignal updater"
           git config user.email "actions@github.com"
-          git add index.html
-          git add -f data/matchsignal.sqlite
-          git diff --staged --quiet || git commit -m "Refresh football predictions"
+          git add index.html data/signals.json VALIDATION_REPORT.md
+          git diff --staged --quiet || git commit -m "Refresh MatchSignals"
           git push
-      - name: Report source or refresh failure after preserving the ledger
-        run: |
-          python - <<'PYTHON'
-          import sqlite3
-          db = sqlite3.connect('data/matchsignal.sqlite')
-          status = db.execute('SELECT status FROM refresh_runs ORDER BY id DESC LIMIT 1').fetchone()[0]
-          if status != 'success':
-              raise SystemExit('Refresh ' + status + '; diagnostic ledger and snapshot preserved')
-          PYTHON
-          test "${{ steps.refresh.outcome }}" = "success"
+      - name: Report degraded refresh after preserving diagnostics
+        run: test "${{ steps.refresh.outcome }}" = "success"

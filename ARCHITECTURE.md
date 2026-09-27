@@ -1,36 +1,13 @@
-# MatchSignal 2.0 architecture and phased rebuild
+# MatchSignal scanner architecture
 
-This document records the original rebuild plan. The current implementation,
-reliability findings and operational requirements are documented in
-[PREDICTION_TRACKER_AUDIT.md](PREDICTION_TRACKER_AUDIT.md).
+1. `leagues.py` defines the eleven competitions and publisher identifiers.
+2. `fixtures.py` retains the existing Sky/FWP parsers and extends league mappings. Sources use bounded timeout/retry handling. Sky daily pages are the primary source after observed FWP failures; FWP and partial SportsDB remain fallback integrations.
+3. `standings.py` reads full publisher-ranked Sky tables, rejects wrong pages, malformed ranks, small/duplicate tables and ambiguous identities.
+4. `normalization.py` retains and extends explicit aliases; `mismatch.py` uses deterministic keys within the same competition, never fuzzy matching.
+5. `mismatch.py` computes symmetric top/bottom groups and selects qualifying scheduled fixtures in chronological order. Unknown clubs and contradictory fixture times are withheld and reported.
+6. `refresh.py` isolates table failures per league, retains bounded last-good caches and atomically writes JSON. It records source outcomes, counts, unmatched teams, warnings and original refresh timestamps.
+7. `dashboard.py` and `templates/dashboard.html` retain UK kickoff formatting, day navigation and the dark/lime visual identity. Flask renders from the snapshot without network calls. The scheduled command also produces static HTML and the all-league report.
 
-## Audit of the original repository
+The old prediction, statistics import and grading modules, routes and tests are removed. Their history remains in Git, and the original SQLite ledger is unchanged. There is no migration of old forecasts into MatchSignals.
 
-The original application was a Flask wrapper that served a pre-rendered HTML
-file. It used four standalone scripts to download Football-Data CSV files,
-scrape a public livescore page, and calculate a direct head-to-head percentage.
-It had a single SQLite file generated during a GitHub Action. There were no
-routes beyond the landing page, no stable schema for fixtures/predictions, no
-team registry, no historical prediction records, tests, or leakage protection.
-
-The compact visual style and Render deployment can be retained. The original
-data parsing and head-to-head model cannot be the forecasting core because they
-mix data concerns and do not preserve pre-match predictions.
-
-## Phases
-
-1. Foundation: canonical teams, configurable English leagues, database schema,
-   chronological features, Poisson probability model, tests. **In progress.**
-2. Robust Football-Data importer for five English competitions and fixture
-   provider abstraction.
-3. Persisted fixture prediction generation and signal scanner.
-4. Dashboard, match detail, history and performance routes.
-5. Chronological backtesting and calibration reporting.
-6. Corners and cards only where data quality supports them.
-
-## Deployment constraint
-
-Render's free filesystem is ephemeral, so persistent prediction history cannot
-live only inside the service. The no-cost deployment approach is a scheduled
-GitHub Action that imports data, regenerates a static prediction snapshot, and
-commits it. A future database-backed deployment needs a durable datastore.
+Deployment remains Flask/Gunicorn plus scheduled GitHub Actions and repository-backed snapshots, compatible with Render's ephemeral filesystem. No external database or new service is required.

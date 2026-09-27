@@ -1,1 +1,1 @@
-"""MatchSignal forecasting application."""
+"""MatchSignal football fixture mismatch scanner."""

@@ -1,4 +1,4 @@
-"""Free fixture providers for the English football pyramid."""
+"""Free fixture providers for the English and Scottish leagues."""
 from dataclasses import dataclass
 from datetime import datetime, time as datetime_time, timedelta
 from html import unescape
@@ -12,6 +12,7 @@ import requests
 
 from .normalization import canonical_team
 from .config import CONFIG
+from .leagues import LEAGUES as SUPPORTED_LEAGUES
 from .timeutils import utc_text, football_day
 
 LOG = logging.getLogger(__name__)
@@ -42,7 +43,7 @@ class FixtureProvider:
 
 
 class TheSportsDBProvider(FixtureProvider):
-    """Multi-source fixture provider covering all five supported tiers."""
+    """Existing multi-source provider, extended to eleven competitions."""
 
     BASE = "https://www.thesportsdb.com/api/v1/json/123/eventsseason.php"
     LEAGUES = {
@@ -67,8 +68,14 @@ class TheSportsDBProvider(FixtureProvider):
         "League Two": "league-two",
         "National League": "national-league",
     }
+    FWP_COMPETITIONS = {league.name: league.fwp for league in SUPPORTED_LEAGUES if league.fwp}
+    SKY_COMPETITIONS.update({league.name: league.name for league in SUPPORTED_LEAGUES})
+    SKY_COMPETITIONS.update({
+        'Scottish League 1': 'Scottish League One',
+        'Scottish League 2': 'Scottish League Two',
+    })
     FWP_URL = "https://www.footballwebpages.co.uk/{slug}/fixtures-results"
-    REQUIRED_COMPETITIONS = tuple(FWP_COMPETITIONS)
+    REQUIRED_COMPETITIONS = tuple(league.name for league in SUPPORTED_LEAGUES)
 
     def __init__(self, session=requests):
         self.session = session
@@ -103,6 +110,7 @@ class TheSportsDBProvider(FixtureProvider):
         # A few returned fixtures are not evidence of complete league coverage.
         sky = [d for d in self.diagnostics if d['source'] == 'sky']
         covered = set(self.SKY_COMPETITIONS.values()) if sky and all(d['status'] == 'success' for d in sky) else set()
+        covered -= {name for d in sky for name in d.get('invalid_competitions', [])}
         for competition in self.REQUIRED_COMPETITIONS:
             rows = [d for d in self.diagnostics if d['source'] == 'fwp' and d['scope'] == competition]
             if rows and all(d['status'] == 'success' for d in rows):
@@ -130,11 +138,20 @@ class TheSportsDBProvider(FixtureProvider):
         now = datetime.now(ZoneInfo('Europe/London')).replace(tzinfo=None)
         window_start, window_end = fixture_window(now)
 
-        # Football Web Pages publishes all five supported English leagues and is
-        # the primary source. Sky supplements it, then TheSportsDB is used only
-        # for any top-four competition still missing from the requested window.
-        fixtures = self._football_web_pages_fixtures(window_start, window_end)
-        fixtures.extend(self._sky_fixtures(window_start, window_end))
+        # Reuse the proven Sky daily JSON parser, extended to eleven leagues.
+        # FWP remains an English-league fallback; SportsDB is partial only.
+        fixtures = self._sky_fixtures(window_start, window_end)
+        # Live inspection demonstrated FWP access failures. Avoid fourteen
+        # unnecessary month requests when the existing Sky feed is healthy.
+        missing = {name: slug for name, slug in self.FWP_COMPETITIONS.items()
+                   if name not in self.covered_competitions()}
+        if missing:
+            original = self.FWP_COMPETITIONS
+            try:
+                self.FWP_COMPETITIONS = missing
+                fixtures.extend(self._football_web_pages_fixtures(window_start, window_end))
+            finally:
+                self.FWP_COMPETITIONS = original
         fixtures = self._dedupe(fixtures)
 
         present_competitions = {fixture.competition for fixture in fixtures}
@@ -326,7 +343,9 @@ class TheSportsDBProvider(FixtureProvider):
                 current += timedelta(days=1)
                 continue
             parsed_events = 0
+            invalid_competitions = set()
             for raw in re.findall(r'data-state="([^"]+)"', response.text):
+                competition = None
                 try:
                     event = json.loads(unescape(raw))
                     source_competition = event["competition"]["name"]["full"]
@@ -339,6 +358,7 @@ class TheSportsDBProvider(FixtureProvider):
                         continue
                     time = event["start"].get("time")
                     if not time:
+                        invalid_competitions.add(competition)
                         continue
                     kickoff = datetime.fromisoformat(f"{current.isoformat()}T{time}:00")
                     if not now <= kickoff <= cutoff:
@@ -356,44 +376,12 @@ class TheSportsDBProvider(FixtureProvider):
                         )
                     )
                 except (KeyError, TypeError, ValueError, json.JSONDecodeError):
+                    if competition:
+                        invalid_competitions.add(competition)
                     continue
             self._parsed(health, parsed_events)
+            if invalid_competitions:
+                health['invalid_competitions'] = sorted(invalid_competitions)
+                health['error'] = 'Supported fixture missing required fields or valid kickoff time'
             current += timedelta(days=1)
         return fixtures
-
-
-def upsert_fixtures(connection, fixtures: list[Fixture]) -> int:
-    with connection:
-        connection.execute('UPDATE fixtures SET status=status WHERE id=-1')
-        for fixture in fixtures:
-            kickoff = utc_text(fixture.kickoff) if len(fixture.kickoff) > 10 else fixture.kickoff
-            existing = connection.execute('''SELECT f.* FROM fixtures f LEFT JOIN fixture_aliases a ON a.fixture_id=f.id
-                WHERE f.external_fixture_id=? OR a.external_id=? LIMIT 1''', (fixture.external_fixture_id, fixture.external_fixture_id)).fetchone()
-            if existing:
-                if (existing['competition'], existing['home_team'], existing['away_team']) != (fixture.competition, fixture.home_team, fixture.away_team):
-                    connection.execute("UPDATE fixtures SET status='identity_conflict' WHERE id=?", (existing['id'],))
-                    LOG.error('Provider identity changed: %s', fixture.external_fixture_id)
-                    continue
-                status = 'identity_conflict' if existing['status'] == 'identity_conflict' else fixture.status
-                if existing['status'] == 'completed' and status == 'scheduled':
-                    status = 'completed'
-                connection.execute('UPDATE fixtures SET kickoff=?,status=? WHERE id=?', (kickoff, status, existing['id']))
-                continue
-            candidates = connection.execute('''SELECT * FROM fixtures WHERE competition=? AND home_team=? AND away_team=?''',
-                (fixture.competition, fixture.home_team, fixture.away_team)).fetchall()
-            same_day = [r for r in candidates if football_day(r['kickoff']) == football_day(kickoff)]
-            if len(same_day) == 1:
-                existing = same_day[0]
-                connection.execute('INSERT INTO fixture_aliases VALUES(?,?)', (fixture.external_fixture_id, existing['id']))
-                if fixture.status in ('postponed', 'cancelled', 'abandoned', 'completed') and existing['status'] != 'identity_conflict':
-                    connection.execute('UPDATE fixtures SET status=? WHERE id=?', (fixture.status, existing['id']))
-                if existing['kickoff'] != kickoff:
-                    # Conflicting sources require review; do not silently move a prediction.
-                    connection.execute("UPDATE fixtures SET status='identity_conflict' WHERE id=?", (existing['id'],))
-                continue
-            if same_day:
-                LOG.error('Ambiguous duplicate fixture: %s', fixture.external_fixture_id)
-                continue
-            connection.execute('''INSERT INTO fixtures(external_fixture_id,competition,kickoff,home_team,away_team,status)
-                VALUES(?,?,?,?,?,?)''', (fixture.external_fixture_id, fixture.competition, kickoff, fixture.home_team, fixture.away_team, fixture.status))
-    return len(fixtures)
