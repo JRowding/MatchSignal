@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "percentage": 0.3,
-  "refreshed_at": "2026-09-27T08:47:26.780063+00:00",
+  "refreshed_at": "2026-09-27T11:58:06.400712+00:00",
   "window_start": "2026-09-27",
   "window_end": "2026-10-01",
   "leagues": {
@@ -16,7 +16,7 @@
       "bottom_count": 6,
       "fixtures_evaluated": 0,
       "signals_found": 0,
-      "last_successful_refresh": "2026-09-27T08:47:26.780063+00:00",
+      "last_successful_refresh": "2026-09-27T11:58:06.400712+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -125,11 +125,11 @@
         "publisher_updated": "21 September, 1:55pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-27T08:47:26.780063+00:00"
+        "refreshed_at": "2026-09-27T11:58:06.400712+00:00"
       },
       "fixtures": {
         "rows": [],
-        "refreshed_at": "2026-09-27T08:47:26.780063+00:00",
+        "refreshed_at": "2026-09-27T11:58:06.400712+00:00",
         "window_start": "2026-09-27",
         "window_end": "2026-10-01",
         "sources": [
@@ -151,7 +151,7 @@
       "bottom_count": 7,
       "fixtures_evaluated": 0,
       "signals_found": 0,
-      "last_successful_refresh": "2026-09-27T08:47:26.780063+00:00",
+      "last_successful_refresh": "2026-09-27T11:58:06.400712+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -280,11 +280,11 @@
         "publisher_updated": "23 September, 11:46am",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-27T08:47:26.780063+00:00"
+        "refreshed_at": "2026-09-27T11:58:06.400712+00:00"
       },
       "fixtures": {
         "rows": [],
-        "refreshed_at": "2026-09-27T08:47:26.780063+00:00",
+        "refreshed_at": "2026-09-27T11:58:06.400712+00:00",
         "window_start": "2026-09-27",
         "window_end": "2026-10-01",
         "sources": [
@@ -306,7 +306,7 @@
       "bottom_count": 7,
       "fixtures_evaluated": 0,
       "signals_found": 0,
-      "last_successful_refresh": "2026-09-27T08:47:26.780063+00:00",
+      "last_successful_refresh": "2026-09-27T11:58:06.400712+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -435,11 +435,11 @@
         "publisher_updated": "26 September, 4:57pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-27T08:47:26.780063+00:00"
+        "refreshed_at": "2026-09-27T11:58:06.400712+00:00"
       },
       "fixtures": {
         "rows": [],
-        "refreshed_at": "2026-09-27T08:47:26.780063+00:00",
+        "refreshed_at": "2026-09-27T11:58:06.400712+00:00",
         "window_start": "2026-09-27",
         "window_end": "2026-10-01",
         "sources": [
@@ -461,7 +461,7 @@
       "bottom_count": 7,
       "fixtures_evaluated": 0,
       "signals_found": 0,
-      "last_successful_refresh": "2026-09-27T08:47:26.780063+00:00",
+      "last_successful_refresh": "2026-09-27T11:58:06.400712+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -587,14 +587,14 @@
           }
         ],
         "source": "https://www.skysports.com/league-2-table",
-        "publisher_updated": "26 September, 7:24pm",
+        "publisher_updated": "27 September, 9:53am",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-27T08:47:26.780063+00:00"
+        "refreshed_at": "2026-09-27T11:58:06.400712+00:00"
       },
       "fixtures": {
         "rows": [],
-        "refreshed_at": "2026-09-27T08:47:26.780063+00:00",
+        "refreshed_at": "2026-09-27T11:58:06.400712+00:00",
         "window_start": "2026-09-27",
         "window_end": "2026-10-01",
         "sources": [
@@ -616,7 +616,7 @@
       "bottom_count": 7,
       "fixtures_evaluated": 12,
       "signals_found": 2,
-      "last_successful_refresh": "2026-09-27T08:47:26.780063+00:00",
+      "last_successful_refresh": "2026-09-27T11:58:06.400712+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -745,7 +745,7 @@
         "publisher_updated": "26 September, 5:02pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-27T08:47:26.780063+00:00"
+        "refreshed_at": "2026-09-27T11:58:06.400712+00:00"
       },
       "fixtures": {
         "rows": [
@@ -846,7 +846,7 @@
             "status": "scheduled"
           }
         ],
-        "refreshed_at": "2026-09-27T08:47:26.780063+00:00",
+        "refreshed_at": "2026-09-27T11:58:06.400712+00:00",
         "window_start": "2026-09-27",
         "window_end": "2026-10-01",
         "sources": [
@@ -868,7 +868,7 @@
       "bottom_count": 7,
       "fixtures_evaluated": 1,
       "signals_found": 1,
-      "last_successful_refresh": "2026-09-27T08:47:26.780063+00:00",
+      "last_successful_refresh": "2026-09-27T11:58:06.400712+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -997,7 +997,7 @@
         "publisher_updated": "26 September, 5:01pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-27T08:47:26.780063+00:00"
+        "refreshed_at": "2026-09-27T11:58:06.400712+00:00"
       },
       "fixtures": {
         "rows": [
@@ -1010,7 +1010,7 @@
             "status": "scheduled"
           }
         ],
-        "refreshed_at": "2026-09-27T08:47:26.780063+00:00",
+        "refreshed_at": "2026-09-27T11:58:06.400712+00:00",
         "window_start": "2026-09-27",
         "window_end": "2026-10-01",
         "sources": [
@@ -1032,7 +1032,7 @@
       "bottom_count": 7,
       "fixtures_evaluated": 1,
       "signals_found": 0,
-      "last_successful_refresh": "2026-09-27T08:47:26.780063+00:00",
+      "last_successful_refresh": "2026-09-27T11:58:06.400712+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -1161,7 +1161,7 @@
         "publisher_updated": "26 September, 5:03pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-27T08:47:26.780063+00:00"
+        "refreshed_at": "2026-09-27T11:58:06.400712+00:00"
       },
       "fixtures": {
         "rows": [
@@ -1174,7 +1174,7 @@
             "status": "scheduled"
           }
         ],
-        "refreshed_at": "2026-09-27T08:47:26.780063+00:00",
+        "refreshed_at": "2026-09-27T11:58:06.400712+00:00",
         "window_start": "2026-09-27",
         "window_end": "2026-10-01",
         "sources": [
@@ -1196,7 +1196,7 @@
       "bottom_count": 4,
       "fixtures_evaluated": 0,
       "signals_found": 0,
-      "last_successful_refresh": "2026-09-27T08:47:26.780063+00:00",
+      "last_successful_refresh": "2026-09-27T11:58:06.400712+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -1265,11 +1265,11 @@
         "publisher_updated": "22 September, 10:11am",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-27T08:47:26.780063+00:00"
+        "refreshed_at": "2026-09-27T11:58:06.400712+00:00"
       },
       "fixtures": {
         "rows": [],
-        "refreshed_at": "2026-09-27T08:47:26.780063+00:00",
+        "refreshed_at": "2026-09-27T11:58:06.400712+00:00",
         "window_start": "2026-09-27",
         "window_end": "2026-10-01",
         "sources": [
@@ -1291,7 +1291,7 @@
       "bottom_count": 3,
       "fixtures_evaluated": 0,
       "signals_found": 0,
-      "last_successful_refresh": "2026-09-27T08:47:26.780063+00:00",
+      "last_successful_refresh": "2026-09-27T11:58:06.400712+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -1350,11 +1350,11 @@
         "publisher_updated": "25 September, 9:37pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-27T08:47:26.780063+00:00"
+        "refreshed_at": "2026-09-27T11:58:06.400712+00:00"
       },
       "fixtures": {
         "rows": [],
-        "refreshed_at": "2026-09-27T08:47:26.780063+00:00",
+        "refreshed_at": "2026-09-27T11:58:06.400712+00:00",
         "window_start": "2026-09-27",
         "window_end": "2026-10-01",
         "sources": [
@@ -1376,7 +1376,7 @@
       "bottom_count": 3,
       "fixtures_evaluated": 0,
       "signals_found": 0,
-      "last_successful_refresh": "2026-09-27T08:47:26.780063+00:00",
+      "last_successful_refresh": "2026-09-27T11:58:06.400712+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -1435,11 +1435,11 @@
         "publisher_updated": "25 September, 1:28pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-27T08:47:26.780063+00:00"
+        "refreshed_at": "2026-09-27T11:58:06.400712+00:00"
       },
       "fixtures": {
         "rows": [],
-        "refreshed_at": "2026-09-27T08:47:26.780063+00:00",
+        "refreshed_at": "2026-09-27T11:58:06.400712+00:00",
         "window_start": "2026-09-27",
         "window_end": "2026-10-01",
         "sources": [
@@ -1461,7 +1461,7 @@
       "bottom_count": 3,
       "fixtures_evaluated": 0,
       "signals_found": 0,
-      "last_successful_refresh": "2026-09-27T08:47:26.780063+00:00",
+      "last_successful_refresh": "2026-09-27T11:58:06.400712+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -1520,11 +1520,11 @@
         "publisher_updated": "21 September, 12:44pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-27T08:47:26.780063+00:00"
+        "refreshed_at": "2026-09-27T11:58:06.400712+00:00"
       },
       "fixtures": {
         "rows": [],
-        "refreshed_at": "2026-09-27T08:47:26.780063+00:00",
+        "refreshed_at": "2026-09-27T11:58:06.400712+00:00",
         "window_start": "2026-09-27",
         "window_end": "2026-10-01",
         "sources": [
@@ -1551,7 +1551,7 @@
       "team_count": 24,
       "group_size": 7,
       "cached": false,
-      "valid_until": "2026-09-27T20:47:26.780063+00:00"
+      "valid_until": "2026-09-27T23:58:06.400712+00:00"
     },
     {
       "external_fixture_id": "sky-4730396385255292232",
@@ -1567,7 +1567,7 @@
       "team_count": 24,
       "group_size": 7,
       "cached": false,
-      "valid_until": "2026-09-27T20:47:26.780063+00:00"
+      "valid_until": "2026-09-27T23:58:06.400712+00:00"
     },
     {
       "external_fixture_id": "sky-6095464206710694232",
@@ -1583,7 +1583,7 @@
       "team_count": 24,
       "group_size": 7,
       "cached": false,
-      "valid_until": "2026-09-27T20:47:26.780063+00:00"
+      "valid_until": "2026-09-27T23:58:06.400712+00:00"
     }
   ],
   "fixture_sources": [
@@ -1591,7 +1591,7 @@
       "source": "sky",
       "scope": "2026-09-27",
       "status": "success",
-      "rows": 54
+      "rows": 53
     },
     {
       "source": "sky",
@@ -1615,10 +1615,10 @@
       "source": "sky",
       "scope": "2026-10-01",
       "status": "success",
-      "rows": 19
+      "rows": 20
     }
   ],
-  "last_successful_refresh": "2026-09-27T08:47:26.780063+00:00",
+  "last_successful_refresh": "2026-09-27T11:58:06.400712+00:00",
   "leagues_checked": 11,
   "status": "ok"
 }
