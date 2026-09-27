@@ -1,61 +1,38 @@
-# MatchSignal 2.0
+# MatchSignal — fixture mismatch scanner
 
-MatchSignal forecasts matches from the Premier League through the National
-League. It uses Football-Data.co.uk for historic results and Football Web Pages/Sky
-fixture pages (with TheSportsDB as a limited fallback) for fixtures in the next four days; neither
-requires a paid account.
+Find upcoming same-league fixtures where a top-30% club meets a bottom-30% club, at either venue. No predictions or betting probabilities.
 
-The model carries one Elo rating across the five tiers, with conservative
-division priors. That means promotions, relegations and cross-division/cup
-fixtures can be assessed rather than silently excluded.
+Supports Premier League, Championship, League One, League Two, National League, National League North/South, Scottish Premiership, Scottish Championship and Scottish League One/Two.
 
-An English-football probability scanner. It is being rebuilt from a direct
-head-to-head dashboard into a measurable forecasting system.
+## Run
 
-## Supported competitions
-
-Premier League, Championship, League One, League Two and National League.
-
-## Model foundation
-
-The first model uses chronological home/away form, recency weighting, Elo and
-a Poisson score model to derive result, goals, BTTS, team goals and
-double-chance probabilities. See [MODEL.md](MODEL.md).
-
-## Development
-
-```text
+```sh
 pip install -r requirements.txt
-pytest
+python scripts/refresh_v2.py
+python -m flask --app app run
 ```
 
-The default landing page serves `index.html`; `/performance` and `/history`
-read the preserved `data/matchsignal.sqlite` ledger. Set `MATCHSIGNAL_DATABASE`
-to use another database path. See [the reliability audit](PREDICTION_TRACKER_AUDIT.md)
-for the architecture, known limitations, and deployment/recovery procedure.
+Production entry point stays `gunicorn app:app`. `/` reads the cached snapshot, `/api/signals` returns signals and diagnostics, and `/health` returns 503 for incomplete/expired coverage. Page requests never download external data.
 
-## Refresh and backtesting
+`SIGNAL_PERCENTAGE = 0.30` is configured centrally in `matchsignal/config.py`. Group sizes round half up: 24→7, 20→6, 12→4, 10→3. Publisher league positions are authoritative; deductions, tie-breakers and Scottish split order are not recalculated from points.
 
-`python scripts/refresh_v2.py` imports supported Football-Data files,
-imports timed fixtures from fixture providers, captures immutable prospective
-predictions, and reconciles independent full-time results. Date-only unplayed
-CSV rows are not eligible forecasts. It is safe to rerun against the preserved ledger.
+## Fixtures and display
 
-The GitHub Action commits the SQLite ledger and static snapshot together and
-retains a run artifact for recovery. This is an interim durability approach;
-large deployments should use a managed datastore. Legacy predictions remain
-unverified and are excluded from trusted metrics. `/health` returns 503 when
-the ledger has no successful recent refresh.
+Retains the existing Sky embedded-JSON and Football Web Pages fixture parsers, UTC storage, Europe/London display (including DST), today plus four calendar days, and day navigation. Dates and kickoff times remain visible on narrow screens. Only scheduled fixtures with known times strictly after the refresh/current time are eligible. Results are chronological; no selection cap.
 
-## System health audit (26 September 2026)
+Sky daily fixtures and full tables currently cover all eleven leagues. Football Web Pages remains the English fixture fallback. Sky is preferred because FWP returned 403 responses during live validation. TheSportsDB remains partial only and cannot establish complete coverage. Table failures use a labelled last-good cache, not guessed rankings. No paid subscription or API key is required.
 
-See [SYSTEM_HEALTH_AUDIT.md](SYSTEM_HEALTH_AUDIT.md) for tested coverage and limits.
-Refresh records include per-source/per-league diagnostics. Failed or incomplete
-coverage blocks new freezes for affected leagues and reports degraded health.
-Source warnings remain visible even when a fallback restores coverage. A recent
-successful download is not proof of an upstream publisher's data completeness.
+## Refresh and deployment
 
-Training aliases are repaired in place; frozen forecasts and result observations
-are never rewritten. Historic low-sample forecasts remain in the tracker with a
-warning. The active model does not consume shot-level xG/xGA. Its `home_xg` and
-`away_xg` fields are model-estimated goal means, not scraped xG statistics.
+The existing six-hour GitHub Action runs tests, refreshes `data/signals.json`, builds `index.html`, and commits the snapshot and `VALIDATION_REPORT.md` together. Render can continue deploying `main` using its existing configuration. Refresh exits nonzero for degraded coverage **after saving diagnostics**. A failed league does not block the others.
+
+Snapshots expire after 12 hours. Cached data after source failure retains its original timestamps and must cover the entire requested fixture window. Client-side filtering hides kicked-off and expired fixtures between page loads. `MATCHSIGNAL_SNAPSHOT` optionally overrides the JSON path; `MATCHSIGNAL_DATABASE` is no longer used. The original SQLite ledger is retained untouched for recovery, but is neither read nor updated by this app.
+
+## Checks and limitations
+
+```sh
+python -m pytest -q
+python scripts/build_snapshot_v2.py  # rebuild HTML from cache only
+```
+
+See `REWRITE_AUDIT.md` for the baseline inspection, `VALIDATION_REPORT.md` for all eleven leagues and actual fixtures, and `REVIEW_VALIDATION.md` for independent verification and remaining acceptance gates. A successful download is not proof of absolute upstream completeness; source timestamps and parser errors remain visible. Historic audit/model documents describe the retired system.

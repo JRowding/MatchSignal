@@ -68,6 +68,8 @@ def test_fwp_provider_reads_all_supported_competitions():
         "League One",
         "League Two",
         "National League",
+        "National League North",
+        "National League South",
     }
 
 
@@ -81,6 +83,51 @@ def test_fwp_does_not_borrow_fields_across_rows():
     class Session:
         def get(self, *args, **kwargs): return Response()
     rows=TheSportsDBProvider(Session())._football_web_pages_fixtures(datetime(2026,9,5),datetime(2026,9,6))
-    assert len(rows)==5
+    assert len(rows)==7
     assert all(r.external_fixture_id.endswith('correct-id') for r in rows)
     assert all(r.kickoff=='2026-09-05T14:00:00+00:00' for r in rows)
+
+
+def test_sky_all_eleven_competitions_and_postponement():
+    import json
+    from html import escape
+    from matchsignal.leagues import LEAGUES
+    names = [l.name for l in LEAGUES]
+    names[-2:] = ['Scottish League 1', 'Scottish League 2']
+    events = [dict(id=i, competition={'name': {'full':name}}, start={'time':'19:45'},
+                   teams={'home':{'name':{'full':'Home'}},'away':{'name':{'full':'Away'}}},
+                   isFixture=True, isPostponed=(i==0)) for i,name in enumerate(names)]
+    class Response:
+        text=''.join('data-state="'+escape(json.dumps(e))+'"' for e in events)
+        def raise_for_status(self):pass
+    class Session:
+        def get(self,*a,**k):return Response()
+    provider=TheSportsDBProvider(Session())
+    fixtures=provider._sky_fixtures(datetime(2026,9,29),datetime(2026,9,29,23,59))
+    assert {f.competition for f in fixtures}=={l.name for l in LEAGUES}
+    assert len(fixtures)==11 and fixtures[0].status=='postponed'
+    assert all(f.kickoff=='2026-09-29T18:45:00+00:00' for f in fixtures)
+
+
+def test_partial_daily_feed_cannot_establish_complete_coverage():
+    p=TheSportsDBProvider()
+    p.diagnostics=[{'source':'sky','scope':'day1','status':'success'},
+                   {'source':'sky','scope':'day2','status':'failed'}]
+    assert not p.covered_competitions()
+
+
+def test_malformed_supported_event_degrades_only_affected_league():
+    import json
+    from html import escape
+    event={'id':1,'competition':{'name':{'full':'Scottish Championship'}},
+           'start':{'time':None},'isFixture':True}
+    class Response:
+        text='data-state="'+escape(json.dumps(event))+'"'
+        def raise_for_status(self):pass
+    class Session:
+        def get(self,*a,**k):return Response()
+    p=TheSportsDBProvider(Session())
+    assert not p._sky_fixtures(datetime(2026,9,29),datetime(2026,9,29,23,59))
+    assert 'Scottish Championship' not in p.covered_competitions()
+    assert 'Premier League' in p.covered_competitions()
+    assert p.diagnostics[0]['invalid_competitions']==['Scottish Championship']

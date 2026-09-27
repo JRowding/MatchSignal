@@ -1,0 +1,1624 @@
+{
+  "schema_version": 1,
+  "percentage": 0.3,
+  "refreshed_at": "2026-09-27T08:38:37.740263+00:00",
+  "window_start": "2026-09-27",
+  "window_end": "2026-10-01",
+  "leagues": {
+    "Premier League": {
+      "table_status": "live",
+      "fixture_status": "live",
+      "errors": [],
+      "unmatched_clubs": [],
+      "conflicts": [],
+      "team_count": 20,
+      "top_count": 6,
+      "bottom_count": 6,
+      "fixtures_evaluated": 0,
+      "signals_found": 0,
+      "last_successful_refresh": "2026-09-27T08:38:37.740263+00:00",
+      "source_warnings": [],
+      "table": {
+        "rows": [
+          {
+            "position": 1,
+            "team": "Manchester City",
+            "played": 5
+          },
+          {
+            "position": 2,
+            "team": "Arsenal",
+            "played": 5
+          },
+          {
+            "position": 3,
+            "team": "Brighton and Hove Albion",
+            "played": 5
+          },
+          {
+            "position": 4,
+            "team": "Brentford",
+            "played": 5
+          },
+          {
+            "position": 5,
+            "team": "Leeds United",
+            "played": 5
+          },
+          {
+            "position": 6,
+            "team": "Liverpool",
+            "played": 5
+          },
+          {
+            "position": 7,
+            "team": "Everton",
+            "played": 5
+          },
+          {
+            "position": 8,
+            "team": "Hull City",
+            "played": 5
+          },
+          {
+            "position": 9,
+            "team": "Newcastle United",
+            "played": 5
+          },
+          {
+            "position": 10,
+            "team": "Chelsea",
+            "played": 5
+          },
+          {
+            "position": 11,
+            "team": "Ipswich Town",
+            "played": 5
+          },
+          {
+            "position": 12,
+            "team": "Manchester United",
+            "played": 5
+          },
+          {
+            "position": 13,
+            "team": "Nottingham Forest",
+            "played": 5
+          },
+          {
+            "position": 14,
+            "team": "Sunderland",
+            "played": 5
+          },
+          {
+            "position": 15,
+            "team": "Crystal Palace",
+            "played": 5
+          },
+          {
+            "position": 16,
+            "team": "Aston Villa",
+            "played": 5
+          },
+          {
+            "position": 17,
+            "team": "Bournemouth",
+            "played": 5
+          },
+          {
+            "position": 18,
+            "team": "Coventry City",
+            "played": 5
+          },
+          {
+            "position": 19,
+            "team": "Fulham",
+            "played": 5
+          },
+          {
+            "position": 20,
+            "team": "Tottenham Hotspur",
+            "played": 5
+          }
+        ],
+        "source": "https://www.skysports.com/premier-league-table",
+        "publisher_updated": "21 September, 1:55pm",
+        "fallback": false,
+        "errors": [],
+        "refreshed_at": "2026-09-27T08:38:37.740263+00:00"
+      },
+      "fixtures": {
+        "rows": [],
+        "refreshed_at": "2026-09-27T08:38:37.740263+00:00",
+        "window_start": "2026-09-27",
+        "window_end": "2026-10-01",
+        "sources": [
+          "sky"
+        ]
+      },
+      "fixtures_retrieved": 0,
+      "fallback_used": false,
+      "checked": true
+    },
+    "Championship": {
+      "table_status": "live",
+      "fixture_status": "live",
+      "errors": [],
+      "unmatched_clubs": [],
+      "conflicts": [],
+      "team_count": 24,
+      "top_count": 7,
+      "bottom_count": 7,
+      "fixtures_evaluated": 0,
+      "signals_found": 0,
+      "last_successful_refresh": "2026-09-27T08:38:37.740263+00:00",
+      "source_warnings": [],
+      "table": {
+        "rows": [
+          {
+            "position": 1,
+            "team": "Swansea City",
+            "played": 8
+          },
+          {
+            "position": 2,
+            "team": "West Ham United",
+            "played": 8
+          },
+          {
+            "position": 3,
+            "team": "Middlesbrough",
+            "played": 8
+          },
+          {
+            "position": 4,
+            "team": "Wolves",
+            "played": 7
+          },
+          {
+            "position": 5,
+            "team": "West Bromwich Albion",
+            "played": 8
+          },
+          {
+            "position": 6,
+            "team": "Queens Park Rangers",
+            "played": 8
+          },
+          {
+            "position": 7,
+            "team": "Stoke City",
+            "played": 8
+          },
+          {
+            "position": 8,
+            "team": "Bristol City",
+            "played": 8
+          },
+          {
+            "position": 9,
+            "team": "Charlton Athletic",
+            "played": 8
+          },
+          {
+            "position": 10,
+            "team": "Birmingham City",
+            "played": 8
+          },
+          {
+            "position": 11,
+            "team": "Millwall",
+            "played": 8
+          },
+          {
+            "position": 12,
+            "team": "Lincoln City",
+            "played": 8
+          },
+          {
+            "position": 13,
+            "team": "* Southampton",
+            "played": 8
+          },
+          {
+            "position": 14,
+            "team": "Wrexham",
+            "played": 8
+          },
+          {
+            "position": 15,
+            "team": "Bolton Wanderers",
+            "played": 8
+          },
+          {
+            "position": 16,
+            "team": "Blackburn",
+            "played": 8
+          },
+          {
+            "position": 17,
+            "team": "Norwich City",
+            "played": 8
+          },
+          {
+            "position": 18,
+            "team": "Sheffield United",
+            "played": 8
+          },
+          {
+            "position": 19,
+            "team": "Portsmouth",
+            "played": 7
+          },
+          {
+            "position": 20,
+            "team": "Watford",
+            "played": 8
+          },
+          {
+            "position": 21,
+            "team": "Cardiff City",
+            "played": 8
+          },
+          {
+            "position": 22,
+            "team": "Derby County",
+            "played": 8
+          },
+          {
+            "position": 23,
+            "team": "Preston North End",
+            "played": 8
+          },
+          {
+            "position": 24,
+            "team": "Burnley",
+            "played": 8
+          }
+        ],
+        "source": "https://www.skysports.com/championship-table",
+        "publisher_updated": "23 September, 11:46am",
+        "fallback": false,
+        "errors": [],
+        "refreshed_at": "2026-09-27T08:38:37.740263+00:00"
+      },
+      "fixtures": {
+        "rows": [],
+        "refreshed_at": "2026-09-27T08:38:37.740263+00:00",
+        "window_start": "2026-09-27",
+        "window_end": "2026-10-01",
+        "sources": [
+          "sky"
+        ]
+      },
+      "fixtures_retrieved": 0,
+      "fallback_used": false,
+      "checked": true
+    },
+    "League One": {
+      "table_status": "live",
+      "fixture_status": "live",
+      "errors": [],
+      "unmatched_clubs": [],
+      "conflicts": [],
+      "team_count": 24,
+      "top_count": 7,
+      "bottom_count": 7,
+      "fixtures_evaluated": 0,
+      "signals_found": 0,
+      "last_successful_refresh": "2026-09-27T08:38:37.740263+00:00",
+      "source_warnings": [],
+      "table": {
+        "rows": [
+          {
+            "position": 1,
+            "team": "Bradford City",
+            "played": 7
+          },
+          {
+            "position": 2,
+            "team": "Sheffield Wednesday",
+            "played": 7
+          },
+          {
+            "position": 3,
+            "team": "Stockport County",
+            "played": 8
+          },
+          {
+            "position": 4,
+            "team": "Plymouth Argyle",
+            "played": 8
+          },
+          {
+            "position": 5,
+            "team": "Cambridge United",
+            "played": 8
+          },
+          {
+            "position": 6,
+            "team": "Huddersfield Town",
+            "played": 7
+          },
+          {
+            "position": 7,
+            "team": "Burton Albion",
+            "played": 8
+          },
+          {
+            "position": 8,
+            "team": "AFC Wimbledon",
+            "played": 8
+          },
+          {
+            "position": 9,
+            "team": "Reading",
+            "played": 7
+          },
+          {
+            "position": 10,
+            "team": "Oxford United",
+            "played": 6
+          },
+          {
+            "position": 11,
+            "team": "Leyton Orient",
+            "played": 7
+          },
+          {
+            "position": 12,
+            "team": "Wycombe Wanderers",
+            "played": 8
+          },
+          {
+            "position": 13,
+            "team": "Stevenage",
+            "played": 7
+          },
+          {
+            "position": 14,
+            "team": "Leicester City",
+            "played": 7
+          },
+          {
+            "position": 15,
+            "team": "Blackpool",
+            "played": 7
+          },
+          {
+            "position": 16,
+            "team": "Luton Town",
+            "played": 7
+          },
+          {
+            "position": 17,
+            "team": "Mansfield Town",
+            "played": 7
+          },
+          {
+            "position": 18,
+            "team": "Barnsley",
+            "played": 7
+          },
+          {
+            "position": 19,
+            "team": "Bromley",
+            "played": 7
+          },
+          {
+            "position": 20,
+            "team": "Notts County",
+            "played": 7
+          },
+          {
+            "position": 21,
+            "team": "Doncaster Rovers",
+            "played": 7
+          },
+          {
+            "position": 22,
+            "team": "Milton Keynes Dons",
+            "played": 7
+          },
+          {
+            "position": 23,
+            "team": "Peterborough United",
+            "played": 8
+          },
+          {
+            "position": 24,
+            "team": "Wigan Athletic",
+            "played": 7
+          }
+        ],
+        "source": "https://www.skysports.com/league-1-table",
+        "publisher_updated": "26 September, 4:57pm",
+        "fallback": false,
+        "errors": [],
+        "refreshed_at": "2026-09-27T08:38:37.740263+00:00"
+      },
+      "fixtures": {
+        "rows": [],
+        "refreshed_at": "2026-09-27T08:38:37.740263+00:00",
+        "window_start": "2026-09-27",
+        "window_end": "2026-10-01",
+        "sources": [
+          "sky"
+        ]
+      },
+      "fixtures_retrieved": 0,
+      "fallback_used": false,
+      "checked": true
+    },
+    "League Two": {
+      "table_status": "live",
+      "fixture_status": "live",
+      "errors": [],
+      "unmatched_clubs": [],
+      "conflicts": [],
+      "team_count": 24,
+      "top_count": 7,
+      "bottom_count": 7,
+      "fixtures_evaluated": 0,
+      "signals_found": 0,
+      "last_successful_refresh": "2026-09-27T08:38:37.740263+00:00",
+      "source_warnings": [],
+      "table": {
+        "rows": [
+          {
+            "position": 1,
+            "team": "Barnet",
+            "played": 7
+          },
+          {
+            "position": 2,
+            "team": "Cheltenham Town",
+            "played": 8
+          },
+          {
+            "position": 3,
+            "team": "Bristol Rovers",
+            "played": 8
+          },
+          {
+            "position": 4,
+            "team": "York City",
+            "played": 8
+          },
+          {
+            "position": 5,
+            "team": "Walsall",
+            "played": 8
+          },
+          {
+            "position": 6,
+            "team": "Grimsby Town",
+            "played": 8
+          },
+          {
+            "position": 7,
+            "team": "Salford City",
+            "played": 8
+          },
+          {
+            "position": 8,
+            "team": "Gillingham",
+            "played": 8
+          },
+          {
+            "position": 9,
+            "team": "Crewe Alexandra",
+            "played": 8
+          },
+          {
+            "position": 10,
+            "team": "Tranmere Rovers",
+            "played": 8
+          },
+          {
+            "position": 11,
+            "team": "Chesterfield",
+            "played": 8
+          },
+          {
+            "position": 12,
+            "team": "Swindon Town",
+            "played": 8
+          },
+          {
+            "position": 13,
+            "team": "Rotherham United",
+            "played": 8
+          },
+          {
+            "position": 14,
+            "team": "Fleetwood Town",
+            "played": 8
+          },
+          {
+            "position": 15,
+            "team": "Colchester United",
+            "played": 8
+          },
+          {
+            "position": 16,
+            "team": "Rochdale",
+            "played": 8
+          },
+          {
+            "position": 17,
+            "team": "Newport County",
+            "played": 8
+          },
+          {
+            "position": 18,
+            "team": "Shrewsbury Town",
+            "played": 8
+          },
+          {
+            "position": 19,
+            "team": "Accrington Stanley",
+            "played": 8
+          },
+          {
+            "position": 20,
+            "team": "Oldham Athletic",
+            "played": 8
+          },
+          {
+            "position": 21,
+            "team": "Exeter City",
+            "played": 8
+          },
+          {
+            "position": 22,
+            "team": "Northampton Town",
+            "played": 7
+          },
+          {
+            "position": 23,
+            "team": "Port Vale",
+            "played": 7
+          },
+          {
+            "position": 24,
+            "team": "Crawley Town",
+            "played": 7
+          }
+        ],
+        "source": "https://www.skysports.com/league-2-table",
+        "publisher_updated": "26 September, 7:24pm",
+        "fallback": false,
+        "errors": [],
+        "refreshed_at": "2026-09-27T08:38:37.740263+00:00"
+      },
+      "fixtures": {
+        "rows": [],
+        "refreshed_at": "2026-09-27T08:38:37.740263+00:00",
+        "window_start": "2026-09-27",
+        "window_end": "2026-10-01",
+        "sources": [
+          "sky"
+        ]
+      },
+      "fixtures_retrieved": 0,
+      "fallback_used": false,
+      "checked": true
+    },
+    "National League": {
+      "table_status": "live",
+      "fixture_status": "live",
+      "errors": [],
+      "unmatched_clubs": [],
+      "conflicts": [],
+      "team_count": 24,
+      "top_count": 7,
+      "bottom_count": 7,
+      "fixtures_evaluated": 12,
+      "signals_found": 2,
+      "last_successful_refresh": "2026-09-27T08:38:37.740263+00:00",
+      "source_warnings": [],
+      "table": {
+        "rows": [
+          {
+            "position": 1,
+            "team": "Boreham Wood",
+            "played": 10
+          },
+          {
+            "position": 2,
+            "team": "Southend United",
+            "played": 10
+          },
+          {
+            "position": 3,
+            "team": "AFC Fylde",
+            "played": 10
+          },
+          {
+            "position": 4,
+            "team": "Harrogate Town",
+            "played": 10
+          },
+          {
+            "position": 5,
+            "team": "Aldershot Town",
+            "played": 10
+          },
+          {
+            "position": 6,
+            "team": "Yeovil Town",
+            "played": 10
+          },
+          {
+            "position": 7,
+            "team": "Kidderminster Harriers",
+            "played": 10
+          },
+          {
+            "position": 8,
+            "team": "Altrincham",
+            "played": 10
+          },
+          {
+            "position": 9,
+            "team": "Worthing",
+            "played": 10
+          },
+          {
+            "position": 10,
+            "team": "Sutton United",
+            "played": 10
+          },
+          {
+            "position": 11,
+            "team": "Hornchurch",
+            "played": 10
+          },
+          {
+            "position": 12,
+            "team": "Forest Green Rovers",
+            "played": 10
+          },
+          {
+            "position": 13,
+            "team": "Eastleigh",
+            "played": 10
+          },
+          {
+            "position": 14,
+            "team": "FC Halifax Town",
+            "played": 10
+          },
+          {
+            "position": 15,
+            "team": "Barrow",
+            "played": 10
+          },
+          {
+            "position": 16,
+            "team": "Woking",
+            "played": 10
+          },
+          {
+            "position": 17,
+            "team": "Wealdstone",
+            "played": 10
+          },
+          {
+            "position": 18,
+            "team": "Boston United",
+            "played": 10
+          },
+          {
+            "position": 19,
+            "team": "Carlisle United",
+            "played": 10
+          },
+          {
+            "position": 20,
+            "team": "Scunthorpe United",
+            "played": 10
+          },
+          {
+            "position": 21,
+            "team": "Hartlepool United",
+            "played": 10
+          },
+          {
+            "position": 22,
+            "team": "Tamworth",
+            "played": 10
+          },
+          {
+            "position": 23,
+            "team": "Solihull Moors",
+            "played": 10
+          },
+          {
+            "position": 24,
+            "team": "Gateshead",
+            "played": 10
+          }
+        ],
+        "source": "https://www.skysports.com/national-league-table",
+        "publisher_updated": "26 September, 5:02pm",
+        "fallback": false,
+        "errors": [],
+        "refreshed_at": "2026-09-27T08:38:37.740263+00:00"
+      },
+      "fixtures": {
+        "rows": [
+          {
+            "external_fixture_id": "sky-6570222655766993232",
+            "competition": "National League",
+            "kickoff": "2026-09-29T18:00:00+00:00",
+            "home_team": "Boreham Wood",
+            "away_team": "Kidderminster Harriers",
+            "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-5528445200683215232",
+            "competition": "National League",
+            "kickoff": "2026-09-29T18:45:00+00:00",
+            "home_team": "AFC Fylde",
+            "away_team": "Carlisle United",
+            "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-7296487560682327232",
+            "competition": "National League",
+            "kickoff": "2026-09-29T18:45:00+00:00",
+            "home_team": "Barrow",
+            "away_team": "Scunthorpe United",
+            "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-9155741011442873232",
+            "competition": "National League",
+            "kickoff": "2026-09-29T18:45:00+00:00",
+            "home_team": "FC Halifax Town",
+            "away_team": "Boston United",
+            "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-9159626849852673232",
+            "competition": "National League",
+            "kickoff": "2026-09-29T18:45:00+00:00",
+            "home_team": "Forest Green Rovers",
+            "away_team": "Wealdstone",
+            "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-5769982551505485232",
+            "competition": "National League",
+            "kickoff": "2026-09-29T18:45:00+00:00",
+            "home_team": "Gateshead",
+            "away_team": "Altrincham",
+            "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-4730396385255292232",
+            "competition": "National League",
+            "kickoff": "2026-09-29T18:45:00+00:00",
+            "home_team": "Hartlepool United",
+            "away_team": "Harrogate Town",
+            "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-6791605807868337232",
+            "competition": "National League",
+            "kickoff": "2026-09-29T18:45:00+00:00",
+            "home_team": "Hornchurch",
+            "away_team": "Aldershot Town",
+            "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-5694466585562007232",
+            "competition": "National League",
+            "kickoff": "2026-09-29T18:45:00+00:00",
+            "home_team": "Woking",
+            "away_team": "Solihull Moors",
+            "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-7239473214900029232",
+            "competition": "National League",
+            "kickoff": "2026-09-29T18:45:00+00:00",
+            "home_team": "Yeovil Town",
+            "away_team": "Worthing",
+            "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-6529045272369458232",
+            "competition": "National League",
+            "kickoff": "2026-09-30T18:45:00+00:00",
+            "home_team": "Eastleigh",
+            "away_team": "Southend United",
+            "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-9029290326238813232",
+            "competition": "National League",
+            "kickoff": "2026-09-30T18:45:00+00:00",
+            "home_team": "Tamworth",
+            "away_team": "Sutton United",
+            "status": "scheduled"
+          }
+        ],
+        "refreshed_at": "2026-09-27T08:38:37.740263+00:00",
+        "window_start": "2026-09-27",
+        "window_end": "2026-10-01",
+        "sources": [
+          "sky"
+        ]
+      },
+      "fixtures_retrieved": 12,
+      "fallback_used": false,
+      "checked": true
+    },
+    "National League North": {
+      "table_status": "live",
+      "fixture_status": "live",
+      "errors": [],
+      "unmatched_clubs": [],
+      "conflicts": [],
+      "team_count": 24,
+      "top_count": 7,
+      "bottom_count": 7,
+      "fixtures_evaluated": 1,
+      "signals_found": 1,
+      "last_successful_refresh": "2026-09-27T08:38:37.740263+00:00",
+      "source_warnings": [],
+      "table": {
+        "rows": [
+          {
+            "position": 1,
+            "team": "Hereford",
+            "played": 10
+          },
+          {
+            "position": 2,
+            "team": "Macclesfield FC",
+            "played": 10
+          },
+          {
+            "position": 3,
+            "team": "Oxford City",
+            "played": 10
+          },
+          {
+            "position": 4,
+            "team": "South Shields",
+            "played": 9
+          },
+          {
+            "position": 5,
+            "team": "Hebburn Town",
+            "played": 10
+          },
+          {
+            "position": 6,
+            "team": "Spalding Utd",
+            "played": 10
+          },
+          {
+            "position": 7,
+            "team": "Chester FC",
+            "played": 10
+          },
+          {
+            "position": 8,
+            "team": "Kings Lynn Town",
+            "played": 10
+          },
+          {
+            "position": 9,
+            "team": "Buxton",
+            "played": 10
+          },
+          {
+            "position": 10,
+            "team": "Bedford Town",
+            "played": 10
+          },
+          {
+            "position": 11,
+            "team": "Morecambe",
+            "played": 10
+          },
+          {
+            "position": 12,
+            "team": "Chorley",
+            "played": 10
+          },
+          {
+            "position": 13,
+            "team": "Merthyr Town",
+            "played": 10
+          },
+          {
+            "position": 14,
+            "team": "Scarborough Athletic",
+            "played": 10
+          },
+          {
+            "position": 15,
+            "team": "Hednesford",
+            "played": 10
+          },
+          {
+            "position": 16,
+            "team": "Marine",
+            "played": 10
+          },
+          {
+            "position": 17,
+            "team": "Harborough Town",
+            "played": 10
+          },
+          {
+            "position": 18,
+            "team": "Worksop",
+            "played": 10
+          },
+          {
+            "position": 19,
+            "team": "Southport",
+            "played": 10
+          },
+          {
+            "position": 20,
+            "team": "AFC Telford United",
+            "played": 10
+          },
+          {
+            "position": 21,
+            "team": "Brackley Town",
+            "played": 9
+          },
+          {
+            "position": 22,
+            "team": "Darlington",
+            "played": 10
+          },
+          {
+            "position": 23,
+            "team": "Spennymoor Town",
+            "played": 10
+          },
+          {
+            "position": 24,
+            "team": "Radcliffe",
+            "played": 10
+          }
+        ],
+        "source": "https://www.skysports.com/national-league-north-table",
+        "publisher_updated": "26 September, 5:01pm",
+        "fallback": false,
+        "errors": [],
+        "refreshed_at": "2026-09-27T08:38:37.740263+00:00"
+      },
+      "fixtures": {
+        "rows": [
+          {
+            "external_fixture_id": "sky-6095464206710694232",
+            "competition": "National League North",
+            "kickoff": "2026-09-29T18:45:00+00:00",
+            "home_team": "Brackley Town",
+            "away_team": "South Shields",
+            "status": "scheduled"
+          }
+        ],
+        "refreshed_at": "2026-09-27T08:38:37.740263+00:00",
+        "window_start": "2026-09-27",
+        "window_end": "2026-10-01",
+        "sources": [
+          "sky"
+        ]
+      },
+      "fixtures_retrieved": 1,
+      "fallback_used": false,
+      "checked": true
+    },
+    "National League South": {
+      "table_status": "live",
+      "fixture_status": "live",
+      "errors": [],
+      "unmatched_clubs": [],
+      "conflicts": [],
+      "team_count": 24,
+      "top_count": 7,
+      "bottom_count": 7,
+      "fixtures_evaluated": 1,
+      "signals_found": 0,
+      "last_successful_refresh": "2026-09-27T08:38:37.740263+00:00",
+      "source_warnings": [],
+      "table": {
+        "rows": [
+          {
+            "position": 1,
+            "team": "Maidstone United",
+            "played": 10
+          },
+          {
+            "position": 2,
+            "team": "Dagenham & Redbridge",
+            "played": 10
+          },
+          {
+            "position": 3,
+            "team": "Salisbury FC",
+            "played": 10
+          },
+          {
+            "position": 4,
+            "team": "Billericay Town",
+            "played": 10
+          },
+          {
+            "position": 5,
+            "team": "Weston-s-Mare",
+            "played": 10
+          },
+          {
+            "position": 6,
+            "team": "Truro City",
+            "played": 9
+          },
+          {
+            "position": 7,
+            "team": "Dover",
+            "played": 10
+          },
+          {
+            "position": 8,
+            "team": "Dorking Wanderers",
+            "played": 10
+          },
+          {
+            "position": 9,
+            "team": "Farnham Town",
+            "played": 9
+          },
+          {
+            "position": 10,
+            "team": "Tonbridge Angels",
+            "played": 10
+          },
+          {
+            "position": 11,
+            "team": "Maidenhead United",
+            "played": 10
+          },
+          {
+            "position": 12,
+            "team": "Hemel Hempstead",
+            "played": 10
+          },
+          {
+            "position": 13,
+            "team": "Torquay United",
+            "played": 10
+          },
+          {
+            "position": 14,
+            "team": "Folkestone Invicta",
+            "played": 9
+          },
+          {
+            "position": 15,
+            "team": "Chelmsford",
+            "played": 9
+          },
+          {
+            "position": 16,
+            "team": "Horsham",
+            "played": 9
+          },
+          {
+            "position": 17,
+            "team": "Farnborough",
+            "played": 9
+          },
+          {
+            "position": 18,
+            "team": "Chesham",
+            "played": 10
+          },
+          {
+            "position": 19,
+            "team": "Braintree Town",
+            "played": 9
+          },
+          {
+            "position": 20,
+            "team": "AFC Totton",
+            "played": 9
+          },
+          {
+            "position": 21,
+            "team": "Ebbsfleet United",
+            "played": 4
+          },
+          {
+            "position": 22,
+            "team": "Hampton & Richmond",
+            "played": 10
+          },
+          {
+            "position": 23,
+            "team": "Slough",
+            "played": 9
+          },
+          {
+            "position": 24,
+            "team": "Walton & Hersham",
+            "played": 9
+          }
+        ],
+        "source": "https://www.skysports.com/national-league-south-table",
+        "publisher_updated": "26 September, 5:03pm",
+        "fallback": false,
+        "errors": [],
+        "refreshed_at": "2026-09-27T08:38:37.740263+00:00"
+      },
+      "fixtures": {
+        "rows": [
+          {
+            "external_fixture_id": "sky-7918843026337785232",
+            "competition": "National League South",
+            "kickoff": "2026-09-29T18:45:00+00:00",
+            "home_team": "Slough",
+            "away_team": "Ebbsfleet United",
+            "status": "scheduled"
+          }
+        ],
+        "refreshed_at": "2026-09-27T08:38:37.740263+00:00",
+        "window_start": "2026-09-27",
+        "window_end": "2026-10-01",
+        "sources": [
+          "sky"
+        ]
+      },
+      "fixtures_retrieved": 1,
+      "fallback_used": false,
+      "checked": true
+    },
+    "Scottish Premiership": {
+      "table_status": "live",
+      "fixture_status": "live",
+      "errors": [],
+      "unmatched_clubs": [],
+      "conflicts": [],
+      "team_count": 12,
+      "top_count": 4,
+      "bottom_count": 4,
+      "fixtures_evaluated": 0,
+      "signals_found": 0,
+      "last_successful_refresh": "2026-09-27T08:38:37.740263+00:00",
+      "source_warnings": [],
+      "table": {
+        "rows": [
+          {
+            "position": 1,
+            "team": "Celtic",
+            "played": 7
+          },
+          {
+            "position": 2,
+            "team": "Rangers",
+            "played": 7
+          },
+          {
+            "position": 3,
+            "team": "Hearts",
+            "played": 7
+          },
+          {
+            "position": 4,
+            "team": "Dundee",
+            "played": 7
+          },
+          {
+            "position": 5,
+            "team": "St Mirren",
+            "played": 7
+          },
+          {
+            "position": 6,
+            "team": "St Johnstone",
+            "played": 7
+          },
+          {
+            "position": 7,
+            "team": "Aberdeen",
+            "played": 7
+          },
+          {
+            "position": 8,
+            "team": "Motherwell",
+            "played": 7
+          },
+          {
+            "position": 9,
+            "team": "Dundee United",
+            "played": 7
+          },
+          {
+            "position": 10,
+            "team": "Hibernian",
+            "played": 7
+          },
+          {
+            "position": 11,
+            "team": "Falkirk",
+            "played": 7
+          },
+          {
+            "position": 12,
+            "team": "Kilmarnock",
+            "played": 7
+          }
+        ],
+        "source": "https://www.skysports.com/scottish-premiership-table",
+        "publisher_updated": "22 September, 10:11am",
+        "fallback": false,
+        "errors": [],
+        "refreshed_at": "2026-09-27T08:38:37.740263+00:00"
+      },
+      "fixtures": {
+        "rows": [],
+        "refreshed_at": "2026-09-27T08:38:37.740263+00:00",
+        "window_start": "2026-09-27",
+        "window_end": "2026-10-01",
+        "sources": [
+          "sky"
+        ]
+      },
+      "fixtures_retrieved": 0,
+      "fallback_used": false,
+      "checked": true
+    },
+    "Scottish Championship": {
+      "table_status": "live",
+      "fixture_status": "live",
+      "errors": [],
+      "unmatched_clubs": [],
+      "conflicts": [],
+      "team_count": 10,
+      "top_count": 3,
+      "bottom_count": 3,
+      "fixtures_evaluated": 0,
+      "signals_found": 0,
+      "last_successful_refresh": "2026-09-27T08:38:37.740263+00:00",
+      "source_warnings": [],
+      "table": {
+        "rows": [
+          {
+            "position": 1,
+            "team": "Stenhousemuir",
+            "played": 8
+          },
+          {
+            "position": 2,
+            "team": "Raith Rovers",
+            "played": 8
+          },
+          {
+            "position": 3,
+            "team": "Livingston",
+            "played": 8
+          },
+          {
+            "position": 4,
+            "team": "Partick Thistle",
+            "played": 7
+          },
+          {
+            "position": 5,
+            "team": "Dunfermline Athletic",
+            "played": 7
+          },
+          {
+            "position": 6,
+            "team": "Arbroath",
+            "played": 8
+          },
+          {
+            "position": 7,
+            "team": "Inverness CT",
+            "played": 8
+          },
+          {
+            "position": 8,
+            "team": "Ayr United",
+            "played": 8
+          },
+          {
+            "position": 9,
+            "team": "Queen's Park",
+            "played": 8
+          },
+          {
+            "position": 10,
+            "team": "Morton",
+            "played": 8
+          }
+        ],
+        "source": "https://www.skysports.com/scottish-championship-table",
+        "publisher_updated": "25 September, 9:37pm",
+        "fallback": false,
+        "errors": [],
+        "refreshed_at": "2026-09-27T08:38:37.740263+00:00"
+      },
+      "fixtures": {
+        "rows": [],
+        "refreshed_at": "2026-09-27T08:38:37.740263+00:00",
+        "window_start": "2026-09-27",
+        "window_end": "2026-10-01",
+        "sources": [
+          "sky"
+        ]
+      },
+      "fixtures_retrieved": 0,
+      "fallback_used": false,
+      "checked": true
+    },
+    "Scottish League One": {
+      "table_status": "live",
+      "fixture_status": "live",
+      "errors": [],
+      "unmatched_clubs": [],
+      "conflicts": [],
+      "team_count": 10,
+      "top_count": 3,
+      "bottom_count": 3,
+      "fixtures_evaluated": 0,
+      "signals_found": 0,
+      "last_successful_refresh": "2026-09-27T08:38:37.740263+00:00",
+      "source_warnings": [],
+      "table": {
+        "rows": [
+          {
+            "position": 1,
+            "team": "Ross County",
+            "played": 7
+          },
+          {
+            "position": 2,
+            "team": "Hamilton Academical",
+            "played": 7
+          },
+          {
+            "position": 3,
+            "team": "Montrose",
+            "played": 8
+          },
+          {
+            "position": 4,
+            "team": "East Kilbride",
+            "played": 8
+          },
+          {
+            "position": 5,
+            "team": "Alloa Athletic",
+            "played": 8
+          },
+          {
+            "position": 6,
+            "team": "Airdrieonians",
+            "played": 8
+          },
+          {
+            "position": 7,
+            "team": "East Fife",
+            "played": 8
+          },
+          {
+            "position": 8,
+            "team": "Peterhead",
+            "played": 8
+          },
+          {
+            "position": 9,
+            "team": "Cove Rangers",
+            "played": 8
+          },
+          {
+            "position": 10,
+            "team": "Queen of the South",
+            "played": 8
+          }
+        ],
+        "source": "https://www.skysports.com/scottish-league-one-table",
+        "publisher_updated": "25 September, 1:28pm",
+        "fallback": false,
+        "errors": [],
+        "refreshed_at": "2026-09-27T08:38:37.740263+00:00"
+      },
+      "fixtures": {
+        "rows": [],
+        "refreshed_at": "2026-09-27T08:38:37.740263+00:00",
+        "window_start": "2026-09-27",
+        "window_end": "2026-10-01",
+        "sources": [
+          "sky"
+        ]
+      },
+      "fixtures_retrieved": 0,
+      "fallback_used": false,
+      "checked": true
+    },
+    "Scottish League Two": {
+      "table_status": "live",
+      "fixture_status": "live",
+      "errors": [],
+      "unmatched_clubs": [],
+      "conflicts": [],
+      "team_count": 10,
+      "top_count": 3,
+      "bottom_count": 3,
+      "fixtures_evaluated": 0,
+      "signals_found": 0,
+      "last_successful_refresh": "2026-09-27T08:38:37.740263+00:00",
+      "source_warnings": [],
+      "table": {
+        "rows": [
+          {
+            "position": 1,
+            "team": "Clyde",
+            "played": 8
+          },
+          {
+            "position": 2,
+            "team": "Stranraer",
+            "played": 8
+          },
+          {
+            "position": 3,
+            "team": "Spartans",
+            "played": 8
+          },
+          {
+            "position": 4,
+            "team": "Elgin City",
+            "played": 8
+          },
+          {
+            "position": 5,
+            "team": "Forfar Athletic",
+            "played": 8
+          },
+          {
+            "position": 6,
+            "team": "* Edinburgh City",
+            "played": 8
+          },
+          {
+            "position": 7,
+            "team": "Annan Athletic",
+            "played": 8
+          },
+          {
+            "position": 8,
+            "team": "Dumbarton",
+            "played": 8
+          },
+          {
+            "position": 9,
+            "team": "Kelty Hearts",
+            "played": 8
+          },
+          {
+            "position": 10,
+            "team": "Stirling Albion",
+            "played": 8
+          }
+        ],
+        "source": "https://www.skysports.com/scottish-league-two-table",
+        "publisher_updated": "21 September, 12:44pm",
+        "fallback": false,
+        "errors": [],
+        "refreshed_at": "2026-09-27T08:38:37.740263+00:00"
+      },
+      "fixtures": {
+        "rows": [],
+        "refreshed_at": "2026-09-27T08:38:37.740263+00:00",
+        "window_start": "2026-09-27",
+        "window_end": "2026-10-01",
+        "sources": [
+          "sky"
+        ]
+      },
+      "fixtures_retrieved": 0,
+      "fallback_used": false,
+      "checked": true
+    }
+  },
+  "signals": [
+    {
+      "external_fixture_id": "sky-5528445200683215232",
+      "competition": "National League",
+      "kickoff": "2026-09-29T18:45:00+00:00",
+      "home_team": "AFC Fylde",
+      "away_team": "Carlisle United",
+      "status": "scheduled",
+      "home_position": 3,
+      "away_position": 19,
+      "top_team": "AFC Fylde",
+      "bottom_team": "Carlisle United",
+      "team_count": 24,
+      "group_size": 7,
+      "cached": false,
+      "valid_until": "2026-09-27T20:38:37.740263+00:00"
+    },
+    {
+      "external_fixture_id": "sky-4730396385255292232",
+      "competition": "National League",
+      "kickoff": "2026-09-29T18:45:00+00:00",
+      "home_team": "Hartlepool United",
+      "away_team": "Harrogate Town",
+      "status": "scheduled",
+      "home_position": 21,
+      "away_position": 4,
+      "top_team": "Harrogate Town",
+      "bottom_team": "Hartlepool United",
+      "team_count": 24,
+      "group_size": 7,
+      "cached": false,
+      "valid_until": "2026-09-27T20:38:37.740263+00:00"
+    },
+    {
+      "external_fixture_id": "sky-6095464206710694232",
+      "competition": "National League North",
+      "kickoff": "2026-09-29T18:45:00+00:00",
+      "home_team": "Brackley Town",
+      "away_team": "South Shields",
+      "status": "scheduled",
+      "home_position": 21,
+      "away_position": 4,
+      "top_team": "South Shields",
+      "bottom_team": "Brackley Town",
+      "team_count": 24,
+      "group_size": 7,
+      "cached": false,
+      "valid_until": "2026-09-27T20:38:37.740263+00:00"
+    }
+  ],
+  "fixture_sources": [
+    {
+      "source": "sky",
+      "scope": "2026-09-27",
+      "status": "success",
+      "rows": 54
+    },
+    {
+      "source": "sky",
+      "scope": "2026-09-28",
+      "status": "success",
+      "rows": 10
+    },
+    {
+      "source": "sky",
+      "scope": "2026-09-29",
+      "status": "success",
+      "rows": 40
+    },
+    {
+      "source": "sky",
+      "scope": "2026-09-30",
+      "status": "success",
+      "rows": 25
+    },
+    {
+      "source": "sky",
+      "scope": "2026-10-01",
+      "status": "success",
+      "rows": 19
+    }
+  ],
+  "last_successful_refresh": "2026-09-27T08:38:37.740263+00:00",
+  "leagues_checked": 11,
+  "status": "ok"
+}
