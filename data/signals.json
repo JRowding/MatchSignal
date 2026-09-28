@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "percentage": 0.3,
-  "refreshed_at": "2026-09-28T13:47:31.157988+00:00",
-  "window_start": "2026-09-28",
-  "window_end": "2026-10-02",
+  "refreshed_at": "2026-09-28T23:14:01.048575+00:00",
+  "window_start": "2026-09-29",
+  "window_end": "2026-10-03",
   "leagues": {
     "Premier League": {
       "table_status": "live",
@@ -16,7 +16,7 @@
       "bottom_count": 6,
       "fixtures_evaluated": 0,
       "signals_found": 0,
-      "last_successful_refresh": "2026-09-28T13:47:31.157988+00:00",
+      "last_successful_refresh": "2026-09-28T23:14:01.048575+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -125,13 +125,13 @@
         "publisher_updated": "21 September, 1:55pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-28T13:47:31.157988+00:00"
+        "refreshed_at": "2026-09-28T23:14:01.048575+00:00"
       },
       "fixtures": {
         "rows": [],
-        "refreshed_at": "2026-09-28T13:47:31.157988+00:00",
-        "window_start": "2026-09-28",
-        "window_end": "2026-10-02",
+        "refreshed_at": "2026-09-28T23:14:01.048575+00:00",
+        "window_start": "2026-09-29",
+        "window_end": "2026-10-03",
         "sources": [
           "sky"
         ]
@@ -151,7 +151,7 @@
       "bottom_count": 7,
       "fixtures_evaluated": 0,
       "signals_found": 0,
-      "last_successful_refresh": "2026-09-28T13:47:31.157988+00:00",
+      "last_successful_refresh": "2026-09-28T23:14:01.048575+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -280,13 +280,13 @@
         "publisher_updated": "23 September, 11:46am",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-28T13:47:31.157988+00:00"
+        "refreshed_at": "2026-09-28T23:14:01.048575+00:00"
       },
       "fixtures": {
         "rows": [],
-        "refreshed_at": "2026-09-28T13:47:31.157988+00:00",
-        "window_start": "2026-09-28",
-        "window_end": "2026-10-02",
+        "refreshed_at": "2026-09-28T23:14:01.048575+00:00",
+        "window_start": "2026-09-29",
+        "window_end": "2026-10-03",
         "sources": [
           "sky"
         ]
@@ -304,9 +304,9 @@
       "team_count": 24,
       "top_count": 7,
       "bottom_count": 7,
-      "fixtures_evaluated": 0,
+      "fixtures_evaluated": 3,
       "signals_found": 0,
-      "last_successful_refresh": "2026-09-28T13:47:31.157988+00:00",
+      "last_successful_refresh": "2026-09-28T23:14:01.048575+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -432,21 +432,94 @@
           }
         ],
         "source": "https://www.skysports.com/league-1-table",
-        "publisher_updated": "26 September, 4:57pm",
+        "publisher_updated": "28 September, 5:31pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-28T13:47:31.157988+00:00"
+        "refreshed_at": "2026-09-28T23:14:01.048575+00:00"
       },
       "fixtures": {
-        "rows": [],
-        "refreshed_at": "2026-09-28T13:47:31.157988+00:00",
-        "window_start": "2026-09-28",
-        "window_end": "2026-10-02",
+        "rows": [
+          {
+            "external_fixture_id": "sky-7562143613951738232",
+            "competition": "League One",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "AFC Wimbledon",
+            "away_team": "Stevenage",
+            "status": "postponed"
+          },
+          {
+            "external_fixture_id": "sky-8464437969910950232",
+            "competition": "League One",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Barnsley",
+            "away_team": "Milton Keynes Dons",
+            "status": "postponed"
+          },
+          {
+            "external_fixture_id": "sky-6794426529198048232",
+            "competition": "League One",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Bromley",
+            "away_team": "Wycombe Wanderers",
+            "status": "postponed"
+          },
+          {
+            "external_fixture_id": "sky-7450793958386699232",
+            "competition": "League One",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Luton Town",
+            "away_team": "Doncaster Rovers",
+            "status": "postponed"
+          },
+          {
+            "external_fixture_id": "sky-9124468300834378232",
+            "competition": "League One",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Peterborough United",
+            "away_team": "Notts County",
+            "status": "postponed"
+          },
+          {
+            "external_fixture_id": "sky-9178337747597838232",
+            "competition": "League One",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Wigan Athletic",
+            "away_team": "Mansfield Town",
+            "status": "postponed"
+          },
+          {
+            "external_fixture_id": "sky-4728855893733399232",
+            "competition": "League One",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Burton Albion",
+            "away_team": "Huddersfield Town",
+            "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-8802241437789239232",
+            "competition": "League One",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Leyton Orient",
+            "away_team": "Plymouth Argyle",
+            "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-8770277414654150232",
+            "competition": "League One",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Reading",
+            "away_team": "Bradford City",
+            "status": "scheduled"
+          }
+        ],
+        "refreshed_at": "2026-09-28T23:14:01.048575+00:00",
+        "window_start": "2026-09-29",
+        "window_end": "2026-10-03",
         "sources": [
           "sky"
         ]
       },
-      "fixtures_retrieved": 0,
+      "fixtures_retrieved": 9,
       "fallback_used": false,
       "checked": true
     },
@@ -459,9 +532,9 @@
       "team_count": 24,
       "top_count": 7,
       "bottom_count": 7,
-      "fixtures_evaluated": 0,
-      "signals_found": 0,
-      "last_successful_refresh": "2026-09-28T13:47:31.157988+00:00",
+      "fixtures_evaluated": 8,
+      "signals_found": 2,
+      "last_successful_refresh": "2026-09-28T23:14:01.048575+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -587,21 +660,110 @@
           }
         ],
         "source": "https://www.skysports.com/league-2-table",
-        "publisher_updated": "27 September, 2:01pm",
+        "publisher_updated": "28 September, 9:03pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-28T13:47:31.157988+00:00"
+        "refreshed_at": "2026-09-28T23:14:01.048575+00:00"
       },
       "fixtures": {
-        "rows": [],
-        "refreshed_at": "2026-09-28T13:47:31.157988+00:00",
-        "window_start": "2026-09-28",
-        "window_end": "2026-10-02",
+        "rows": [
+          {
+            "external_fixture_id": "sky-7160336080039103232",
+            "competition": "League Two",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Colchester United",
+            "away_team": "Port Vale",
+            "status": "postponed"
+          },
+          {
+            "external_fixture_id": "sky-8543210742276696232",
+            "competition": "League Two",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Northampton Town",
+            "away_team": "Oldham Athletic",
+            "status": "postponed"
+          },
+          {
+            "external_fixture_id": "sky-8214596692786110232",
+            "competition": "League Two",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Walsall",
+            "away_team": "Crawley Town",
+            "status": "postponed"
+          },
+          {
+            "external_fixture_id": "sky-5297080627552962232",
+            "competition": "League Two",
+            "kickoff": "2026-10-03T11:30:00+00:00",
+            "home_team": "Chesterfield",
+            "away_team": "Tranmere Rovers",
+            "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-8691276221236937232",
+            "competition": "League Two",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Accrington Stanley",
+            "away_team": "Cheltenham Town",
+            "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-6012689327102566232",
+            "competition": "League Two",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Crewe Alexandra",
+            "away_team": "Bristol Rovers",
+            "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-5606407370956802232",
+            "competition": "League Two",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Exeter City",
+            "away_team": "Rotherham United",
+            "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-4672556184468839232",
+            "competition": "League Two",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Gillingham",
+            "away_team": "Newport County",
+            "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-5364405029390284232",
+            "competition": "League Two",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Grimsby Town",
+            "away_team": "Shrewsbury Town",
+            "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-5997281999212631232",
+            "competition": "League Two",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Rochdale",
+            "away_team": "Swindon Town",
+            "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-5524939676513597232",
+            "competition": "League Two",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Salford City",
+            "away_team": "Fleetwood Town",
+            "status": "scheduled"
+          }
+        ],
+        "refreshed_at": "2026-09-28T23:14:01.048575+00:00",
+        "window_start": "2026-09-29",
+        "window_end": "2026-10-03",
         "sources": [
           "sky"
         ]
       },
-      "fixtures_retrieved": 0,
+      "fixtures_retrieved": 11,
       "fallback_used": false,
       "checked": true
     },
@@ -614,9 +776,9 @@
       "team_count": 24,
       "top_count": 7,
       "bottom_count": 7,
-      "fixtures_evaluated": 12,
-      "signals_found": 2,
-      "last_successful_refresh": "2026-09-28T13:47:31.157988+00:00",
+      "fixtures_evaluated": 23,
+      "signals_found": 4,
+      "last_successful_refresh": "2026-09-28T23:14:01.048575+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -742,13 +904,21 @@
           }
         ],
         "source": "https://www.skysports.com/national-league-table",
-        "publisher_updated": "28 September, 11:29am",
+        "publisher_updated": "28 September, 4:53pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-28T13:47:31.157988+00:00"
+        "refreshed_at": "2026-09-28T23:14:01.048575+00:00"
       },
       "fixtures": {
         "rows": [
+          {
+            "external_fixture_id": "sky-8324528704895542232",
+            "competition": "National League",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Scunthorpe United",
+            "away_team": "Forest Green Rovers",
+            "status": "postponed"
+          },
           {
             "external_fixture_id": "sky-6570222655766993232",
             "competition": "National League",
@@ -844,16 +1014,104 @@
             "home_team": "Tamworth",
             "away_team": "Sutton United",
             "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-5138778264380696232",
+            "competition": "National League",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Aldershot Town",
+            "away_team": "Carlisle United",
+            "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-8767353889288372232",
+            "competition": "National League",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Barrow",
+            "away_team": "Wealdstone",
+            "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-8104443403588969232",
+            "competition": "National League",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Boreham Wood",
+            "away_team": "Altrincham",
+            "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-5108135900695802232",
+            "competition": "National League",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Eastleigh",
+            "away_team": "Woking",
+            "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-6006391544727196232",
+            "competition": "National League",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Gateshead",
+            "away_team": "Worthing",
+            "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-5328115814885403232",
+            "competition": "National League",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Harrogate Town",
+            "away_team": "Hornchurch",
+            "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-6870130738521711232",
+            "competition": "National League",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Hartlepool United",
+            "away_team": "Tamworth",
+            "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-9218808708084643232",
+            "competition": "National League",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Kidderminster Harriers",
+            "away_team": "Sutton United",
+            "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-7215340741942190232",
+            "competition": "National League",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Solihull Moors",
+            "away_team": "FC Halifax Town",
+            "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-8771789130091023232",
+            "competition": "National League",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Southend United",
+            "away_team": "AFC Fylde",
+            "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-4787807271019771232",
+            "competition": "National League",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Yeovil Town",
+            "away_team": "Boston United",
+            "status": "scheduled"
           }
         ],
-        "refreshed_at": "2026-09-28T13:47:31.157988+00:00",
-        "window_start": "2026-09-28",
-        "window_end": "2026-10-02",
+        "refreshed_at": "2026-09-28T23:14:01.048575+00:00",
+        "window_start": "2026-09-29",
+        "window_end": "2026-10-03",
         "sources": [
           "sky"
         ]
       },
-      "fixtures_retrieved": 12,
+      "fixtures_retrieved": 24,
       "fallback_used": false,
       "checked": true
     },
@@ -868,7 +1126,7 @@
       "bottom_count": 7,
       "fixtures_evaluated": 1,
       "signals_found": 1,
-      "last_successful_refresh": "2026-09-28T13:47:31.157988+00:00",
+      "last_successful_refresh": "2026-09-28T23:14:01.048575+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -997,7 +1255,7 @@
         "publisher_updated": "26 September, 5:01pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-28T13:47:31.157988+00:00"
+        "refreshed_at": "2026-09-28T23:14:01.048575+00:00"
       },
       "fixtures": {
         "rows": [
@@ -1010,9 +1268,9 @@
             "status": "scheduled"
           }
         ],
-        "refreshed_at": "2026-09-28T13:47:31.157988+00:00",
-        "window_start": "2026-09-28",
-        "window_end": "2026-10-02",
+        "refreshed_at": "2026-09-28T23:14:01.048575+00:00",
+        "window_start": "2026-09-29",
+        "window_end": "2026-10-03",
         "sources": [
           "sky"
         ]
@@ -1032,7 +1290,7 @@
       "bottom_count": 7,
       "fixtures_evaluated": 1,
       "signals_found": 0,
-      "last_successful_refresh": "2026-09-28T13:47:31.157988+00:00",
+      "last_successful_refresh": "2026-09-28T23:14:01.048575+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -1161,7 +1419,7 @@
         "publisher_updated": "26 September, 5:03pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-28T13:47:31.157988+00:00"
+        "refreshed_at": "2026-09-28T23:14:01.048575+00:00"
       },
       "fixtures": {
         "rows": [
@@ -1174,9 +1432,9 @@
             "status": "scheduled"
           }
         ],
-        "refreshed_at": "2026-09-28T13:47:31.157988+00:00",
-        "window_start": "2026-09-28",
-        "window_end": "2026-10-02",
+        "refreshed_at": "2026-09-28T23:14:01.048575+00:00",
+        "window_start": "2026-09-29",
+        "window_end": "2026-10-03",
         "sources": [
           "sky"
         ]
@@ -1196,7 +1454,7 @@
       "bottom_count": 4,
       "fixtures_evaluated": 0,
       "signals_found": 0,
-      "last_successful_refresh": "2026-09-28T13:47:31.157988+00:00",
+      "last_successful_refresh": "2026-09-28T23:14:01.048575+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -1265,13 +1523,13 @@
         "publisher_updated": "22 September, 10:11am",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-28T13:47:31.157988+00:00"
+        "refreshed_at": "2026-09-28T23:14:01.048575+00:00"
       },
       "fixtures": {
         "rows": [],
-        "refreshed_at": "2026-09-28T13:47:31.157988+00:00",
-        "window_start": "2026-09-28",
-        "window_end": "2026-10-02",
+        "refreshed_at": "2026-09-28T23:14:01.048575+00:00",
+        "window_start": "2026-09-29",
+        "window_end": "2026-10-03",
         "sources": [
           "sky"
         ]
@@ -1289,9 +1547,9 @@
       "team_count": 10,
       "top_count": 3,
       "bottom_count": 3,
-      "fixtures_evaluated": 0,
-      "signals_found": 0,
-      "last_successful_refresh": "2026-09-28T13:47:31.157988+00:00",
+      "fixtures_evaluated": 3,
+      "signals_found": 2,
+      "last_successful_refresh": "2026-09-28T23:14:01.048575+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -1350,18 +1608,43 @@
         "publisher_updated": "27 September, 6:43pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-28T13:47:31.157988+00:00"
+        "refreshed_at": "2026-09-28T23:14:01.048575+00:00"
       },
       "fixtures": {
-        "rows": [],
-        "refreshed_at": "2026-09-28T13:47:31.157988+00:00",
-        "window_start": "2026-09-28",
-        "window_end": "2026-10-02",
+        "rows": [
+          {
+            "external_fixture_id": "sky-8395524554942817232",
+            "competition": "Scottish Championship",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Livingston",
+            "away_team": "Ayr United",
+            "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-6683134159251406232",
+            "competition": "Scottish Championship",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Morton",
+            "away_team": "Raith Rovers",
+            "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-7556277487373549232",
+            "competition": "Scottish Championship",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Partick Thistle",
+            "away_team": "Arbroath",
+            "status": "scheduled"
+          }
+        ],
+        "refreshed_at": "2026-09-28T23:14:01.048575+00:00",
+        "window_start": "2026-09-29",
+        "window_end": "2026-10-03",
         "sources": [
           "sky"
         ]
       },
-      "fixtures_retrieved": 0,
+      "fixtures_retrieved": 3,
       "fallback_used": false,
       "checked": true
     },
@@ -1374,9 +1657,9 @@
       "team_count": 10,
       "top_count": 3,
       "bottom_count": 3,
-      "fixtures_evaluated": 0,
-      "signals_found": 0,
-      "last_successful_refresh": "2026-09-28T13:47:31.157988+00:00",
+      "fixtures_evaluated": 5,
+      "signals_found": 1,
+      "last_successful_refresh": "2026-09-28T23:14:01.048575+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -1435,18 +1718,59 @@
         "publisher_updated": "25 September, 1:28pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-28T13:47:31.157988+00:00"
+        "refreshed_at": "2026-09-28T23:14:01.048575+00:00"
       },
       "fixtures": {
-        "rows": [],
-        "refreshed_at": "2026-09-28T13:47:31.157988+00:00",
-        "window_start": "2026-09-28",
-        "window_end": "2026-10-02",
+        "rows": [
+          {
+            "external_fixture_id": "sky-6939871866820474232",
+            "competition": "Scottish League One",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Airdrieonians",
+            "away_team": "Montrose",
+            "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-6025632939587458232",
+            "competition": "Scottish League One",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "East Fife",
+            "away_team": "East Kilbride",
+            "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-5748376656919928232",
+            "competition": "Scottish League One",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Queen of the South",
+            "away_team": "Cove Rangers",
+            "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-6003935425076966232",
+            "competition": "Scottish League One",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Ross County",
+            "away_team": "Alloa Athletic",
+            "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-4978368000290405232",
+            "competition": "Scottish League One",
+            "kickoff": "2026-10-03T16:30:00+00:00",
+            "home_team": "Hamilton Academical",
+            "away_team": "Peterhead",
+            "status": "scheduled"
+          }
+        ],
+        "refreshed_at": "2026-09-28T23:14:01.048575+00:00",
+        "window_start": "2026-09-29",
+        "window_end": "2026-10-03",
         "sources": [
           "sky"
         ]
       },
-      "fixtures_retrieved": 0,
+      "fixtures_retrieved": 5,
       "fallback_used": false,
       "checked": true
     },
@@ -1459,9 +1783,9 @@
       "team_count": 10,
       "top_count": 3,
       "bottom_count": 3,
-      "fixtures_evaluated": 0,
-      "signals_found": 0,
-      "last_successful_refresh": "2026-09-28T13:47:31.157988+00:00",
+      "fixtures_evaluated": 5,
+      "signals_found": 1,
+      "last_successful_refresh": "2026-09-28T23:14:01.048575+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -1520,18 +1844,59 @@
         "publisher_updated": "21 September, 12:44pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-28T13:47:31.157988+00:00"
+        "refreshed_at": "2026-09-28T23:14:01.048575+00:00"
       },
       "fixtures": {
-        "rows": [],
-        "refreshed_at": "2026-09-28T13:47:31.157988+00:00",
-        "window_start": "2026-09-28",
-        "window_end": "2026-10-02",
+        "rows": [
+          {
+            "external_fixture_id": "sky-8974757317288475232",
+            "competition": "Scottish League Two",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Annan Athletic",
+            "away_team": "Stirling Albion",
+            "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-4936662500183278232",
+            "competition": "Scottish League Two",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Dumbarton",
+            "away_team": "Forfar Athletic",
+            "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-6152131219788842232",
+            "competition": "Scottish League Two",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Elgin City",
+            "away_team": "Clyde",
+            "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-8769575234786020232",
+            "competition": "Scottish League Two",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Spartans",
+            "away_team": "Kelty Hearts",
+            "status": "scheduled"
+          },
+          {
+            "external_fixture_id": "sky-4849057630756072232",
+            "competition": "Scottish League Two",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Stranraer",
+            "away_team": "Edinburgh City",
+            "status": "scheduled"
+          }
+        ],
+        "refreshed_at": "2026-09-28T23:14:01.048575+00:00",
+        "window_start": "2026-09-29",
+        "window_end": "2026-10-03",
         "sources": [
           "sky"
         ]
       },
-      "fixtures_retrieved": 0,
+      "fixtures_retrieved": 5,
       "fallback_used": false,
       "checked": true
     }
@@ -1551,7 +1916,7 @@
       "team_count": 24,
       "group_size": 7,
       "cached": false,
-      "valid_until": "2026-09-29T01:47:31.157988+00:00"
+      "valid_until": "2026-09-29T11:14:01.048575+00:00"
     },
     {
       "external_fixture_id": "sky-4730396385255292232",
@@ -1567,7 +1932,7 @@
       "team_count": 24,
       "group_size": 7,
       "cached": false,
-      "valid_until": "2026-09-29T01:47:31.157988+00:00"
+      "valid_until": "2026-09-29T11:14:01.048575+00:00"
     },
     {
       "external_fixture_id": "sky-6095464206710694232",
@@ -1583,16 +1948,138 @@
       "team_count": 24,
       "group_size": 7,
       "cached": false,
-      "valid_until": "2026-09-29T01:47:31.157988+00:00"
+      "valid_until": "2026-09-29T11:14:01.048575+00:00"
+    },
+    {
+      "external_fixture_id": "sky-8691276221236937232",
+      "competition": "League Two",
+      "kickoff": "2026-10-03T14:00:00+00:00",
+      "home_team": "Accrington Stanley",
+      "away_team": "Cheltenham Town",
+      "status": "scheduled",
+      "home_position": 19,
+      "away_position": 2,
+      "top_team": "Cheltenham Town",
+      "bottom_team": "Accrington Stanley",
+      "team_count": 24,
+      "group_size": 7,
+      "cached": false,
+      "valid_until": "2026-09-29T11:14:01.048575+00:00"
+    },
+    {
+      "external_fixture_id": "sky-5364405029390284232",
+      "competition": "League Two",
+      "kickoff": "2026-10-03T14:00:00+00:00",
+      "home_team": "Grimsby Town",
+      "away_team": "Shrewsbury Town",
+      "status": "scheduled",
+      "home_position": 6,
+      "away_position": 18,
+      "top_team": "Grimsby Town",
+      "bottom_team": "Shrewsbury Town",
+      "team_count": 24,
+      "group_size": 7,
+      "cached": false,
+      "valid_until": "2026-09-29T11:14:01.048575+00:00"
+    },
+    {
+      "external_fixture_id": "sky-5138778264380696232",
+      "competition": "National League",
+      "kickoff": "2026-10-03T14:00:00+00:00",
+      "home_team": "Aldershot Town",
+      "away_team": "Carlisle United",
+      "status": "scheduled",
+      "home_position": 5,
+      "away_position": 19,
+      "top_team": "Aldershot Town",
+      "bottom_team": "Carlisle United",
+      "team_count": 24,
+      "group_size": 7,
+      "cached": false,
+      "valid_until": "2026-09-29T11:14:01.048575+00:00"
+    },
+    {
+      "external_fixture_id": "sky-4787807271019771232",
+      "competition": "National League",
+      "kickoff": "2026-10-03T14:00:00+00:00",
+      "home_team": "Yeovil Town",
+      "away_team": "Boston United",
+      "status": "scheduled",
+      "home_position": 6,
+      "away_position": 18,
+      "top_team": "Yeovil Town",
+      "bottom_team": "Boston United",
+      "team_count": 24,
+      "group_size": 7,
+      "cached": false,
+      "valid_until": "2026-09-29T11:14:01.048575+00:00"
+    },
+    {
+      "external_fixture_id": "sky-8395524554942817232",
+      "competition": "Scottish Championship",
+      "kickoff": "2026-10-03T14:00:00+00:00",
+      "home_team": "Livingston",
+      "away_team": "Ayr United",
+      "status": "scheduled",
+      "home_position": 3,
+      "away_position": 8,
+      "top_team": "Livingston",
+      "bottom_team": "Ayr United",
+      "team_count": 10,
+      "group_size": 3,
+      "cached": false,
+      "valid_until": "2026-09-29T11:14:01.048575+00:00"
+    },
+    {
+      "external_fixture_id": "sky-6683134159251406232",
+      "competition": "Scottish Championship",
+      "kickoff": "2026-10-03T14:00:00+00:00",
+      "home_team": "Morton",
+      "away_team": "Raith Rovers",
+      "status": "scheduled",
+      "home_position": 10,
+      "away_position": 2,
+      "top_team": "Raith Rovers",
+      "bottom_team": "Morton",
+      "team_count": 10,
+      "group_size": 3,
+      "cached": false,
+      "valid_until": "2026-09-29T11:14:01.048575+00:00"
+    },
+    {
+      "external_fixture_id": "sky-8769575234786020232",
+      "competition": "Scottish League Two",
+      "kickoff": "2026-10-03T14:00:00+00:00",
+      "home_team": "Spartans",
+      "away_team": "Kelty Hearts",
+      "status": "scheduled",
+      "home_position": 3,
+      "away_position": 9,
+      "top_team": "Spartans",
+      "bottom_team": "Kelty Hearts",
+      "team_count": 10,
+      "group_size": 3,
+      "cached": false,
+      "valid_until": "2026-09-29T11:14:01.048575+00:00"
+    },
+    {
+      "external_fixture_id": "sky-4978368000290405232",
+      "competition": "Scottish League One",
+      "kickoff": "2026-10-03T16:30:00+00:00",
+      "home_team": "Hamilton Academical",
+      "away_team": "Peterhead",
+      "status": "scheduled",
+      "home_position": 2,
+      "away_position": 8,
+      "top_team": "Hamilton Academical",
+      "bottom_team": "Peterhead",
+      "team_count": 10,
+      "group_size": 3,
+      "cached": false,
+      "valid_until": "2026-09-29T11:14:01.048575+00:00"
     }
   ],
   "fixture_sources": [
-    {
-      "source": "sky",
-      "scope": "2026-09-28",
-      "status": "success",
-      "rows": 12
-    },
     {
       "source": "sky",
       "scope": "2026-09-29",
@@ -1616,9 +2103,15 @@
       "scope": "2026-10-02",
       "status": "success",
       "rows": 23
+    },
+    {
+      "source": "sky",
+      "scope": "2026-10-03",
+      "status": "success",
+      "rows": 133
     }
   ],
-  "last_successful_refresh": "2026-09-28T13:47:31.157988+00:00",
+  "last_successful_refresh": "2026-09-28T23:14:01.048575+00:00",
   "leagues_checked": 11,
   "status": "ok"
 }
