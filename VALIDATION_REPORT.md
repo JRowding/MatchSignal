@@ -1,6 +1,6 @@
 # MatchSignal live validation
 
-Refresh: 2026-09-29T05:39:38.315805+00:00
+Refresh: 2026-09-29T12:47:13.936471+00:00
 Window: 2026-09-29 through 2026-10-03 (Europe/London).
 11/11 leagues checked; 11 qualifying fixtures.
 
@@ -8,17 +8,17 @@ Counts below reflect the refresh instant; already-started matches disappear from
 
 | League | Table | Fixtures | Teams | Top | Bottom | Checked | Signals | Source | Last success |
 |---|---|---|---:|---:|---:|---:|---:|---|---|
-| Premier League | live | live | 20 | 6 | 6 | 0 | 0 | https://www.skysports.com/premier-league-table | 2026-09-29T05:39:38.315805+00:00 |
-| Championship | live | live | 24 | 7 | 7 | 0 | 0 | https://www.skysports.com/championship-table | 2026-09-29T05:39:38.315805+00:00 |
-| League One | live | live | 24 | 7 | 7 | 3 | 0 | https://www.skysports.com/league-1-table | 2026-09-29T05:39:38.315805+00:00 |
-| League Two | live | live | 24 | 7 | 7 | 8 | 2 | https://www.skysports.com/league-2-table | 2026-09-29T05:39:38.315805+00:00 |
-| National League | live | live | 24 | 7 | 7 | 23 | 4 | https://www.skysports.com/national-league-table | 2026-09-29T05:39:38.315805+00:00 |
-| National League North | live | live | 24 | 7 | 7 | 1 | 1 | https://www.skysports.com/national-league-north-table | 2026-09-29T05:39:38.315805+00:00 |
-| National League South | live | live | 24 | 7 | 7 | 1 | 0 | https://www.skysports.com/national-league-south-table | 2026-09-29T05:39:38.315805+00:00 |
-| Scottish Premiership | live | live | 12 | 4 | 4 | 0 | 0 | https://www.skysports.com/scottish-premiership-table | 2026-09-29T05:39:38.315805+00:00 |
-| Scottish Championship | live | live | 10 | 3 | 3 | 3 | 2 | https://www.skysports.com/scottish-championship-table | 2026-09-29T05:39:38.315805+00:00 |
-| Scottish League One | live | live | 10 | 3 | 3 | 5 | 1 | https://www.skysports.com/scottish-league-one-table | 2026-09-29T05:39:38.315805+00:00 |
-| Scottish League Two | live | live | 10 | 3 | 3 | 5 | 1 | https://www.skysports.com/scottish-league-two-table | 2026-09-29T05:39:38.315805+00:00 |
+| Premier League | live | live | 20 | 6 | 6 | 0 | 0 | https://www.skysports.com/premier-league-table | 2026-09-29T12:47:13.936471+00:00 |
+| Championship | live | live | 24 | 7 | 7 | 0 | 0 | https://www.skysports.com/championship-table | 2026-09-29T12:47:13.936471+00:00 |
+| League One | live | live | 24 | 7 | 7 | 3 | 0 | https://www.skysports.com/league-1-table | 2026-09-29T12:47:13.936471+00:00 |
+| League Two | live | live | 24 | 7 | 7 | 8 | 2 | https://www.skysports.com/league-2-table | 2026-09-29T12:47:13.936471+00:00 |
+| National League | live | live | 24 | 7 | 7 | 23 | 4 | https://www.skysports.com/national-league-table | 2026-09-29T12:47:13.936471+00:00 |
+| National League North | live | live | 24 | 7 | 7 | 1 | 1 | https://www.skysports.com/national-league-north-table | 2026-09-29T12:47:13.936471+00:00 |
+| National League South | live | live | 24 | 7 | 7 | 1 | 0 | https://www.skysports.com/national-league-south-table | 2026-09-29T12:47:13.936471+00:00 |
+| Scottish Premiership | live | live | 12 | 4 | 4 | 0 | 0 | https://www.skysports.com/scottish-premiership-table | 2026-09-29T12:47:13.936471+00:00 |
+| Scottish Championship | live | live | 10 | 3 | 3 | 3 | 2 | https://www.skysports.com/scottish-championship-table | 2026-09-29T12:47:13.936471+00:00 |
+| Scottish League One | live | live | 10 | 3 | 3 | 5 | 1 | https://www.skysports.com/scottish-league-one-table | 2026-09-29T12:47:13.936471+00:00 |
+| Scottish League Two | live | live | 10 | 3 | 3 | 5 | 1 | https://www.skysports.com/scottish-league-two-table | 2026-09-29T12:47:13.936471+00:00 |
 
 ## Qualifying fixtures
 
@@ -57,7 +57,7 @@ Errors: none. Unmatched: none.
 Source warnings: none.
 
 ### League Two
-Fallback used: False. Publisher table timestamp: 28 September, 9:03pm.
+Fallback used: False. Publisher table timestamp: 29 September, 11:40am.
 Fixture sources: ['sky'].
 Errors: none. Unmatched: none.
 Source warnings: none.
