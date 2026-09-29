@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "percentage": 0.3,
-  "refreshed_at": "2026-09-29T12:47:13.936471+00:00",
+  "refreshed_at": "2026-09-29T22:11:54.296105+00:00",
   "window_start": "2026-09-29",
   "window_end": "2026-10-03",
   "leagues": {
@@ -16,7 +16,7 @@
       "bottom_count": 6,
       "fixtures_evaluated": 0,
       "signals_found": 0,
-      "last_successful_refresh": "2026-09-29T12:47:13.936471+00:00",
+      "last_successful_refresh": "2026-09-29T22:11:54.296105+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -125,11 +125,11 @@
         "publisher_updated": "21 September, 1:55pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-29T12:47:13.936471+00:00"
+        "refreshed_at": "2026-09-29T22:11:54.296105+00:00"
       },
       "fixtures": {
         "rows": [],
-        "refreshed_at": "2026-09-29T12:47:13.936471+00:00",
+        "refreshed_at": "2026-09-29T22:11:54.296105+00:00",
         "window_start": "2026-09-29",
         "window_end": "2026-10-03",
         "sources": [
@@ -151,7 +151,7 @@
       "bottom_count": 7,
       "fixtures_evaluated": 0,
       "signals_found": 0,
-      "last_successful_refresh": "2026-09-29T12:47:13.936471+00:00",
+      "last_successful_refresh": "2026-09-29T22:11:54.296105+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -280,11 +280,11 @@
         "publisher_updated": "23 September, 11:46am",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-29T12:47:13.936471+00:00"
+        "refreshed_at": "2026-09-29T22:11:54.296105+00:00"
       },
       "fixtures": {
         "rows": [],
-        "refreshed_at": "2026-09-29T12:47:13.936471+00:00",
+        "refreshed_at": "2026-09-29T22:11:54.296105+00:00",
         "window_start": "2026-09-29",
         "window_end": "2026-10-03",
         "sources": [
@@ -306,7 +306,7 @@
       "bottom_count": 7,
       "fixtures_evaluated": 3,
       "signals_found": 0,
-      "last_successful_refresh": "2026-09-29T12:47:13.936471+00:00",
+      "last_successful_refresh": "2026-09-29T22:11:54.296105+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -435,7 +435,7 @@
         "publisher_updated": "28 September, 5:31pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-29T12:47:13.936471+00:00"
+        "refreshed_at": "2026-09-29T22:11:54.296105+00:00"
       },
       "fixtures": {
         "rows": [
@@ -512,7 +512,7 @@
             "status": "scheduled"
           }
         ],
-        "refreshed_at": "2026-09-29T12:47:13.936471+00:00",
+        "refreshed_at": "2026-09-29T22:11:54.296105+00:00",
         "window_start": "2026-09-29",
         "window_end": "2026-10-03",
         "sources": [
@@ -534,7 +534,7 @@
       "bottom_count": 7,
       "fixtures_evaluated": 8,
       "signals_found": 2,
-      "last_successful_refresh": "2026-09-29T12:47:13.936471+00:00",
+      "last_successful_refresh": "2026-09-29T22:11:54.296105+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -660,10 +660,10 @@
           }
         ],
         "source": "https://www.skysports.com/league-2-table",
-        "publisher_updated": "29 September, 11:40am",
+        "publisher_updated": "29 September, 10:50pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-29T12:47:13.936471+00:00"
+        "refreshed_at": "2026-09-29T22:11:54.296105+00:00"
       },
       "fixtures": {
         "rows": [
@@ -756,7 +756,7 @@
             "status": "scheduled"
           }
         ],
-        "refreshed_at": "2026-09-29T12:47:13.936471+00:00",
+        "refreshed_at": "2026-09-29T22:11:54.296105+00:00",
         "window_start": "2026-09-29",
         "window_end": "2026-10-03",
         "sources": [
@@ -776,116 +776,116 @@
       "team_count": 24,
       "top_count": 7,
       "bottom_count": 7,
-      "fixtures_evaluated": 23,
-      "signals_found": 4,
-      "last_successful_refresh": "2026-09-29T12:47:13.936471+00:00",
+      "fixtures_evaluated": 13,
+      "signals_found": 1,
+      "last_successful_refresh": "2026-09-29T22:11:54.296105+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
           {
             "position": 1,
             "team": "Boreham Wood",
-            "played": 10
+            "played": 11
           },
           {
             "position": 2,
+            "team": "Harrogate Town",
+            "played": 11
+          },
+          {
+            "position": 3,
+            "team": "Altrincham",
+            "played": 11
+          },
+          {
+            "position": 4,
             "team": "Southend United",
             "played": 10
           },
           {
-            "position": 3,
-            "team": "AFC Fylde",
-            "played": 10
-          },
-          {
-            "position": 4,
-            "team": "Harrogate Town",
-            "played": 10
-          },
-          {
             "position": 5,
-            "team": "Aldershot Town",
-            "played": 10
+            "team": "AFC Fylde",
+            "played": 11
           },
           {
             "position": 6,
             "team": "Yeovil Town",
-            "played": 10
+            "played": 11
           },
           {
             "position": 7,
-            "team": "Kidderminster Harriers",
-            "played": 10
+            "team": "Aldershot Town",
+            "played": 11
           },
           {
             "position": 8,
-            "team": "Altrincham",
-            "played": 10
+            "team": "Worthing",
+            "played": 11
           },
           {
             "position": 9,
-            "team": "Worthing",
-            "played": 10
+            "team": "Kidderminster Harriers",
+            "played": 11
           },
           {
             "position": 10,
+            "team": "Hornchurch",
+            "played": 11
+          },
+          {
+            "position": 11,
             "team": "Sutton United",
             "played": 10
           },
           {
-            "position": 11,
-            "team": "Hornchurch",
-            "played": 10
-          },
-          {
             "position": 12,
-            "team": "Forest Green Rovers",
-            "played": 10
+            "team": "Barrow",
+            "played": 11
           },
           {
             "position": 13,
-            "team": "Eastleigh",
-            "played": 10
+            "team": "Forest Green Rovers",
+            "played": 11
           },
           {
             "position": 14,
             "team": "FC Halifax Town",
-            "played": 10
+            "played": 11
           },
           {
             "position": 15,
-            "team": "Barrow",
+            "team": "Eastleigh",
             "played": 10
           },
           {
             "position": 16,
-            "team": "Woking",
-            "played": 10
+            "team": "Carlisle United",
+            "played": 11
           },
           {
             "position": 17,
             "team": "Wealdstone",
-            "played": 10
+            "played": 11
           },
           {
             "position": 18,
-            "team": "Boston United",
-            "played": 10
+            "team": "Woking",
+            "played": 11
           },
           {
             "position": 19,
-            "team": "Carlisle United",
-            "played": 10
+            "team": "Boston United",
+            "played": 11
           },
           {
             "position": 20,
             "team": "Scunthorpe United",
-            "played": 10
+            "played": 11
           },
           {
             "position": 21,
             "team": "Hartlepool United",
-            "played": 10
+            "played": 11
           },
           {
             "position": 22,
@@ -895,37 +895,29 @@
           {
             "position": 23,
             "team": "Solihull Moors",
-            "played": 10
+            "played": 11
           },
           {
             "position": 24,
             "team": "Gateshead",
-            "played": 10
+            "played": 11
           }
         ],
         "source": "https://www.skysports.com/national-league-table",
-        "publisher_updated": "28 September, 4:53pm",
+        "publisher_updated": "29 September, 9:44pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-29T12:47:13.936471+00:00"
+        "refreshed_at": "2026-09-29T22:11:54.296105+00:00"
       },
       "fixtures": {
         "rows": [
-          {
-            "external_fixture_id": "sky-8324528704895542232",
-            "competition": "National League",
-            "kickoff": "2026-10-03T14:00:00+00:00",
-            "home_team": "Scunthorpe United",
-            "away_team": "Forest Green Rovers",
-            "status": "postponed"
-          },
           {
             "external_fixture_id": "sky-6570222655766993232",
             "competition": "National League",
             "kickoff": "2026-09-29T18:00:00+00:00",
             "home_team": "Boreham Wood",
             "away_team": "Kidderminster Harriers",
-            "status": "scheduled"
+            "status": "completed"
           },
           {
             "external_fixture_id": "sky-5528445200683215232",
@@ -933,7 +925,7 @@
             "kickoff": "2026-09-29T18:45:00+00:00",
             "home_team": "AFC Fylde",
             "away_team": "Carlisle United",
-            "status": "scheduled"
+            "status": "completed"
           },
           {
             "external_fixture_id": "sky-7296487560682327232",
@@ -941,7 +933,7 @@
             "kickoff": "2026-09-29T18:45:00+00:00",
             "home_team": "Barrow",
             "away_team": "Scunthorpe United",
-            "status": "scheduled"
+            "status": "completed"
           },
           {
             "external_fixture_id": "sky-9155741011442873232",
@@ -949,7 +941,7 @@
             "kickoff": "2026-09-29T18:45:00+00:00",
             "home_team": "FC Halifax Town",
             "away_team": "Boston United",
-            "status": "scheduled"
+            "status": "completed"
           },
           {
             "external_fixture_id": "sky-9159626849852673232",
@@ -957,7 +949,7 @@
             "kickoff": "2026-09-29T18:45:00+00:00",
             "home_team": "Forest Green Rovers",
             "away_team": "Wealdstone",
-            "status": "scheduled"
+            "status": "completed"
           },
           {
             "external_fixture_id": "sky-5769982551505485232",
@@ -965,7 +957,7 @@
             "kickoff": "2026-09-29T18:45:00+00:00",
             "home_team": "Gateshead",
             "away_team": "Altrincham",
-            "status": "scheduled"
+            "status": "completed"
           },
           {
             "external_fixture_id": "sky-4730396385255292232",
@@ -973,7 +965,7 @@
             "kickoff": "2026-09-29T18:45:00+00:00",
             "home_team": "Hartlepool United",
             "away_team": "Harrogate Town",
-            "status": "scheduled"
+            "status": "completed"
           },
           {
             "external_fixture_id": "sky-6791605807868337232",
@@ -981,7 +973,7 @@
             "kickoff": "2026-09-29T18:45:00+00:00",
             "home_team": "Hornchurch",
             "away_team": "Aldershot Town",
-            "status": "scheduled"
+            "status": "completed"
           },
           {
             "external_fixture_id": "sky-5694466585562007232",
@@ -989,7 +981,7 @@
             "kickoff": "2026-09-29T18:45:00+00:00",
             "home_team": "Woking",
             "away_team": "Solihull Moors",
-            "status": "scheduled"
+            "status": "completed"
           },
           {
             "external_fixture_id": "sky-7239473214900029232",
@@ -997,7 +989,15 @@
             "kickoff": "2026-09-29T18:45:00+00:00",
             "home_team": "Yeovil Town",
             "away_team": "Worthing",
-            "status": "scheduled"
+            "status": "completed"
+          },
+          {
+            "external_fixture_id": "sky-8324528704895542232",
+            "competition": "National League",
+            "kickoff": "2026-10-03T14:00:00+00:00",
+            "home_team": "Scunthorpe United",
+            "away_team": "Forest Green Rovers",
+            "status": "postponed"
           },
           {
             "external_fixture_id": "sky-6529045272369458232",
@@ -1104,7 +1104,7 @@
             "status": "scheduled"
           }
         ],
-        "refreshed_at": "2026-09-29T12:47:13.936471+00:00",
+        "refreshed_at": "2026-09-29T22:11:54.296105+00:00",
         "window_start": "2026-09-29",
         "window_end": "2026-10-03",
         "sources": [
@@ -1124,9 +1124,9 @@
       "team_count": 24,
       "top_count": 7,
       "bottom_count": 7,
-      "fixtures_evaluated": 1,
-      "signals_found": 1,
-      "last_successful_refresh": "2026-09-29T12:47:13.936471+00:00",
+      "fixtures_evaluated": 0,
+      "signals_found": 0,
+      "last_successful_refresh": "2026-09-29T22:11:54.296105+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -1148,7 +1148,7 @@
           {
             "position": 4,
             "team": "South Shields",
-            "played": 9
+            "played": 10
           },
           {
             "position": 5,
@@ -1222,18 +1222,18 @@
           },
           {
             "position": 19,
-            "team": "Southport",
+            "team": "Brackley Town",
             "played": 10
           },
           {
             "position": 20,
-            "team": "AFC Telford United",
+            "team": "Southport",
             "played": 10
           },
           {
             "position": 21,
-            "team": "Brackley Town",
-            "played": 9
+            "team": "AFC Telford United",
+            "played": 10
           },
           {
             "position": 22,
@@ -1252,10 +1252,10 @@
           }
         ],
         "source": "https://www.skysports.com/national-league-north-table",
-        "publisher_updated": "26 September, 5:01pm",
+        "publisher_updated": "29 September, 9:42pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-29T12:47:13.936471+00:00"
+        "refreshed_at": "2026-09-29T22:11:54.296105+00:00"
       },
       "fixtures": {
         "rows": [
@@ -1265,10 +1265,10 @@
             "kickoff": "2026-09-29T18:45:00+00:00",
             "home_team": "Brackley Town",
             "away_team": "South Shields",
-            "status": "scheduled"
+            "status": "completed"
           }
         ],
-        "refreshed_at": "2026-09-29T12:47:13.936471+00:00",
+        "refreshed_at": "2026-09-29T22:11:54.296105+00:00",
         "window_start": "2026-09-29",
         "window_end": "2026-10-03",
         "sources": [
@@ -1288,9 +1288,9 @@
       "team_count": 24,
       "top_count": 7,
       "bottom_count": 7,
-      "fixtures_evaluated": 1,
+      "fixtures_evaluated": 0,
       "signals_found": 0,
-      "last_successful_refresh": "2026-09-29T12:47:13.936471+00:00",
+      "last_successful_refresh": "2026-09-29T22:11:54.296105+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -1397,7 +1397,7 @@
           {
             "position": 21,
             "team": "Ebbsfleet United",
-            "played": 4
+            "played": 5
           },
           {
             "position": 22,
@@ -1407,7 +1407,7 @@
           {
             "position": 23,
             "team": "Slough",
-            "played": 9
+            "played": 10
           },
           {
             "position": 24,
@@ -1416,10 +1416,10 @@
           }
         ],
         "source": "https://www.skysports.com/national-league-south-table",
-        "publisher_updated": "26 September, 5:03pm",
+        "publisher_updated": "29 September, 9:40pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-29T12:47:13.936471+00:00"
+        "refreshed_at": "2026-09-29T22:11:54.296105+00:00"
       },
       "fixtures": {
         "rows": [
@@ -1429,10 +1429,10 @@
             "kickoff": "2026-09-29T18:45:00+00:00",
             "home_team": "Slough",
             "away_team": "Ebbsfleet United",
-            "status": "scheduled"
+            "status": "completed"
           }
         ],
-        "refreshed_at": "2026-09-29T12:47:13.936471+00:00",
+        "refreshed_at": "2026-09-29T22:11:54.296105+00:00",
         "window_start": "2026-09-29",
         "window_end": "2026-10-03",
         "sources": [
@@ -1454,7 +1454,7 @@
       "bottom_count": 4,
       "fixtures_evaluated": 0,
       "signals_found": 0,
-      "last_successful_refresh": "2026-09-29T12:47:13.936471+00:00",
+      "last_successful_refresh": "2026-09-29T22:11:54.296105+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -1523,11 +1523,11 @@
         "publisher_updated": "22 September, 10:11am",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-29T12:47:13.936471+00:00"
+        "refreshed_at": "2026-09-29T22:11:54.296105+00:00"
       },
       "fixtures": {
         "rows": [],
-        "refreshed_at": "2026-09-29T12:47:13.936471+00:00",
+        "refreshed_at": "2026-09-29T22:11:54.296105+00:00",
         "window_start": "2026-09-29",
         "window_end": "2026-10-03",
         "sources": [
@@ -1549,7 +1549,7 @@
       "bottom_count": 3,
       "fixtures_evaluated": 3,
       "signals_found": 2,
-      "last_successful_refresh": "2026-09-29T12:47:13.936471+00:00",
+      "last_successful_refresh": "2026-09-29T22:11:54.296105+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -1608,7 +1608,7 @@
         "publisher_updated": "27 September, 6:43pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-29T12:47:13.936471+00:00"
+        "refreshed_at": "2026-09-29T22:11:54.296105+00:00"
       },
       "fixtures": {
         "rows": [
@@ -1637,7 +1637,7 @@
             "status": "scheduled"
           }
         ],
-        "refreshed_at": "2026-09-29T12:47:13.936471+00:00",
+        "refreshed_at": "2026-09-29T22:11:54.296105+00:00",
         "window_start": "2026-09-29",
         "window_end": "2026-10-03",
         "sources": [
@@ -1659,7 +1659,7 @@
       "bottom_count": 3,
       "fixtures_evaluated": 5,
       "signals_found": 1,
-      "last_successful_refresh": "2026-09-29T12:47:13.936471+00:00",
+      "last_successful_refresh": "2026-09-29T22:11:54.296105+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -1718,7 +1718,7 @@
         "publisher_updated": "25 September, 1:28pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-29T12:47:13.936471+00:00"
+        "refreshed_at": "2026-09-29T22:11:54.296105+00:00"
       },
       "fixtures": {
         "rows": [
@@ -1763,7 +1763,7 @@
             "status": "scheduled"
           }
         ],
-        "refreshed_at": "2026-09-29T12:47:13.936471+00:00",
+        "refreshed_at": "2026-09-29T22:11:54.296105+00:00",
         "window_start": "2026-09-29",
         "window_end": "2026-10-03",
         "sources": [
@@ -1785,7 +1785,7 @@
       "bottom_count": 3,
       "fixtures_evaluated": 5,
       "signals_found": 1,
-      "last_successful_refresh": "2026-09-29T12:47:13.936471+00:00",
+      "last_successful_refresh": "2026-09-29T22:11:54.296105+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -1844,7 +1844,7 @@
         "publisher_updated": "21 September, 12:44pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-29T12:47:13.936471+00:00"
+        "refreshed_at": "2026-09-29T22:11:54.296105+00:00"
       },
       "fixtures": {
         "rows": [
@@ -1889,7 +1889,7 @@
             "status": "scheduled"
           }
         ],
-        "refreshed_at": "2026-09-29T12:47:13.936471+00:00",
+        "refreshed_at": "2026-09-29T22:11:54.296105+00:00",
         "window_start": "2026-09-29",
         "window_end": "2026-10-03",
         "sources": [
@@ -1902,54 +1902,6 @@
     }
   },
   "signals": [
-    {
-      "external_fixture_id": "sky-5528445200683215232",
-      "competition": "National League",
-      "kickoff": "2026-09-29T18:45:00+00:00",
-      "home_team": "AFC Fylde",
-      "away_team": "Carlisle United",
-      "status": "scheduled",
-      "home_position": 3,
-      "away_position": 19,
-      "top_team": "AFC Fylde",
-      "bottom_team": "Carlisle United",
-      "team_count": 24,
-      "group_size": 7,
-      "cached": false,
-      "valid_until": "2026-09-30T00:47:13.936471+00:00"
-    },
-    {
-      "external_fixture_id": "sky-4730396385255292232",
-      "competition": "National League",
-      "kickoff": "2026-09-29T18:45:00+00:00",
-      "home_team": "Hartlepool United",
-      "away_team": "Harrogate Town",
-      "status": "scheduled",
-      "home_position": 21,
-      "away_position": 4,
-      "top_team": "Harrogate Town",
-      "bottom_team": "Hartlepool United",
-      "team_count": 24,
-      "group_size": 7,
-      "cached": false,
-      "valid_until": "2026-09-30T00:47:13.936471+00:00"
-    },
-    {
-      "external_fixture_id": "sky-6095464206710694232",
-      "competition": "National League North",
-      "kickoff": "2026-09-29T18:45:00+00:00",
-      "home_team": "Brackley Town",
-      "away_team": "South Shields",
-      "status": "scheduled",
-      "home_position": 21,
-      "away_position": 4,
-      "top_team": "South Shields",
-      "bottom_team": "Brackley Town",
-      "team_count": 24,
-      "group_size": 7,
-      "cached": false,
-      "valid_until": "2026-09-30T00:47:13.936471+00:00"
-    },
     {
       "external_fixture_id": "sky-8691276221236937232",
       "competition": "League Two",
@@ -1964,7 +1916,7 @@
       "team_count": 24,
       "group_size": 7,
       "cached": false,
-      "valid_until": "2026-09-30T00:47:13.936471+00:00"
+      "valid_until": "2026-09-30T10:11:54.296105+00:00"
     },
     {
       "external_fixture_id": "sky-5364405029390284232",
@@ -1980,23 +1932,7 @@
       "team_count": 24,
       "group_size": 7,
       "cached": false,
-      "valid_until": "2026-09-30T00:47:13.936471+00:00"
-    },
-    {
-      "external_fixture_id": "sky-5138778264380696232",
-      "competition": "National League",
-      "kickoff": "2026-10-03T14:00:00+00:00",
-      "home_team": "Aldershot Town",
-      "away_team": "Carlisle United",
-      "status": "scheduled",
-      "home_position": 5,
-      "away_position": 19,
-      "top_team": "Aldershot Town",
-      "bottom_team": "Carlisle United",
-      "team_count": 24,
-      "group_size": 7,
-      "cached": false,
-      "valid_until": "2026-09-30T00:47:13.936471+00:00"
+      "valid_until": "2026-09-30T10:11:54.296105+00:00"
     },
     {
       "external_fixture_id": "sky-4787807271019771232",
@@ -2006,13 +1942,13 @@
       "away_team": "Boston United",
       "status": "scheduled",
       "home_position": 6,
-      "away_position": 18,
+      "away_position": 19,
       "top_team": "Yeovil Town",
       "bottom_team": "Boston United",
       "team_count": 24,
       "group_size": 7,
       "cached": false,
-      "valid_until": "2026-09-30T00:47:13.936471+00:00"
+      "valid_until": "2026-09-30T10:11:54.296105+00:00"
     },
     {
       "external_fixture_id": "sky-8395524554942817232",
@@ -2028,7 +1964,7 @@
       "team_count": 10,
       "group_size": 3,
       "cached": false,
-      "valid_until": "2026-09-30T00:47:13.936471+00:00"
+      "valid_until": "2026-09-30T10:11:54.296105+00:00"
     },
     {
       "external_fixture_id": "sky-6683134159251406232",
@@ -2044,7 +1980,7 @@
       "team_count": 10,
       "group_size": 3,
       "cached": false,
-      "valid_until": "2026-09-30T00:47:13.936471+00:00"
+      "valid_until": "2026-09-30T10:11:54.296105+00:00"
     },
     {
       "external_fixture_id": "sky-8769575234786020232",
@@ -2060,7 +1996,7 @@
       "team_count": 10,
       "group_size": 3,
       "cached": false,
-      "valid_until": "2026-09-30T00:47:13.936471+00:00"
+      "valid_until": "2026-09-30T10:11:54.296105+00:00"
     },
     {
       "external_fixture_id": "sky-4978368000290405232",
@@ -2076,7 +2012,7 @@
       "team_count": 10,
       "group_size": 3,
       "cached": false,
-      "valid_until": "2026-09-30T00:47:13.936471+00:00"
+      "valid_until": "2026-09-30T10:11:54.296105+00:00"
     }
   ],
   "fixture_sources": [
@@ -2084,7 +2020,7 @@
       "source": "sky",
       "scope": "2026-09-29",
       "status": "success",
-      "rows": 39
+      "rows": 59
     },
     {
       "source": "sky",
@@ -2108,10 +2044,10 @@
       "source": "sky",
       "scope": "2026-10-03",
       "status": "success",
-      "rows": 133
+      "rows": 134
     }
   ],
-  "last_successful_refresh": "2026-09-29T12:47:13.936471+00:00",
+  "last_successful_refresh": "2026-09-29T22:11:54.296105+00:00",
   "leagues_checked": 11,
   "status": "ok"
 }
