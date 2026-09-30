@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "percentage": 0.3,
-  "refreshed_at": "2026-09-29T22:11:54.296105+00:00",
-  "window_start": "2026-09-29",
-  "window_end": "2026-10-03",
+  "refreshed_at": "2026-09-30T05:28:00.451833+00:00",
+  "window_start": "2026-09-30",
+  "window_end": "2026-10-04",
   "leagues": {
     "Premier League": {
       "table_status": "live",
@@ -16,7 +16,7 @@
       "bottom_count": 6,
       "fixtures_evaluated": 0,
       "signals_found": 0,
-      "last_successful_refresh": "2026-09-29T22:11:54.296105+00:00",
+      "last_successful_refresh": "2026-09-30T05:28:00.451833+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -125,13 +125,13 @@
         "publisher_updated": "21 September, 1:55pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-29T22:11:54.296105+00:00"
+        "refreshed_at": "2026-09-30T05:28:00.451833+00:00"
       },
       "fixtures": {
         "rows": [],
-        "refreshed_at": "2026-09-29T22:11:54.296105+00:00",
-        "window_start": "2026-09-29",
-        "window_end": "2026-10-03",
+        "refreshed_at": "2026-09-30T05:28:00.451833+00:00",
+        "window_start": "2026-09-30",
+        "window_end": "2026-10-04",
         "sources": [
           "sky"
         ]
@@ -151,7 +151,7 @@
       "bottom_count": 7,
       "fixtures_evaluated": 0,
       "signals_found": 0,
-      "last_successful_refresh": "2026-09-29T22:11:54.296105+00:00",
+      "last_successful_refresh": "2026-09-30T05:28:00.451833+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -280,13 +280,13 @@
         "publisher_updated": "23 September, 11:46am",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-29T22:11:54.296105+00:00"
+        "refreshed_at": "2026-09-30T05:28:00.451833+00:00"
       },
       "fixtures": {
         "rows": [],
-        "refreshed_at": "2026-09-29T22:11:54.296105+00:00",
-        "window_start": "2026-09-29",
-        "window_end": "2026-10-03",
+        "refreshed_at": "2026-09-30T05:28:00.451833+00:00",
+        "window_start": "2026-09-30",
+        "window_end": "2026-10-04",
         "sources": [
           "sky"
         ]
@@ -306,7 +306,7 @@
       "bottom_count": 7,
       "fixtures_evaluated": 3,
       "signals_found": 0,
-      "last_successful_refresh": "2026-09-29T22:11:54.296105+00:00",
+      "last_successful_refresh": "2026-09-30T05:28:00.451833+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -435,7 +435,7 @@
         "publisher_updated": "28 September, 5:31pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-29T22:11:54.296105+00:00"
+        "refreshed_at": "2026-09-30T05:28:00.451833+00:00"
       },
       "fixtures": {
         "rows": [
@@ -512,9 +512,9 @@
             "status": "scheduled"
           }
         ],
-        "refreshed_at": "2026-09-29T22:11:54.296105+00:00",
-        "window_start": "2026-09-29",
-        "window_end": "2026-10-03",
+        "refreshed_at": "2026-09-30T05:28:00.451833+00:00",
+        "window_start": "2026-09-30",
+        "window_end": "2026-10-04",
         "sources": [
           "sky"
         ]
@@ -534,7 +534,7 @@
       "bottom_count": 7,
       "fixtures_evaluated": 8,
       "signals_found": 2,
-      "last_successful_refresh": "2026-09-29T22:11:54.296105+00:00",
+      "last_successful_refresh": "2026-09-30T05:28:00.451833+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -663,7 +663,7 @@
         "publisher_updated": "29 September, 10:50pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-29T22:11:54.296105+00:00"
+        "refreshed_at": "2026-09-30T05:28:00.451833+00:00"
       },
       "fixtures": {
         "rows": [
@@ -756,9 +756,9 @@
             "status": "scheduled"
           }
         ],
-        "refreshed_at": "2026-09-29T22:11:54.296105+00:00",
-        "window_start": "2026-09-29",
-        "window_end": "2026-10-03",
+        "refreshed_at": "2026-09-30T05:28:00.451833+00:00",
+        "window_start": "2026-09-30",
+        "window_end": "2026-10-04",
         "sources": [
           "sky"
         ]
@@ -778,7 +778,7 @@
       "bottom_count": 7,
       "fixtures_evaluated": 13,
       "signals_found": 1,
-      "last_successful_refresh": "2026-09-29T22:11:54.296105+00:00",
+      "last_successful_refresh": "2026-09-30T05:28:00.451833+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -907,90 +907,10 @@
         "publisher_updated": "29 September, 9:44pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-29T22:11:54.296105+00:00"
+        "refreshed_at": "2026-09-30T05:28:00.451833+00:00"
       },
       "fixtures": {
         "rows": [
-          {
-            "external_fixture_id": "sky-6570222655766993232",
-            "competition": "National League",
-            "kickoff": "2026-09-29T18:00:00+00:00",
-            "home_team": "Boreham Wood",
-            "away_team": "Kidderminster Harriers",
-            "status": "completed"
-          },
-          {
-            "external_fixture_id": "sky-5528445200683215232",
-            "competition": "National League",
-            "kickoff": "2026-09-29T18:45:00+00:00",
-            "home_team": "AFC Fylde",
-            "away_team": "Carlisle United",
-            "status": "completed"
-          },
-          {
-            "external_fixture_id": "sky-7296487560682327232",
-            "competition": "National League",
-            "kickoff": "2026-09-29T18:45:00+00:00",
-            "home_team": "Barrow",
-            "away_team": "Scunthorpe United",
-            "status": "completed"
-          },
-          {
-            "external_fixture_id": "sky-9155741011442873232",
-            "competition": "National League",
-            "kickoff": "2026-09-29T18:45:00+00:00",
-            "home_team": "FC Halifax Town",
-            "away_team": "Boston United",
-            "status": "completed"
-          },
-          {
-            "external_fixture_id": "sky-9159626849852673232",
-            "competition": "National League",
-            "kickoff": "2026-09-29T18:45:00+00:00",
-            "home_team": "Forest Green Rovers",
-            "away_team": "Wealdstone",
-            "status": "completed"
-          },
-          {
-            "external_fixture_id": "sky-5769982551505485232",
-            "competition": "National League",
-            "kickoff": "2026-09-29T18:45:00+00:00",
-            "home_team": "Gateshead",
-            "away_team": "Altrincham",
-            "status": "completed"
-          },
-          {
-            "external_fixture_id": "sky-4730396385255292232",
-            "competition": "National League",
-            "kickoff": "2026-09-29T18:45:00+00:00",
-            "home_team": "Hartlepool United",
-            "away_team": "Harrogate Town",
-            "status": "completed"
-          },
-          {
-            "external_fixture_id": "sky-6791605807868337232",
-            "competition": "National League",
-            "kickoff": "2026-09-29T18:45:00+00:00",
-            "home_team": "Hornchurch",
-            "away_team": "Aldershot Town",
-            "status": "completed"
-          },
-          {
-            "external_fixture_id": "sky-5694466585562007232",
-            "competition": "National League",
-            "kickoff": "2026-09-29T18:45:00+00:00",
-            "home_team": "Woking",
-            "away_team": "Solihull Moors",
-            "status": "completed"
-          },
-          {
-            "external_fixture_id": "sky-7239473214900029232",
-            "competition": "National League",
-            "kickoff": "2026-09-29T18:45:00+00:00",
-            "home_team": "Yeovil Town",
-            "away_team": "Worthing",
-            "status": "completed"
-          },
           {
             "external_fixture_id": "sky-8324528704895542232",
             "competition": "National League",
@@ -1104,14 +1024,14 @@
             "status": "scheduled"
           }
         ],
-        "refreshed_at": "2026-09-29T22:11:54.296105+00:00",
-        "window_start": "2026-09-29",
-        "window_end": "2026-10-03",
+        "refreshed_at": "2026-09-30T05:28:00.451833+00:00",
+        "window_start": "2026-09-30",
+        "window_end": "2026-10-04",
         "sources": [
           "sky"
         ]
       },
-      "fixtures_retrieved": 24,
+      "fixtures_retrieved": 14,
       "fallback_used": false,
       "checked": true
     },
@@ -1126,7 +1046,7 @@
       "bottom_count": 7,
       "fixtures_evaluated": 0,
       "signals_found": 0,
-      "last_successful_refresh": "2026-09-29T22:11:54.296105+00:00",
+      "last_successful_refresh": "2026-09-30T05:28:00.451833+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -1255,27 +1175,18 @@
         "publisher_updated": "29 September, 9:42pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-29T22:11:54.296105+00:00"
+        "refreshed_at": "2026-09-30T05:28:00.451833+00:00"
       },
       "fixtures": {
-        "rows": [
-          {
-            "external_fixture_id": "sky-6095464206710694232",
-            "competition": "National League North",
-            "kickoff": "2026-09-29T18:45:00+00:00",
-            "home_team": "Brackley Town",
-            "away_team": "South Shields",
-            "status": "completed"
-          }
-        ],
-        "refreshed_at": "2026-09-29T22:11:54.296105+00:00",
-        "window_start": "2026-09-29",
-        "window_end": "2026-10-03",
+        "rows": [],
+        "refreshed_at": "2026-09-30T05:28:00.451833+00:00",
+        "window_start": "2026-09-30",
+        "window_end": "2026-10-04",
         "sources": [
           "sky"
         ]
       },
-      "fixtures_retrieved": 1,
+      "fixtures_retrieved": 0,
       "fallback_used": false,
       "checked": true
     },
@@ -1290,7 +1201,7 @@
       "bottom_count": 7,
       "fixtures_evaluated": 0,
       "signals_found": 0,
-      "last_successful_refresh": "2026-09-29T22:11:54.296105+00:00",
+      "last_successful_refresh": "2026-09-30T05:28:00.451833+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -1419,27 +1330,18 @@
         "publisher_updated": "29 September, 9:40pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-29T22:11:54.296105+00:00"
+        "refreshed_at": "2026-09-30T05:28:00.451833+00:00"
       },
       "fixtures": {
-        "rows": [
-          {
-            "external_fixture_id": "sky-7918843026337785232",
-            "competition": "National League South",
-            "kickoff": "2026-09-29T18:45:00+00:00",
-            "home_team": "Slough",
-            "away_team": "Ebbsfleet United",
-            "status": "completed"
-          }
-        ],
-        "refreshed_at": "2026-09-29T22:11:54.296105+00:00",
-        "window_start": "2026-09-29",
-        "window_end": "2026-10-03",
+        "rows": [],
+        "refreshed_at": "2026-09-30T05:28:00.451833+00:00",
+        "window_start": "2026-09-30",
+        "window_end": "2026-10-04",
         "sources": [
           "sky"
         ]
       },
-      "fixtures_retrieved": 1,
+      "fixtures_retrieved": 0,
       "fallback_used": false,
       "checked": true
     },
@@ -1454,7 +1356,7 @@
       "bottom_count": 4,
       "fixtures_evaluated": 0,
       "signals_found": 0,
-      "last_successful_refresh": "2026-09-29T22:11:54.296105+00:00",
+      "last_successful_refresh": "2026-09-30T05:28:00.451833+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -1523,13 +1425,13 @@
         "publisher_updated": "22 September, 10:11am",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-29T22:11:54.296105+00:00"
+        "refreshed_at": "2026-09-30T05:28:00.451833+00:00"
       },
       "fixtures": {
         "rows": [],
-        "refreshed_at": "2026-09-29T22:11:54.296105+00:00",
-        "window_start": "2026-09-29",
-        "window_end": "2026-10-03",
+        "refreshed_at": "2026-09-30T05:28:00.451833+00:00",
+        "window_start": "2026-09-30",
+        "window_end": "2026-10-04",
         "sources": [
           "sky"
         ]
@@ -1549,7 +1451,7 @@
       "bottom_count": 3,
       "fixtures_evaluated": 3,
       "signals_found": 2,
-      "last_successful_refresh": "2026-09-29T22:11:54.296105+00:00",
+      "last_successful_refresh": "2026-09-30T05:28:00.451833+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -1608,7 +1510,7 @@
         "publisher_updated": "27 September, 6:43pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-29T22:11:54.296105+00:00"
+        "refreshed_at": "2026-09-30T05:28:00.451833+00:00"
       },
       "fixtures": {
         "rows": [
@@ -1637,9 +1539,9 @@
             "status": "scheduled"
           }
         ],
-        "refreshed_at": "2026-09-29T22:11:54.296105+00:00",
-        "window_start": "2026-09-29",
-        "window_end": "2026-10-03",
+        "refreshed_at": "2026-09-30T05:28:00.451833+00:00",
+        "window_start": "2026-09-30",
+        "window_end": "2026-10-04",
         "sources": [
           "sky"
         ]
@@ -1659,7 +1561,7 @@
       "bottom_count": 3,
       "fixtures_evaluated": 5,
       "signals_found": 1,
-      "last_successful_refresh": "2026-09-29T22:11:54.296105+00:00",
+      "last_successful_refresh": "2026-09-30T05:28:00.451833+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -1718,7 +1620,7 @@
         "publisher_updated": "25 September, 1:28pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-29T22:11:54.296105+00:00"
+        "refreshed_at": "2026-09-30T05:28:00.451833+00:00"
       },
       "fixtures": {
         "rows": [
@@ -1763,9 +1665,9 @@
             "status": "scheduled"
           }
         ],
-        "refreshed_at": "2026-09-29T22:11:54.296105+00:00",
-        "window_start": "2026-09-29",
-        "window_end": "2026-10-03",
+        "refreshed_at": "2026-09-30T05:28:00.451833+00:00",
+        "window_start": "2026-09-30",
+        "window_end": "2026-10-04",
         "sources": [
           "sky"
         ]
@@ -1785,7 +1687,7 @@
       "bottom_count": 3,
       "fixtures_evaluated": 5,
       "signals_found": 1,
-      "last_successful_refresh": "2026-09-29T22:11:54.296105+00:00",
+      "last_successful_refresh": "2026-09-30T05:28:00.451833+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -1844,7 +1746,7 @@
         "publisher_updated": "21 September, 12:44pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-09-29T22:11:54.296105+00:00"
+        "refreshed_at": "2026-09-30T05:28:00.451833+00:00"
       },
       "fixtures": {
         "rows": [
@@ -1889,9 +1791,9 @@
             "status": "scheduled"
           }
         ],
-        "refreshed_at": "2026-09-29T22:11:54.296105+00:00",
-        "window_start": "2026-09-29",
-        "window_end": "2026-10-03",
+        "refreshed_at": "2026-09-30T05:28:00.451833+00:00",
+        "window_start": "2026-09-30",
+        "window_end": "2026-10-04",
         "sources": [
           "sky"
         ]
@@ -1916,7 +1818,7 @@
       "team_count": 24,
       "group_size": 7,
       "cached": false,
-      "valid_until": "2026-09-30T10:11:54.296105+00:00"
+      "valid_until": "2026-09-30T17:28:00.451833+00:00"
     },
     {
       "external_fixture_id": "sky-5364405029390284232",
@@ -1932,7 +1834,7 @@
       "team_count": 24,
       "group_size": 7,
       "cached": false,
-      "valid_until": "2026-09-30T10:11:54.296105+00:00"
+      "valid_until": "2026-09-30T17:28:00.451833+00:00"
     },
     {
       "external_fixture_id": "sky-4787807271019771232",
@@ -1948,7 +1850,7 @@
       "team_count": 24,
       "group_size": 7,
       "cached": false,
-      "valid_until": "2026-09-30T10:11:54.296105+00:00"
+      "valid_until": "2026-09-30T17:28:00.451833+00:00"
     },
     {
       "external_fixture_id": "sky-8395524554942817232",
@@ -1964,7 +1866,7 @@
       "team_count": 10,
       "group_size": 3,
       "cached": false,
-      "valid_until": "2026-09-30T10:11:54.296105+00:00"
+      "valid_until": "2026-09-30T17:28:00.451833+00:00"
     },
     {
       "external_fixture_id": "sky-6683134159251406232",
@@ -1980,7 +1882,7 @@
       "team_count": 10,
       "group_size": 3,
       "cached": false,
-      "valid_until": "2026-09-30T10:11:54.296105+00:00"
+      "valid_until": "2026-09-30T17:28:00.451833+00:00"
     },
     {
       "external_fixture_id": "sky-8769575234786020232",
@@ -1996,7 +1898,7 @@
       "team_count": 10,
       "group_size": 3,
       "cached": false,
-      "valid_until": "2026-09-30T10:11:54.296105+00:00"
+      "valid_until": "2026-09-30T17:28:00.451833+00:00"
     },
     {
       "external_fixture_id": "sky-4978368000290405232",
@@ -2012,27 +1914,21 @@
       "team_count": 10,
       "group_size": 3,
       "cached": false,
-      "valid_until": "2026-09-30T10:11:54.296105+00:00"
+      "valid_until": "2026-09-30T17:28:00.451833+00:00"
     }
   ],
   "fixture_sources": [
     {
       "source": "sky",
-      "scope": "2026-09-29",
-      "status": "success",
-      "rows": 59
-    },
-    {
-      "source": "sky",
       "scope": "2026-09-30",
       "status": "success",
-      "rows": 25
+      "rows": 26
     },
     {
       "source": "sky",
       "scope": "2026-10-01",
       "status": "success",
-      "rows": 21
+      "rows": 22
     },
     {
       "source": "sky",
@@ -2045,9 +1941,15 @@
       "scope": "2026-10-03",
       "status": "success",
       "rows": 134
+    },
+    {
+      "source": "sky",
+      "scope": "2026-10-04",
+      "status": "success",
+      "rows": 56
     }
   ],
-  "last_successful_refresh": "2026-09-29T22:11:54.296105+00:00",
+  "last_successful_refresh": "2026-09-30T05:28:00.451833+00:00",
   "leagues_checked": 11,
   "status": "ok"
 }
