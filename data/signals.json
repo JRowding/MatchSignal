@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "percentage": 0.3,
-  "refreshed_at": "2026-10-03T16:14:27.607557+00:00",
+  "refreshed_at": "2026-10-03T21:11:21.025445+00:00",
   "window_start": "2026-10-03",
   "window_end": "2026-10-07",
   "leagues": {
@@ -16,7 +16,7 @@
       "bottom_count": 6,
       "fixtures_evaluated": 0,
       "signals_found": 0,
-      "last_successful_refresh": "2026-10-03T16:14:27.607557+00:00",
+      "last_successful_refresh": "2026-10-03T21:11:21.025445+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -125,11 +125,11 @@
         "publisher_updated": "30 September, 11:21am",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-10-03T16:14:27.607557+00:00"
+        "refreshed_at": "2026-10-03T21:11:21.025445+00:00"
       },
       "fixtures": {
         "rows": [],
-        "refreshed_at": "2026-10-03T16:14:27.607557+00:00",
+        "refreshed_at": "2026-10-03T21:11:21.025445+00:00",
         "window_start": "2026-10-03",
         "window_end": "2026-10-07",
         "sources": [
@@ -151,7 +151,7 @@
       "bottom_count": 7,
       "fixtures_evaluated": 0,
       "signals_found": 0,
-      "last_successful_refresh": "2026-10-03T16:14:27.607557+00:00",
+      "last_successful_refresh": "2026-10-03T21:11:21.025445+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -280,11 +280,11 @@
         "publisher_updated": "2 October, 8:17pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-10-03T16:14:27.607557+00:00"
+        "refreshed_at": "2026-10-03T21:11:21.025445+00:00"
       },
       "fixtures": {
         "rows": [],
-        "refreshed_at": "2026-10-03T16:14:27.607557+00:00",
+        "refreshed_at": "2026-10-03T21:11:21.025445+00:00",
         "window_start": "2026-10-03",
         "window_end": "2026-10-07",
         "sources": [
@@ -306,7 +306,7 @@
       "bottom_count": 7,
       "fixtures_evaluated": 0,
       "signals_found": 0,
-      "last_successful_refresh": "2026-10-03T16:14:27.607557+00:00",
+      "last_successful_refresh": "2026-10-03T21:11:21.025445+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -432,10 +432,10 @@
           }
         ],
         "source": "https://www.skysports.com/league-1-table",
-        "publisher_updated": "3 October, 5:01pm",
+        "publisher_updated": "3 October, 6:24pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-10-03T16:14:27.607557+00:00"
+        "refreshed_at": "2026-10-03T21:11:21.025445+00:00"
       },
       "fixtures": {
         "rows": [
@@ -512,7 +512,7 @@
             "status": "postponed"
           }
         ],
-        "refreshed_at": "2026-10-03T16:14:27.607557+00:00",
+        "refreshed_at": "2026-10-03T21:11:21.025445+00:00",
         "window_start": "2026-10-03",
         "window_end": "2026-10-07",
         "sources": [
@@ -534,7 +534,7 @@
       "bottom_count": 7,
       "fixtures_evaluated": 0,
       "signals_found": 0,
-      "last_successful_refresh": "2026-10-03T16:14:27.607557+00:00",
+      "last_successful_refresh": "2026-10-03T21:11:21.025445+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -663,7 +663,7 @@
         "publisher_updated": "3 October, 5:04pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-10-03T16:14:27.607557+00:00"
+        "refreshed_at": "2026-10-03T21:11:21.025445+00:00"
       },
       "fixtures": {
         "rows": [
@@ -756,7 +756,7 @@
             "status": "postponed"
           }
         ],
-        "refreshed_at": "2026-10-03T16:14:27.607557+00:00",
+        "refreshed_at": "2026-10-03T21:11:21.025445+00:00",
         "window_start": "2026-10-03",
         "window_end": "2026-10-07",
         "sources": [
@@ -778,109 +778,109 @@
       "bottom_count": 7,
       "fixtures_evaluated": 0,
       "signals_found": 0,
-      "last_successful_refresh": "2026-10-03T16:14:27.607557+00:00",
+      "last_successful_refresh": "2026-10-03T21:11:21.025445+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
           {
             "position": 1,
             "team": "Boreham Wood",
-            "played": 11
+            "played": 12
           },
           {
             "position": 2,
             "team": "Harrogate Town",
-            "played": 11
+            "played": 12
           },
           {
             "position": 3,
             "team": "Southend United",
-            "played": 11
+            "played": 12
           },
           {
             "position": 4,
-            "team": "Altrincham",
-            "played": 11
+            "team": "Yeovil Town",
+            "played": 12
           },
           {
             "position": 5,
-            "team": "AFC Fylde",
-            "played": 11
+            "team": "Worthing",
+            "played": 12
           },
           {
             "position": 6,
-            "team": "Yeovil Town",
-            "played": 11
+            "team": "Altrincham",
+            "played": 12
           },
           {
             "position": 7,
-            "team": "Aldershot Town",
-            "played": 11
+            "team": "AFC Fylde",
+            "played": 12
           },
           {
             "position": 8,
-            "team": "Worthing",
-            "played": 11
+            "team": "Kidderminster Harriers",
+            "played": 12
           },
           {
             "position": 9,
-            "team": "Kidderminster Harriers",
-            "played": 11
+            "team": "Barrow",
+            "played": 12
           },
           {
             "position": 10,
-            "team": "Hornchurch",
-            "played": 11
+            "team": "Aldershot Town",
+            "played": 12
           },
           {
             "position": 11,
             "team": "Sutton United",
-            "played": 11
+            "played": 12
           },
           {
             "position": 12,
-            "team": "Barrow",
-            "played": 11
+            "team": "Hornchurch",
+            "played": 12
           },
           {
             "position": 13,
+            "team": "FC Halifax Town",
+            "played": 12
+          },
+          {
+            "position": 14,
+            "team": "Carlisle United",
+            "played": 12
+          },
+          {
+            "position": 15,
+            "team": "Woking",
+            "played": 12
+          },
+          {
+            "position": 16,
             "team": "Forest Green Rovers",
             "played": 11
           },
           {
-            "position": 14,
-            "team": "Eastleigh",
-            "played": 11
-          },
-          {
-            "position": 15,
-            "team": "FC Halifax Town",
-            "played": 11
-          },
-          {
-            "position": 16,
-            "team": "Carlisle United",
-            "played": 11
-          },
-          {
             "position": 17,
-            "team": "Wealdstone",
-            "played": 11
+            "team": "Eastleigh",
+            "played": 12
           },
           {
             "position": 18,
-            "team": "Woking",
-            "played": 11
+            "team": "Tamworth",
+            "played": 12
           },
           {
             "position": 19,
-            "team": "Boston United",
-            "played": 11
+            "team": "Wealdstone",
+            "played": 12
           },
           {
             "position": 20,
-            "team": "Tamworth",
-            "played": 11
+            "team": "Boston United",
+            "played": 12
           },
           {
             "position": 21,
@@ -890,24 +890,24 @@
           {
             "position": 22,
             "team": "Hartlepool United",
-            "played": 11
+            "played": 12
           },
           {
             "position": 23,
             "team": "Solihull Moors",
-            "played": 11
+            "played": 12
           },
           {
             "position": 24,
             "team": "Gateshead",
-            "played": 11
+            "played": 12
           }
         ],
         "source": "https://www.skysports.com/national-league-table",
-        "publisher_updated": "1 October, 2:04pm",
+        "publisher_updated": "3 October, 5:00pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-10-03T16:14:27.607557+00:00"
+        "refreshed_at": "2026-10-03T21:11:21.025445+00:00"
       },
       "fixtures": {
         "rows": [
@@ -1008,7 +1008,7 @@
             "status": "completed"
           }
         ],
-        "refreshed_at": "2026-10-03T16:14:27.607557+00:00",
+        "refreshed_at": "2026-10-03T21:11:21.025445+00:00",
         "window_start": "2026-10-03",
         "window_end": "2026-10-07",
         "sources": [
@@ -1030,7 +1030,7 @@
       "bottom_count": 7,
       "fixtures_evaluated": 0,
       "signals_found": 0,
-      "last_successful_refresh": "2026-10-03T16:14:27.607557+00:00",
+      "last_successful_refresh": "2026-10-03T21:11:21.025445+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -1159,11 +1159,11 @@
         "publisher_updated": "30 September, 6:48pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-10-03T16:14:27.607557+00:00"
+        "refreshed_at": "2026-10-03T21:11:21.025445+00:00"
       },
       "fixtures": {
         "rows": [],
-        "refreshed_at": "2026-10-03T16:14:27.607557+00:00",
+        "refreshed_at": "2026-10-03T21:11:21.025445+00:00",
         "window_start": "2026-10-03",
         "window_end": "2026-10-07",
         "sources": [
@@ -1185,7 +1185,7 @@
       "bottom_count": 7,
       "fixtures_evaluated": 3,
       "signals_found": 0,
-      "last_successful_refresh": "2026-10-03T16:14:27.607557+00:00",
+      "last_successful_refresh": "2026-10-03T21:11:21.025445+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -1314,7 +1314,7 @@
         "publisher_updated": "30 September, 6:50pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-10-03T16:14:27.607557+00:00"
+        "refreshed_at": "2026-10-03T21:11:21.025445+00:00"
       },
       "fixtures": {
         "rows": [
@@ -1343,7 +1343,7 @@
             "status": "scheduled"
           }
         ],
-        "refreshed_at": "2026-10-03T16:14:27.607557+00:00",
+        "refreshed_at": "2026-10-03T21:11:21.025445+00:00",
         "window_start": "2026-10-03",
         "window_end": "2026-10-07",
         "sources": [
@@ -1365,7 +1365,7 @@
       "bottom_count": 4,
       "fixtures_evaluated": 0,
       "signals_found": 0,
-      "last_successful_refresh": "2026-10-03T16:14:27.607557+00:00",
+      "last_successful_refresh": "2026-10-03T21:11:21.025445+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -1434,11 +1434,11 @@
         "publisher_updated": "1 October, 1:20pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-10-03T16:14:27.607557+00:00"
+        "refreshed_at": "2026-10-03T21:11:21.025445+00:00"
       },
       "fixtures": {
         "rows": [],
-        "refreshed_at": "2026-10-03T16:14:27.607557+00:00",
+        "refreshed_at": "2026-10-03T21:11:21.025445+00:00",
         "window_start": "2026-10-03",
         "window_end": "2026-10-07",
         "sources": [
@@ -1460,7 +1460,7 @@
       "bottom_count": 3,
       "fixtures_evaluated": 0,
       "signals_found": 0,
-      "last_successful_refresh": "2026-10-03T16:14:27.607557+00:00",
+      "last_successful_refresh": "2026-10-03T21:11:21.025445+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -1472,17 +1472,17 @@
           {
             "position": 2,
             "team": "Raith Rovers",
-            "played": 8
+            "played": 9
           },
           {
             "position": 3,
-            "team": "Livingston",
+            "team": "Partick Thistle",
             "played": 8
           },
           {
             "position": 4,
-            "team": "Partick Thistle",
-            "played": 7
+            "team": "Livingston",
+            "played": 9
           },
           {
             "position": 5,
@@ -1491,17 +1491,17 @@
           },
           {
             "position": 6,
-            "team": "Arbroath",
-            "played": 8
+            "team": "Ayr United",
+            "played": 9
           },
           {
             "position": 7,
-            "team": "Inverness CT",
-            "played": 8
+            "team": "Arbroath",
+            "played": 9
           },
           {
             "position": 8,
-            "team": "Ayr United",
+            "team": "Inverness CT",
             "played": 8
           },
           {
@@ -1512,14 +1512,14 @@
           {
             "position": 10,
             "team": "Morton",
-            "played": 8
+            "played": 9
           }
         ],
         "source": "https://www.skysports.com/scottish-championship-table",
-        "publisher_updated": "27 September, 6:43pm",
+        "publisher_updated": "3 October, 4:51pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-10-03T16:14:27.607557+00:00"
+        "refreshed_at": "2026-10-03T21:11:21.025445+00:00"
       },
       "fixtures": {
         "rows": [
@@ -1548,7 +1548,7 @@
             "status": "completed"
           }
         ],
-        "refreshed_at": "2026-10-03T16:14:27.607557+00:00",
+        "refreshed_at": "2026-10-03T21:11:21.025445+00:00",
         "window_start": "2026-10-03",
         "window_end": "2026-10-07",
         "sources": [
@@ -1568,9 +1568,9 @@
       "team_count": 10,
       "top_count": 3,
       "bottom_count": 3,
-      "fixtures_evaluated": 1,
-      "signals_found": 1,
-      "last_successful_refresh": "2026-10-03T16:14:27.607557+00:00",
+      "fixtures_evaluated": 0,
+      "signals_found": 0,
+      "last_successful_refresh": "2026-10-03T21:11:21.025445+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -1582,7 +1582,7 @@
           {
             "position": 2,
             "team": "Hamilton Academical",
-            "played": 7
+            "played": 8
           },
           {
             "position": 3,
@@ -1612,7 +1612,7 @@
           {
             "position": 8,
             "team": "Peterhead",
-            "played": 8
+            "played": 9
           },
           {
             "position": 9,
@@ -1626,10 +1626,10 @@
           }
         ],
         "source": "https://www.skysports.com/scottish-league-one-table",
-        "publisher_updated": "3 October, 4:52pm",
+        "publisher_updated": "3 October, 7:21pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-10-03T16:14:27.607557+00:00"
+        "refreshed_at": "2026-10-03T21:11:21.025445+00:00"
       },
       "fixtures": {
         "rows": [
@@ -1671,10 +1671,10 @@
             "kickoff": "2026-10-03T16:30:00+00:00",
             "home_team": "Hamilton Academical",
             "away_team": "Peterhead",
-            "status": "scheduled"
+            "status": "completed"
           }
         ],
-        "refreshed_at": "2026-10-03T16:14:27.607557+00:00",
+        "refreshed_at": "2026-10-03T21:11:21.025445+00:00",
         "window_start": "2026-10-03",
         "window_end": "2026-10-07",
         "sources": [
@@ -1696,7 +1696,7 @@
       "bottom_count": 3,
       "fixtures_evaluated": 0,
       "signals_found": 0,
-      "last_successful_refresh": "2026-10-03T16:14:27.607557+00:00",
+      "last_successful_refresh": "2026-10-03T21:11:21.025445+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -1752,10 +1752,10 @@
           }
         ],
         "source": "https://www.skysports.com/scottish-league-two-table",
-        "publisher_updated": "3 October, 4:53pm",
+        "publisher_updated": "3 October, 5:19pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-10-03T16:14:27.607557+00:00"
+        "refreshed_at": "2026-10-03T21:11:21.025445+00:00"
       },
       "fixtures": {
         "rows": [
@@ -1800,7 +1800,7 @@
             "status": "completed"
           }
         ],
-        "refreshed_at": "2026-10-03T16:14:27.607557+00:00",
+        "refreshed_at": "2026-10-03T21:11:21.025445+00:00",
         "window_start": "2026-10-03",
         "window_end": "2026-10-07",
         "sources": [
@@ -1812,30 +1812,13 @@
       "checked": true
     }
   },
-  "signals": [
-    {
-      "external_fixture_id": "sky-4978368000290405232",
-      "competition": "Scottish League One",
-      "kickoff": "2026-10-03T16:30:00+00:00",
-      "home_team": "Hamilton Academical",
-      "away_team": "Peterhead",
-      "status": "scheduled",
-      "home_position": 2,
-      "away_position": 8,
-      "top_team": "Hamilton Academical",
-      "bottom_team": "Peterhead",
-      "team_count": 10,
-      "group_size": 3,
-      "cached": false,
-      "valid_until": "2026-10-04T04:14:27.607557+00:00"
-    }
-  ],
+  "signals": [],
   "fixture_sources": [
     {
       "source": "sky",
       "scope": "2026-10-03",
       "status": "success",
-      "rows": 156
+      "rows": 159
     },
     {
       "source": "sky",
@@ -1862,7 +1845,7 @@
       "rows": 7
     }
   ],
-  "last_successful_refresh": "2026-10-03T16:14:27.607557+00:00",
+  "last_successful_refresh": "2026-10-03T21:11:21.025445+00:00",
   "leagues_checked": 11,
   "status": "ok"
 }
