@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "percentage": 0.3,
-  "refreshed_at": "2026-10-02T22:10:36.204943+00:00",
-  "window_start": "2026-10-02",
-  "window_end": "2026-10-06",
+  "refreshed_at": "2026-10-03T05:14:04.026206+00:00",
+  "window_start": "2026-10-03",
+  "window_end": "2026-10-07",
   "leagues": {
     "Premier League": {
       "table_status": "live",
@@ -16,7 +16,7 @@
       "bottom_count": 6,
       "fixtures_evaluated": 0,
       "signals_found": 0,
-      "last_successful_refresh": "2026-10-02T22:10:36.204943+00:00",
+      "last_successful_refresh": "2026-10-03T05:14:04.026206+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -125,13 +125,13 @@
         "publisher_updated": "30 September, 11:21am",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-10-02T22:10:36.204943+00:00"
+        "refreshed_at": "2026-10-03T05:14:04.026206+00:00"
       },
       "fixtures": {
         "rows": [],
-        "refreshed_at": "2026-10-02T22:10:36.204943+00:00",
-        "window_start": "2026-10-02",
-        "window_end": "2026-10-06",
+        "refreshed_at": "2026-10-03T05:14:04.026206+00:00",
+        "window_start": "2026-10-03",
+        "window_end": "2026-10-07",
         "sources": [
           "sky"
         ]
@@ -151,7 +151,7 @@
       "bottom_count": 7,
       "fixtures_evaluated": 0,
       "signals_found": 0,
-      "last_successful_refresh": "2026-10-02T22:10:36.204943+00:00",
+      "last_successful_refresh": "2026-10-03T05:14:04.026206+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -280,13 +280,13 @@
         "publisher_updated": "2 October, 8:17pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-10-02T22:10:36.204943+00:00"
+        "refreshed_at": "2026-10-03T05:14:04.026206+00:00"
       },
       "fixtures": {
         "rows": [],
-        "refreshed_at": "2026-10-02T22:10:36.204943+00:00",
-        "window_start": "2026-10-02",
-        "window_end": "2026-10-06",
+        "refreshed_at": "2026-10-03T05:14:04.026206+00:00",
+        "window_start": "2026-10-03",
+        "window_end": "2026-10-07",
         "sources": [
           "sky"
         ]
@@ -306,7 +306,7 @@
       "bottom_count": 7,
       "fixtures_evaluated": 3,
       "signals_found": 0,
-      "last_successful_refresh": "2026-10-02T22:10:36.204943+00:00",
+      "last_successful_refresh": "2026-10-03T05:14:04.026206+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -435,7 +435,7 @@
         "publisher_updated": "28 September, 5:31pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-10-02T22:10:36.204943+00:00"
+        "refreshed_at": "2026-10-03T05:14:04.026206+00:00"
       },
       "fixtures": {
         "rows": [
@@ -512,9 +512,9 @@
             "status": "scheduled"
           }
         ],
-        "refreshed_at": "2026-10-02T22:10:36.204943+00:00",
-        "window_start": "2026-10-02",
-        "window_end": "2026-10-06",
+        "refreshed_at": "2026-10-03T05:14:04.026206+00:00",
+        "window_start": "2026-10-03",
+        "window_end": "2026-10-07",
         "sources": [
           "sky"
         ]
@@ -534,7 +534,7 @@
       "bottom_count": 7,
       "fixtures_evaluated": 8,
       "signals_found": 2,
-      "last_successful_refresh": "2026-10-02T22:10:36.204943+00:00",
+      "last_successful_refresh": "2026-10-03T05:14:04.026206+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -663,7 +663,7 @@
         "publisher_updated": "1 October, 12:54pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-10-02T22:10:36.204943+00:00"
+        "refreshed_at": "2026-10-03T05:14:04.026206+00:00"
       },
       "fixtures": {
         "rows": [
@@ -756,9 +756,9 @@
             "status": "scheduled"
           }
         ],
-        "refreshed_at": "2026-10-02T22:10:36.204943+00:00",
-        "window_start": "2026-10-02",
-        "window_end": "2026-10-06",
+        "refreshed_at": "2026-10-03T05:14:04.026206+00:00",
+        "window_start": "2026-10-03",
+        "window_end": "2026-10-07",
         "sources": [
           "sky"
         ]
@@ -778,7 +778,7 @@
       "bottom_count": 7,
       "fixtures_evaluated": 11,
       "signals_found": 1,
-      "last_successful_refresh": "2026-10-02T22:10:36.204943+00:00",
+      "last_successful_refresh": "2026-10-03T05:14:04.026206+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -907,7 +907,7 @@
         "publisher_updated": "1 October, 2:04pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-10-02T22:10:36.204943+00:00"
+        "refreshed_at": "2026-10-03T05:14:04.026206+00:00"
       },
       "fixtures": {
         "rows": [
@@ -1008,9 +1008,9 @@
             "status": "scheduled"
           }
         ],
-        "refreshed_at": "2026-10-02T22:10:36.204943+00:00",
-        "window_start": "2026-10-02",
-        "window_end": "2026-10-06",
+        "refreshed_at": "2026-10-03T05:14:04.026206+00:00",
+        "window_start": "2026-10-03",
+        "window_end": "2026-10-07",
         "sources": [
           "sky"
         ]
@@ -1030,7 +1030,7 @@
       "bottom_count": 7,
       "fixtures_evaluated": 0,
       "signals_found": 0,
-      "last_successful_refresh": "2026-10-02T22:10:36.204943+00:00",
+      "last_successful_refresh": "2026-10-03T05:14:04.026206+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -1159,13 +1159,13 @@
         "publisher_updated": "30 September, 6:48pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-10-02T22:10:36.204943+00:00"
+        "refreshed_at": "2026-10-03T05:14:04.026206+00:00"
       },
       "fixtures": {
         "rows": [],
-        "refreshed_at": "2026-10-02T22:10:36.204943+00:00",
-        "window_start": "2026-10-02",
-        "window_end": "2026-10-06",
+        "refreshed_at": "2026-10-03T05:14:04.026206+00:00",
+        "window_start": "2026-10-03",
+        "window_end": "2026-10-07",
         "sources": [
           "sky"
         ]
@@ -1185,7 +1185,7 @@
       "bottom_count": 7,
       "fixtures_evaluated": 3,
       "signals_found": 0,
-      "last_successful_refresh": "2026-10-02T22:10:36.204943+00:00",
+      "last_successful_refresh": "2026-10-03T05:14:04.026206+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -1314,7 +1314,7 @@
         "publisher_updated": "30 September, 6:50pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-10-02T22:10:36.204943+00:00"
+        "refreshed_at": "2026-10-03T05:14:04.026206+00:00"
       },
       "fixtures": {
         "rows": [
@@ -1343,9 +1343,9 @@
             "status": "scheduled"
           }
         ],
-        "refreshed_at": "2026-10-02T22:10:36.204943+00:00",
-        "window_start": "2026-10-02",
-        "window_end": "2026-10-06",
+        "refreshed_at": "2026-10-03T05:14:04.026206+00:00",
+        "window_start": "2026-10-03",
+        "window_end": "2026-10-07",
         "sources": [
           "sky"
         ]
@@ -1365,7 +1365,7 @@
       "bottom_count": 4,
       "fixtures_evaluated": 0,
       "signals_found": 0,
-      "last_successful_refresh": "2026-10-02T22:10:36.204943+00:00",
+      "last_successful_refresh": "2026-10-03T05:14:04.026206+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -1434,13 +1434,13 @@
         "publisher_updated": "1 October, 1:20pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-10-02T22:10:36.204943+00:00"
+        "refreshed_at": "2026-10-03T05:14:04.026206+00:00"
       },
       "fixtures": {
         "rows": [],
-        "refreshed_at": "2026-10-02T22:10:36.204943+00:00",
-        "window_start": "2026-10-02",
-        "window_end": "2026-10-06",
+        "refreshed_at": "2026-10-03T05:14:04.026206+00:00",
+        "window_start": "2026-10-03",
+        "window_end": "2026-10-07",
         "sources": [
           "sky"
         ]
@@ -1460,7 +1460,7 @@
       "bottom_count": 3,
       "fixtures_evaluated": 3,
       "signals_found": 2,
-      "last_successful_refresh": "2026-10-02T22:10:36.204943+00:00",
+      "last_successful_refresh": "2026-10-03T05:14:04.026206+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -1519,7 +1519,7 @@
         "publisher_updated": "27 September, 6:43pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-10-02T22:10:36.204943+00:00"
+        "refreshed_at": "2026-10-03T05:14:04.026206+00:00"
       },
       "fixtures": {
         "rows": [
@@ -1548,9 +1548,9 @@
             "status": "scheduled"
           }
         ],
-        "refreshed_at": "2026-10-02T22:10:36.204943+00:00",
-        "window_start": "2026-10-02",
-        "window_end": "2026-10-06",
+        "refreshed_at": "2026-10-03T05:14:04.026206+00:00",
+        "window_start": "2026-10-03",
+        "window_end": "2026-10-07",
         "sources": [
           "sky"
         ]
@@ -1570,7 +1570,7 @@
       "bottom_count": 3,
       "fixtures_evaluated": 5,
       "signals_found": 1,
-      "last_successful_refresh": "2026-10-02T22:10:36.204943+00:00",
+      "last_successful_refresh": "2026-10-03T05:14:04.026206+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -1629,7 +1629,7 @@
         "publisher_updated": "25 September, 1:28pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-10-02T22:10:36.204943+00:00"
+        "refreshed_at": "2026-10-03T05:14:04.026206+00:00"
       },
       "fixtures": {
         "rows": [
@@ -1674,9 +1674,9 @@
             "status": "scheduled"
           }
         ],
-        "refreshed_at": "2026-10-02T22:10:36.204943+00:00",
-        "window_start": "2026-10-02",
-        "window_end": "2026-10-06",
+        "refreshed_at": "2026-10-03T05:14:04.026206+00:00",
+        "window_start": "2026-10-03",
+        "window_end": "2026-10-07",
         "sources": [
           "sky"
         ]
@@ -1696,7 +1696,7 @@
       "bottom_count": 3,
       "fixtures_evaluated": 5,
       "signals_found": 1,
-      "last_successful_refresh": "2026-10-02T22:10:36.204943+00:00",
+      "last_successful_refresh": "2026-10-03T05:14:04.026206+00:00",
       "source_warnings": [],
       "table": {
         "rows": [
@@ -1755,7 +1755,7 @@
         "publisher_updated": "1 October, 11:39pm",
         "fallback": false,
         "errors": [],
-        "refreshed_at": "2026-10-02T22:10:36.204943+00:00"
+        "refreshed_at": "2026-10-03T05:14:04.026206+00:00"
       },
       "fixtures": {
         "rows": [
@@ -1800,9 +1800,9 @@
             "status": "scheduled"
           }
         ],
-        "refreshed_at": "2026-10-02T22:10:36.204943+00:00",
-        "window_start": "2026-10-02",
-        "window_end": "2026-10-06",
+        "refreshed_at": "2026-10-03T05:14:04.026206+00:00",
+        "window_start": "2026-10-03",
+        "window_end": "2026-10-07",
         "sources": [
           "sky"
         ]
@@ -1827,7 +1827,7 @@
       "team_count": 24,
       "group_size": 7,
       "cached": false,
-      "valid_until": "2026-10-03T10:10:36.204943+00:00"
+      "valid_until": "2026-10-03T17:14:04.026206+00:00"
     },
     {
       "external_fixture_id": "sky-5364405029390284232",
@@ -1843,7 +1843,7 @@
       "team_count": 24,
       "group_size": 7,
       "cached": false,
-      "valid_until": "2026-10-03T10:10:36.204943+00:00"
+      "valid_until": "2026-10-03T17:14:04.026206+00:00"
     },
     {
       "external_fixture_id": "sky-4787807271019771232",
@@ -1859,7 +1859,7 @@
       "team_count": 24,
       "group_size": 7,
       "cached": false,
-      "valid_until": "2026-10-03T10:10:36.204943+00:00"
+      "valid_until": "2026-10-03T17:14:04.026206+00:00"
     },
     {
       "external_fixture_id": "sky-8395524554942817232",
@@ -1875,7 +1875,7 @@
       "team_count": 10,
       "group_size": 3,
       "cached": false,
-      "valid_until": "2026-10-03T10:10:36.204943+00:00"
+      "valid_until": "2026-10-03T17:14:04.026206+00:00"
     },
     {
       "external_fixture_id": "sky-6683134159251406232",
@@ -1891,7 +1891,7 @@
       "team_count": 10,
       "group_size": 3,
       "cached": false,
-      "valid_until": "2026-10-03T10:10:36.204943+00:00"
+      "valid_until": "2026-10-03T17:14:04.026206+00:00"
     },
     {
       "external_fixture_id": "sky-8769575234786020232",
@@ -1907,7 +1907,7 @@
       "team_count": 10,
       "group_size": 3,
       "cached": false,
-      "valid_until": "2026-10-03T10:10:36.204943+00:00"
+      "valid_until": "2026-10-03T17:14:04.026206+00:00"
     },
     {
       "external_fixture_id": "sky-4978368000290405232",
@@ -1923,21 +1923,15 @@
       "team_count": 10,
       "group_size": 3,
       "cached": false,
-      "valid_until": "2026-10-03T10:10:36.204943+00:00"
+      "valid_until": "2026-10-03T17:14:04.026206+00:00"
     }
   ],
   "fixture_sources": [
     {
       "source": "sky",
-      "scope": "2026-10-02",
-      "status": "success",
-      "rows": 29
-    },
-    {
-      "source": "sky",
       "scope": "2026-10-03",
       "status": "success",
-      "rows": 143
+      "rows": 150
     },
     {
       "source": "sky",
@@ -1956,9 +1950,15 @@
       "scope": "2026-10-06",
       "status": "success",
       "rows": 58
+    },
+    {
+      "source": "sky",
+      "scope": "2026-10-07",
+      "status": "success",
+      "rows": 7
     }
   ],
-  "last_successful_refresh": "2026-10-02T22:10:36.204943+00:00",
+  "last_successful_refresh": "2026-10-03T05:14:04.026206+00:00",
   "leagues_checked": 11,
   "status": "ok"
 }
