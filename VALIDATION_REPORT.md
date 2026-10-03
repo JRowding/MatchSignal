@@ -1,35 +1,29 @@
 # MatchSignal live validation
 
-Refresh: 2026-10-03T11:35:33.538259+00:00
+Refresh: 2026-10-03T16:14:27.607557+00:00
 Window: 2026-10-03 through 2026-10-07 (Europe/London).
-11/11 leagues checked; 7 qualifying fixtures.
+11/11 leagues checked; 1 qualifying fixtures.
 
 Counts below reflect the refresh instant; already-started matches disappear from the app.
 
 | League | Table | Fixtures | Teams | Top | Bottom | Checked | Signals | Source | Last success |
 |---|---|---|---:|---:|---:|---:|---:|---|---|
-| Premier League | live | live | 20 | 6 | 6 | 0 | 0 | https://www.skysports.com/premier-league-table | 2026-10-03T11:35:33.538259+00:00 |
-| Championship | live | live | 24 | 7 | 7 | 0 | 0 | https://www.skysports.com/championship-table | 2026-10-03T11:35:33.538259+00:00 |
-| League One | live | live | 24 | 7 | 7 | 3 | 0 | https://www.skysports.com/league-1-table | 2026-10-03T11:35:33.538259+00:00 |
-| League Two | live | live | 24 | 7 | 7 | 7 | 2 | https://www.skysports.com/league-2-table | 2026-10-03T11:35:33.538259+00:00 |
-| National League | live | live | 24 | 7 | 7 | 11 | 1 | https://www.skysports.com/national-league-table | 2026-10-03T11:35:33.538259+00:00 |
-| National League North | live | live | 24 | 7 | 7 | 0 | 0 | https://www.skysports.com/national-league-north-table | 2026-10-03T11:35:33.538259+00:00 |
-| National League South | live | live | 24 | 7 | 7 | 3 | 0 | https://www.skysports.com/national-league-south-table | 2026-10-03T11:35:33.538259+00:00 |
-| Scottish Premiership | live | live | 12 | 4 | 4 | 0 | 0 | https://www.skysports.com/scottish-premiership-table | 2026-10-03T11:35:33.538259+00:00 |
-| Scottish Championship | live | live | 10 | 3 | 3 | 3 | 2 | https://www.skysports.com/scottish-championship-table | 2026-10-03T11:35:33.538259+00:00 |
-| Scottish League One | live | live | 10 | 3 | 3 | 5 | 1 | https://www.skysports.com/scottish-league-one-table | 2026-10-03T11:35:33.538259+00:00 |
-| Scottish League Two | live | live | 10 | 3 | 3 | 5 | 1 | https://www.skysports.com/scottish-league-two-table | 2026-10-03T11:35:33.538259+00:00 |
+| Premier League | live | live | 20 | 6 | 6 | 0 | 0 | https://www.skysports.com/premier-league-table | 2026-10-03T16:14:27.607557+00:00 |
+| Championship | live | live | 24 | 7 | 7 | 0 | 0 | https://www.skysports.com/championship-table | 2026-10-03T16:14:27.607557+00:00 |
+| League One | live | live | 24 | 7 | 7 | 0 | 0 | https://www.skysports.com/league-1-table | 2026-10-03T16:14:27.607557+00:00 |
+| League Two | live | live | 24 | 7 | 7 | 0 | 0 | https://www.skysports.com/league-2-table | 2026-10-03T16:14:27.607557+00:00 |
+| National League | live | live | 24 | 7 | 7 | 0 | 0 | https://www.skysports.com/national-league-table | 2026-10-03T16:14:27.607557+00:00 |
+| National League North | live | live | 24 | 7 | 7 | 0 | 0 | https://www.skysports.com/national-league-north-table | 2026-10-03T16:14:27.607557+00:00 |
+| National League South | live | live | 24 | 7 | 7 | 3 | 0 | https://www.skysports.com/national-league-south-table | 2026-10-03T16:14:27.607557+00:00 |
+| Scottish Premiership | live | live | 12 | 4 | 4 | 0 | 0 | https://www.skysports.com/scottish-premiership-table | 2026-10-03T16:14:27.607557+00:00 |
+| Scottish Championship | live | live | 10 | 3 | 3 | 0 | 0 | https://www.skysports.com/scottish-championship-table | 2026-10-03T16:14:27.607557+00:00 |
+| Scottish League One | live | live | 10 | 3 | 3 | 1 | 1 | https://www.skysports.com/scottish-league-one-table | 2026-10-03T16:14:27.607557+00:00 |
+| Scottish League Two | live | live | 10 | 3 | 3 | 0 | 0 | https://www.skysports.com/scottish-league-two-table | 2026-10-03T16:14:27.607557+00:00 |
 
 ## Qualifying fixtures
 
 | Day/date | UK kickoff | League | Home | Away | Top | Bottom |
 |---|---|---|---|---|---|---|
-| Saturday 03 October 2026 | Saturday 3pm | League Two | Accrington Stanley (19th) | Cheltenham Town (2nd) | Cheltenham Town | Accrington Stanley |
-| Saturday 03 October 2026 | Saturday 3pm | League Two | Grimsby Town (6th) | Shrewsbury Town (18th) | Grimsby Town | Shrewsbury Town |
-| Saturday 03 October 2026 | Saturday 3pm | National League | Yeovil Town (6th) | Boston United (19th) | Yeovil Town | Boston United |
-| Saturday 03 October 2026 | Saturday 3pm | Scottish Championship | Livingston (3rd) | Ayr United (8th) | Livingston | Ayr United |
-| Saturday 03 October 2026 | Saturday 3pm | Scottish Championship | Morton (10th) | Raith Rovers (2nd) | Raith Rovers | Morton |
-| Saturday 03 October 2026 | Saturday 3pm | Scottish League Two | Spartans (3rd) | Kelty Hearts (9th) | Spartans | Kelty Hearts |
 | Saturday 03 October 2026 | Saturday 5:30pm | Scottish League One | Hamilton Academical (2nd) | Peterhead (8th) | Hamilton Academical | Peterhead |
 
 ## Source diagnostics
@@ -47,13 +41,13 @@ Errors: none. Unmatched: none.
 Source warnings: none.
 
 ### League One
-Fallback used: False. Publisher table timestamp: 28 September, 5:31pm.
+Fallback used: False. Publisher table timestamp: 3 October, 5:01pm.
 Fixture sources: ['sky'].
 Errors: none. Unmatched: none.
 Source warnings: none.
 
 ### League Two
-Fallback used: False. Publisher table timestamp: 1 October, 12:54pm.
+Fallback used: False. Publisher table timestamp: 3 October, 5:04pm.
 Fixture sources: ['sky'].
 Errors: none. Unmatched: none.
 Source warnings: none.
@@ -89,13 +83,13 @@ Errors: none. Unmatched: none.
 Source warnings: none.
 
 ### Scottish League One
-Fallback used: False. Publisher table timestamp: 25 September, 1:28pm.
+Fallback used: False. Publisher table timestamp: 3 October, 4:52pm.
 Fixture sources: ['sky'].
 Errors: none. Unmatched: none.
 Source warnings: none.
 
 ### Scottish League Two
-Fallback used: False. Publisher table timestamp: 1 October, 11:39pm.
+Fallback used: False. Publisher table timestamp: 3 October, 4:53pm.
 Fixture sources: ['sky'].
 Errors: none. Unmatched: none.
 Source warnings: none.
